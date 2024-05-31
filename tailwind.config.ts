@@ -75,6 +75,17 @@ const config: Config = {
           'Segoe UI Symbol',
           'Noto Color Emoji'
         ],
+        'mono': [
+          'JetBrains Mono',
+          'ui-monospace',
+          'SFMono-Regular',
+          'Menlo',
+          'Monaco',
+          'Consolas',
+          'Liberation Mono',
+          'Courier New',
+          'monospace',
+        ],
         'sans': [
           'Inter',
           'ui-sans-serif',

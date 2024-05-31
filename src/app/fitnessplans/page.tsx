@@ -17,24 +17,25 @@ const FitnessPlanPage = async () => {
     const fitnessPlans:FitnessPlan[] = data.results;
 
     return (
-      <div className='min-h-screen flex flex-col items-center justify-center'>
-        <h1 className='text-5xl font-bold mb-5'>Your Fitness Plan!</h1>
-        <div className='grid grid-cols-3 content-center justify-items-center p-10 gap-8'>
-        {fitnessPlans.map((plan) => (
-          <div key={plan.id} className="scale-125 col-span-3 hover:-translate-y-2 transition card w-96 bg-card-bg shadow-xl">
-          <div className="card-body">
-            <p className="card-title -mb-1">
-              {plan.title}
-            </p>
-            <p className='text-gray-500 mb-4'>Flex up with FlexTime!</p>
-            <div className="card-actions justify-end">
-              <SessionPlansButton fitnessPlanId={plan.id}/>
+      <div className='min-h-screen flex flex-col items-center justify-center -translate-y-20'>
+                <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-8'>
+                <h1 className='text-5xl font-semibold font-mono mb-2 col-span-3'>your fitness plan:</h1>
+                    {fitnessPlans.map((plan) => (
+                        <div key={plan.id} className="scale-150 origin-top-left hover:-translate-y-2 transition card bg-card-bg w-72 shadow-xl">
+                            <div className="card-body">
+                                <p className="card-title -mb-2 font-extrabold font-mono">
+                                    {plan.title}
+                                </p>
+                                <p className='text-gray-500 mb-4 text-sm'>Flex up with FlexTime!</p>
+                                <div className="card-actions justify-end">
+                                    <SessionPlansButton fitnessPlanId={plan.id}></SessionPlansButton>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    ))}
+                </div>
             </div>
-          </div>
-        </div>
-        ))}
-        </div>
-      </div>
     );
   } catch (error) {
     console.error('Error fetching fitness plans:', error);

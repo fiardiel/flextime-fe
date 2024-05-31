@@ -7,17 +7,10 @@ interface SessionPlansButtonProps {
   fitnessPlanId: number;
 }
 
-interface SessionPlan {
-  id: number;
-  trainingType: string;
-  fitnessPlan: string;
-  trainings: number[];
-}
-
 const SessionPlansButton: React.FC<SessionPlansButtonProps> = ({ fitnessPlanId }) => {
   return (
     <div>
-      <Link href={`sessionplans/${fitnessPlanId}`} className='btn btn-outline btn-accent'>
+      <Link href={`sessionplans/${fitnessPlanId}`} className='btn btn-sm btn-outline text-xs px-3 py-1 btn-accent'>
         Session Plans
       </Link>
     </div>

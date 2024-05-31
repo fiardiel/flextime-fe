@@ -1,5 +1,7 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
+import ViewTrainingsButton from '@/app/components/ViewTrainingsButton';
+import DeleteSessionPlanButton from '@/app/components/DeleteSessionPlanButton';
 
 interface SessionPlan {
     id: number;
@@ -21,19 +23,22 @@ const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: string } }
         const sessionPlans: SessionPlan[] = data.results;
 
         return (
-            <div className='min-h-screen flex flex-col items-center justify-center'>
-                <h1 className='text-5xl font-bold mb-5'>Your Session Plans!</h1>
-                <div className='grid grid-cols-3 content-center justify-items-center p-10 gap-8'>
+            <div className='min-h-screen flex flex-col items-center justify-center -translate-y-10'>
+                <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-8'>
+                <h1 className='text-5xl font-semibold font-mono mb-2 col-span-3'>your session plans:</h1>
                     {sessionPlans.map((plan) => (
                         <div key={plan.id} className="hover:-translate-y-2 transition card bg-card-bg w-72 shadow-xl">
                             <div className="card-body">
-                                <p className="card-title -mb-1">
+                                <p className="card-title -mb-1 font-mono font-extrabold">
                                     {plan.training_type}
                                 </p>
-                                <p className='text-gray-300 mb-4'>Flex up with FlexTime!</p>
+                                <p className='text-gray-400 text-sm mb-4'>Flex up with FlexTime!</p>
                                 <div className="card-actions justify-end">
+                                    <ViewTrainingsButton sessionPlanId={plan.id}></ViewTrainingsButton>
+                                    <DeleteSessionPlanButton sessionPlanId={plan.id}></DeleteSessionPlanButton>
                                 </div>
                             </div>
+                            
                         </div>
                     ))}
                 </div>
