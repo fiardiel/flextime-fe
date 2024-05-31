@@ -8,7 +8,7 @@ export default function Home() {
         <p className="text-start text-5xl font-bold">
           Flex Up With FlexTime!
         </p>
-        <Link className="btn btn-info btn-outline px-4 py-2 mt-5" href="/fitnessplans">
+        <Link className="btn btn-info btn-outline w-32 px-4 py-2 mt-5" href="/fitnessplans">
           Fitness Plan
         </Link>
       </div>
