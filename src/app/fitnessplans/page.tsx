@@ -1,5 +1,7 @@
 import React from 'react';
-import SessionPlansButton from '../components/SessionPlansButton';
+import SessionPlansButton from './components/SessionPlansButton';
+import { getAllFitnessPlans } from '../../../api';
+import { GiBiceps } from "react-icons/gi";
 
 interface FitnessPlan {
   title: string;
@@ -9,13 +11,7 @@ interface FitnessPlan {
 
 const FitnessPlanPage = async () => {
   try {
-    const res = await fetch('http://127.0.0.1:8000/fitnessplans/');
-    if (!res.ok) {
-      throw new Error('Failed to fetch fitness plans');
-    }
-    const data = await res.json();
-    const fitnessPlans: FitnessPlan[] = data.results;
-
+    const fitnessPlans = await getAllFitnessPlans();
     return (
       <div className='min-h-screen flex flex-col items-center justify-center -translate-y-20'>
         <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-8'>
@@ -28,7 +24,7 @@ const FitnessPlanPage = async () => {
                 </p>
                 <p className='text-gray-500 mb-4 text-sm'>Flex up with FlexTime!</p>
                 <div className="card-actions justify-end">
-                  <SessionPlansButton fitnessPlanId={plan.id}></SessionPlansButton>
+                  <SessionPlansButton fitnessPlanId={plan.id}/>
                 </div>
               </div>
 
