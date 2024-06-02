@@ -21,3 +21,9 @@ export const deleteSessionPlan = async ( {sessionPlanId}: { sessionPlanId: numbe
         method: 'DELETE'
     });
 }
+
+export const getAllTrainings = async (): Promise<ITraining[]> => {
+    const res = await fetch(`${baseUrl}/trainings/`)
+    const data = await res.json()
+    return data.results;
+}

@@ -4,10 +4,9 @@ import { getSessionPlanByFitnessPlan } from '../../../../api';
 import { ISessionPlan } from '../../../../types/SessionPlan';
 import SessionPlanList from './components/SessionPlanList';
 
-const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: string } }) => {
-    const fitnessPlanId = Number(params.fitnessPlanId);
+const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: number } }) => {
     try {
-        const sessionPlans: ISessionPlan[] =  await getSessionPlanByFitnessPlan({ fitnessPlanId: fitnessPlanId });
+        const sessionPlans: ISessionPlan[] =  await getSessionPlanByFitnessPlan({ fitnessPlanId: params.fitnessPlanId });
 
         return (
             <div className='flex flex-col items-center h-full w-full'>
@@ -15,7 +14,6 @@ const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: string } }
                 <div className='self-center font-sans'>
                     <SessionPlanList initSessionPlans={sessionPlans}/>
                 </div>
-                
             </div>
         );
     } catch (error) {
