@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { IoFitnessOutline } from "react-icons/io5";
 
 export default function Home() {
   return (
@@ -8,8 +9,8 @@ export default function Home() {
         <p className="text-start text-5xl font-bold font-mono">
           Flex Up With FlexTime!
         </p>
-        <Link className="btn btn-info btn-outline w-32 px-4 py-2 mt-5 text-start" href="/fitnessplans">
-          Fitness Plan
+        <Link className="btn btn-info btn-outline w-40 px-4 py-2 mt-5 text-start font-sans" href="/fitnessplans">
+          Fitness Plan <IoFitnessOutline size={20}/>
         </Link>
       </div>
     </main>

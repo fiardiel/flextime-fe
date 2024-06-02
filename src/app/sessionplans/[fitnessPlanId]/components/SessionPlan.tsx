@@ -9,9 +9,10 @@ import { deleteSessionPlan } from '../../../../../api';
 
 interface SessionPlanProps {
     sessionPlan: ISessionPlan;
+    onDelete: (id: number) => void;
 }
 
-const SessionPlan: React.FC<SessionPlanProps> = ( {sessionPlan } ) => {
+const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) => {
     const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false);
 
     const handleDelete = async () => {
@@ -22,6 +23,7 @@ const SessionPlan: React.FC<SessionPlanProps> = ( {sessionPlan } ) => {
         await deleteSessionPlan({sessionPlanId: sessionPlan.id});
         console.log(`Session plan ${sessionPlan.id} deleted`);
         setDeleteModalOpen(false);
+        onDelete(sessionPlan.id)
     };
 
     const deleteAction = (

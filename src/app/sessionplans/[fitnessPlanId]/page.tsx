@@ -12,8 +12,8 @@ const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: string } }
         return (
             <div className='flex flex-col items-center h-full w-full'>
                 <h1 className='text-5xl font-bold font-mono mb-2 col-span-3 text-start px-52 mt-28'>your session plans:</h1>
-                <div className='self-center'>
-                    <SessionPlanList sessionPlans={sessionPlans}/>
+                <div className='self-center font-sans'>
+                    <SessionPlanList initSessionPlans={sessionPlans}/>
                 </div>
                 
             </div>

@@ -12,7 +12,7 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ( {modalOpen, setModalOpen, children, actions} ) => {
   return (    
     <div className={`modal ${modalOpen ? "modal-open" : ""}`}>
-        <div className='modal-box w-80'>
+        <div className='modal-box w-96'>
             {children}
             <div className="modal-action">
                 <form method="dialog">

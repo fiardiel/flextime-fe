@@ -1,7 +1,6 @@
 import React from 'react';
 import SessionPlansButton from './components/SessionPlansButton';
 import { getAllFitnessPlans } from '../../../api';
-import { GiBiceps } from "react-icons/gi";
 
 interface FitnessPlan {
   title: string;
