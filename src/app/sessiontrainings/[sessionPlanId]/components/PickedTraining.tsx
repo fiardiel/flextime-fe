@@ -7,6 +7,8 @@ import { FaTrashAlt } from 'react-icons/fa';
 import { ICustomization } from '../../../../../types/Customization';
 import Link from 'next/link';
 import { RiEditBoxFill } from 'react-icons/ri';
+import { Button } from 'flowbite-react';
+import { useRouter } from 'next/navigation';
 
 interface PickedTrainingProps {
     sessionTraining: ISessionTraining;
@@ -50,9 +52,15 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
     };
 
     const deleteAction = (
-        <button onClick={confirmDelete} className='btn btn-error btn-outline text-white hover:text-white'>
-            Delete
-        </button>
+        <Button outline onClick={confirmDelete} gradientMonochrome="failure">Delete</Button>
+    );
+
+    const handleUpdate = async() => {
+        setUpdateModalOpen(true);
+    }
+
+    const updateAction = (
+        <Button outline onClick={confirmDelete} gradientMonochrome="failure">Delete</Button>
     );
 
     return (
@@ -68,17 +76,16 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
                         <span className=' bg-blue-300 px-2 py-1 rounded-lg text-blue-800 text-xs font-semibold self-center'>{customization?.duration}s</span>
                     </p>
                     <div className="card-actions justify-end">
-                        <Link href={`/customization`} className='btn btn-outline btn-info btn-sm px-2 py-1'>
-                            <RiEditBoxFill size={17}/>
-                        </Link>
-                        <button onClick={handleDelete} className='btn btn-outline btn-error btn-sm px-2 py-1'>
-                            <FaTrashAlt size={15}/>
-                        </button>
+                        <Button outline size='sm' onClick={handleUpdate} gradientDuoTone="purpleToBlue"><RiEditBoxFill size={17}/></Button>
+                        <Button outline size='sm' onClick={handleDelete} gradientMonochrome="failure"><FaTrashAlt size={15}/></Button>
                     </div>
                 </div>
             </div>
             <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen} actions={deleteAction}> 
                 <h3 className='text-lg font-mono font-medium'>Delete Session Training #{sessionTraining.id}?</h3>    
+            </Modal>
+            <Modal modalOpen={updateModalOpen} setModalOpen={setUpdateModalOpen} actions={updateAction}> 
+                <h3 className='text-lg font-mono font-medium'>Customize #{sessionTraining.id}?</h3>    
             </Modal>
         </div>
     )

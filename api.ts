@@ -1,7 +1,7 @@
-import { ICustomization } from './types/Customization';
+import { CustomizationForm, ICustomization } from './types/Customization';
 import { IFitnessPlan } from './types/FitnessPlan';
 import { ISessionPlan } from './types/SessionPlan';
-import { ISessionTraining } from './types/SessionTraining';
+import { ISessionTraining, SessionTrainingForm } from './types/SessionTraining';
 import { ITraining } from './types/Training';
 
 
@@ -32,7 +32,7 @@ export const getTrainingsByTrainingType = async ({ trainingType }: { trainingTyp
 }
 
 export const getSessionTrainingsBySessionPlan = async ({ sessionPlanId }: { sessionPlanId: number }): Promise<ISessionTraining[]> => {
-    const res = await fetch(`${baseUrl}/sessiontrainings/?sessionplan=${sessionPlanId}`);
+    const res = await fetch(`${baseUrl}/sessiontrainings/?sessionplan=${sessionPlanId}`, { next: { tags: ['sessionTrainings'] } });
     const data = await res.json();
     return data.results;
 }
@@ -59,4 +59,28 @@ export const getCustomizationById = async ({ id }: { id: number }): Promise<ICus
     const res = await fetch(`${baseUrl}/customizations/${id}/`)
     const data = await res.json()
     return data
+}
+
+export const addCustomization = async ( customization: CustomizationForm ): Promise<ICustomization> => {
+    const res = await fetch(`${baseUrl}/customizations/`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(customization)
+    })
+    const newCustomziation = await res.json()
+    return newCustomziation
+}
+
+export const addSessionTraining = async ( sessionTraining: SessionTrainingForm ): Promise<ISessionTraining> => {
+    const res = await fetch(`${baseUrl}/sessiontrainings/`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(sessionTraining)
+    })
+    const newSessionTraining = await res.json()
+    return newSessionTraining
 }

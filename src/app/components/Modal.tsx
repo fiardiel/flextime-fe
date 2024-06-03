@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from 'flowbite-react';
 import React from 'react'
 
 interface ModalProps {
@@ -16,7 +17,9 @@ const Modal: React.FC<ModalProps> = ( {modalOpen, setModalOpen, children, action
             {children}
             <div className="modal-action">
                 <form method="dialog">
-                    <button onClick={() => setModalOpen(false)} className="btn btn-secondary btn-outline">Cancel</button>
+                    <Button outline gradientDuoTone="purpleToPink"  onClick={() => setModalOpen(false)}>
+                        Cancel
+                    </Button>
                 </form>
                 {actions}
             </div>
