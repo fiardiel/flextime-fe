@@ -11,7 +11,7 @@ type ViewTrainingsButtonProps = {
 const ViewTrainingsButton: React.FC<ViewTrainingsButtonProps> = ({ sessionPlanId }) => {
   return (
     <div>
-      <Link href={`/trainings/${sessionPlanId}`} className='btn btn-outline btn-sm px-2 py-1 btn-info'>
+      <Link href={`/sessiontrainings/${sessionPlanId}`} className='btn btn-outline btn-sm px-2 py-1 btn-info'>
         <PiBarbellFill size={20}/>
       </Link>
     </div>

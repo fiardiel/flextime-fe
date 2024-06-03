@@ -1,4 +1,4 @@
-interface ICustomization {
+export interface ICustomization {
     id: number;
     reps: number;
     sets: number;

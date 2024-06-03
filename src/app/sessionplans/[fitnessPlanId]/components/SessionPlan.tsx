@@ -34,7 +34,7 @@ const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) =>
 
     return (
         <div>
-            <div key={sessionPlan.id} className="hover:-translate-y-2 hover:scale-110 transition card bg-card-bg w-72 shadow-xl">
+            <div className="hover:-translate-y-2 hover:scale-110 transition card bg-card-bg w-72 shadow-xl">
                 <div className="card-body">
                     <div className='card-title -mb-1 font-mono font-extrabold'>
                         <span className='text-white'> {sessionPlan.training_type} </span>

@@ -1,4 +1,4 @@
-interface ITraining {
+export interface ITraining {
     id: number;
     title: string;
     training_type: string;

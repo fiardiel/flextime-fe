@@ -2,21 +2,14 @@
 
 import { useState } from 'react';
 import SessionPlan from './SessionPlan';
-
-
-
-interface SessionPlan {
-    id: number;
-    training_type: string;
-    fitness_plan: number;
-} 
+import { ISessionPlan } from '../../../../../types/SessionPlan';
 
 interface SessionPlansListProps {
-    initSessionPlans: SessionPlan[];
+    initSessionPlans: ISessionPlan[];
 }
 
 const SessionPlanList: React.FC<SessionPlansListProps> = ({ initSessionPlans }) => {
-    const [sessionPlans, setSessionPlans] = useState<SessionPlan[]>(initSessionPlans);
+    const [sessionPlans, setSessionPlans] = useState<ISessionPlan[]>(initSessionPlans);
 
     const handleDeleteSessionPlan = (id: number) => {
         setSessionPlans(prevSessionPlans => prevSessionPlans.filter(plan => plan.id !== id))
@@ -26,7 +19,7 @@ const SessionPlanList: React.FC<SessionPlansListProps> = ({ initSessionPlans }) 
         <div> 
             <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
                 {sessionPlans.map(plan => (
-                    <SessionPlan sessionPlan={plan} onDelete={handleDeleteSessionPlan}/>
+                    <SessionPlan key={plan.id} sessionPlan={plan} onDelete={handleDeleteSessionPlan}/>
                 ))}
             </div>
         </div>

@@ -1,4 +1,4 @@
-interface ISessionTraining {
+export interface ISessionTraining {
     id: number;
     session_plan: number;
     training: number;

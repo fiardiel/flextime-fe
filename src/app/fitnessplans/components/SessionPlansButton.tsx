@@ -11,7 +11,7 @@ interface SessionPlansButtonProps {
 const SessionPlansButton: React.FC<SessionPlansButtonProps> = ({ fitnessPlanId }) => {
   return (
     <div>
-      <Link href={`sessionplans/${fitnessPlanId}`} className='btn btn-sm text-xs px-3 py-1 btn-accent'>
+      <Link href={`sessionplans/${fitnessPlanId}`} className='btn btn-outline btn-sm text-xs px-3 py-1 btn-accent'>
         Session Plans <FaClock/>
       </Link>
     </div>

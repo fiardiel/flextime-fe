@@ -5,8 +5,8 @@ import React from 'react'
 interface ModalProps {
     modalOpen: boolean;
     setModalOpen: (open: boolean) => boolean | void;
-    children: React.ReactNode;
-    actions: React.ReactNode;
+    children?: React.ReactNode;
+    actions?: React.ReactNode;
 }
 
 const Modal: React.FC<ModalProps> = ( {modalOpen, setModalOpen, children, actions} ) => {
