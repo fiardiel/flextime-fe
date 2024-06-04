@@ -6,6 +6,7 @@ import ViewTrainingsButton from './ViewTrainingsButton';
 import Modal from '../../../components/Modal';
 import { FaTrashAlt } from 'react-icons/fa';
 import { deleteSessionPlan } from '../../../../../api';
+import { Button } from 'flowbite-react';
 
 interface SessionPlanProps {
     sessionPlan: ISessionPlan;
@@ -27,9 +28,9 @@ const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) =>
     };
 
     const deleteAction = (
-        <button onClick={confirmDelete} className='btn btn-error btn-outline text-white hover:text-white'>
+        <Button outline gradientMonochrome={'failure'} onClick={confirmDelete}>
             Delete
-        </button>
+        </Button>
     );
 
     return (
@@ -43,9 +44,9 @@ const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) =>
                     <p className='text-gray-400 text-sm mb-4'>Flex up with FlexTime!</p>
                     <div className="card-actions justify-end">
                         <ViewTrainingsButton sessionPlanId={sessionPlan.id}></ViewTrainingsButton>
-                        <button onClick={handleDelete} className='btn btn-outline btn-error btn-sm px-2 py-1'>
+                        <Button gradientMonochrome={'failure'} outline onClick={handleDelete}>
                             <FaTrashAlt size={17}/>
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

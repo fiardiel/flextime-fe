@@ -1,5 +1,6 @@
 'use client';
 
+import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import React from 'react'
 import { FaClock } from "react-icons/fa";
@@ -11,9 +12,12 @@ interface SessionPlansButtonProps {
 const SessionPlansButton: React.FC<SessionPlansButtonProps> = ({ fitnessPlanId }) => {
   return (
     <div>
-      <Link href={`sessionplans/${fitnessPlanId}`} className='btn btn-outline btn-sm text-xs px-3 py-1 btn-accent'>
-        Session Plans <FaClock/>
-      </Link>
+      <a href={`sessionplans/${fitnessPlanId}`}>
+        <Button outline gradientDuoTone={'pinkToOrange'} className='flex items-center'>
+          <span className='mr-2'> Session Plans </span>
+          <span className='self-center'> <FaClock /> </span>
+        </Button>
+      </a>
     </div>
   )
 }

@@ -97,7 +97,7 @@ const AvailableTraining: React.FC<AvailableTrainingProps> = ({ training, onAdd }
                         <span className='self-center'> Submit </span>
                     </Button>
             }>
-                <h3 className='text-lg font-sans font-semibold mb-4'>Customize {training.title} #{training.id}</h3>
+                <h3 className='text-lg font-mono font-semibold mb-4'>Customize {training.title} #{training.id}</h3>
                 <form id={`form-${training.id}`} onSubmit={handleSubmitCustomization}>
                     <div className='mb-3'>
                         <TextInput name="set" value={customization.set} onChange={handleInputChange} type="number" placeholder="Sets" icon={() => <FaListUl size={15} color='gray' />} required shadow />
