@@ -1,11 +1,11 @@
 'use client';
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ISessionPlan } from '../../../../../types/SessionPlan'
 import ViewTrainingsButton from './ViewTrainingsButton';
 import Modal from '../../../components/Modal';
 import { FaTrashAlt } from 'react-icons/fa';
-import { deleteSessionPlan } from '../../../../../api';
+import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } from '../../../../../api';
 import { Button } from 'flowbite-react';
 
 interface SessionPlanProps {
@@ -15,6 +15,8 @@ interface SessionPlanProps {
 
 const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) => {
     const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false);
+    const [totalDuration, setTotalDuration] = React.useState<string | null>(null);
+    const [trainingCount, setTrainingCount] = React.useState<number | null>(null);
 
     const handleDelete = async () => {
         setDeleteModalOpen(true);
@@ -33,6 +35,25 @@ const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) =>
         </Button>
     );
 
+    useEffect(() => {
+        const fetchTotalDuration = async () => {
+            const fetchedDuration = await getTotalDuration({ sessionPlanId: sessionPlan.id });
+            const minutes = Math.floor(fetchedDuration.total_duration / 60);
+            const seconds = fetchedDuration.total_duration % 60;
+            const formattedDuration = `${minutes.toString().padStart(2, '0')}m${seconds.toString().padStart(2, '0')}s`;
+            setTotalDuration(formattedDuration);
+        }
+        fetchTotalDuration();
+    }, [sessionPlan.id]);
+
+    useEffect(() => {
+        const fetchTrainingCount = async () => {
+            const fetchedCount = await getTrainingCountBySessionPlan({ sessionPlanId: sessionPlan.id });
+            setTrainingCount(fetchedCount);
+        }
+        fetchTrainingCount();
+    }, [sessionPlan.id])
+
     return (
         <div>
             <div className="hover:-translate-y-2 hover:scale-110 transition card bg-card-bg w-72 shadow-xl">
@@ -41,7 +62,8 @@ const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) =>
                         <span className='text-white'> {sessionPlan.training_type} </span>
                         <span className='text-gray-600 font-medium'> #{sessionPlan.id} </span>
                     </div>
-                    <p className='text-gray-400 text-sm mb-4'>Flex up with FlexTime!</p>
+                    <p className='text-gray-400 text-sm'> {trainingCount} training(s) added </p>
+                    <p className='text-blue-800 text-xs px-2 py-1 bg-blue-300 text-center rounded-lg self-start font-semibold mb-4'> {totalDuration || 0} </p>
                     <div className="card-actions justify-end">
                         <ViewTrainingsButton sessionPlanId={sessionPlan.id}></ViewTrainingsButton>
                         <Button gradientMonochrome={'failure'} outline onClick={handleDelete}>

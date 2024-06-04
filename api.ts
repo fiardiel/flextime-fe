@@ -1,6 +1,6 @@
 import { CustomizationForm, ICustomization } from './types/Customization';
 import { IFitnessPlan } from './types/FitnessPlan';
-import { ISessionPlan } from './types/SessionPlan';
+import { Duration, ISessionPlan } from './types/SessionPlan';
 import { ISessionTraining, SessionTrainingForm } from './types/SessionTraining';
 import { ITraining } from './types/Training';
 
@@ -101,4 +101,16 @@ export const deleteCustomization = async ( { id }: { id: number } ): Promise<voi
     await fetch(`${baseUrl}/customizations/${id}/`, {
         method: 'DELETE'
     });
+}
+
+export const getTotalDuration = async ( { sessionPlanId }: { sessionPlanId: number } ): Promise<Duration> => {
+    const res = await fetch(`${baseUrl}/sessionplans/${sessionPlanId}/total_duration/`)
+    const data = await res.json()
+    return data
+}
+
+export const getTrainingCountBySessionPlan = async ({ sessionPlanId }: { sessionPlanId: number }): Promise<number> => {
+    const res = await fetch(`${baseUrl}/sessiontrainings/?sessionplan=${sessionPlanId}`)
+    const data = await res.json()
+    return data.count
 }
