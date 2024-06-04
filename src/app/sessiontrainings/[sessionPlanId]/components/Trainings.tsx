@@ -30,7 +30,7 @@ const Trainings: React.FC<TrainingsProps> = ({ availableTrainings, initPickedTra
             <div className='self-center font-sans'>
                 <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
                     {pickedTrainings.map(training => (
-                        <PickedTraining key={training.id} sessionTraining={training} onDelete={handleDeleteTraining} />
+                        <PickedTraining key={training.id} sessionTraining={training} onDelete={handleDeleteTraining} onUpdate={() => null || true} />
                     ))}
                 </div>
             </div>

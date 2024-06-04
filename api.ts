@@ -84,3 +84,21 @@ export const addSessionTraining = async ( sessionTraining: SessionTrainingForm )
     const newSessionTraining = await res.json()
     return newSessionTraining
 }
+
+export const updateCustomization = async ( { id, customization }: { id: number, customization: CustomizationForm } ): Promise<ICustomization> => {
+    const res = await fetch(`${baseUrl}/customizations/${id}/`, {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(customization)
+    })
+    const updatedCustomization = await res.json()
+    return updatedCustomization
+}
+
+export const deleteCustomization = async ( { id }: { id: number } ): Promise<void> => {
+    await fetch(`${baseUrl}/customizations/${id}/`, {
+        method: 'DELETE'
+    });
+}
