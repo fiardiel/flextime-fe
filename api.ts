@@ -1,6 +1,6 @@
 import { CustomizationForm, ICustomization } from './types/Customization';
 import { IFitnessPlan } from './types/FitnessPlan';
-import { Duration, ISessionPlan } from './types/SessionPlan';
+import { Duration, ISessionPlan, SessionPlanForm } from './types/SessionPlan';
 import { ISessionTraining, SessionTrainingForm } from './types/SessionTraining';
 import { ITraining } from './types/Training';
 
@@ -113,4 +113,16 @@ export const getTrainingCountBySessionPlan = async ({ sessionPlanId }: { session
     const res = await fetch(`${baseUrl}/sessiontrainings/?sessionplan=${sessionPlanId}`)
     const data = await res.json()
     return data.count
+}
+
+export const addSessionPlan = async (sessionPlan: SessionPlanForm): Promise<ISessionPlan> => {
+    const res = await fetch(`${baseUrl}/sessionplans/`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(sessionPlan)
+    })
+    const newSessionPlan = await res.json()
+    return newSessionPlan
 }

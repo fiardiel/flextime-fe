@@ -2,18 +2,18 @@
 
 import React, { useEffect } from 'react'
 import { ISessionPlan } from '../../../../../types/SessionPlan'
-import ViewTrainingsButton from './ViewTrainingsButton';
 import Modal from '../../../components/Modal';
-import { FaTrashAlt } from 'react-icons/fa';
 import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } from '../../../../../api';
 import { Button } from 'flowbite-react';
+import { PiBarbellFill } from 'react-icons/pi';
+import { TbTrashFilled } from 'react-icons/tb';
 
 interface SessionPlanProps {
     sessionPlan: ISessionPlan;
     onDelete: (id: number) => void;
 }
 
-const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) => {
+const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
     const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false);
     const [totalDuration, setTotalDuration] = React.useState<string | null>(null);
     const [trainingCount, setTrainingCount] = React.useState<number | null>(null);
@@ -22,8 +22,8 @@ const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) =>
         setDeleteModalOpen(true);
     };
 
-    const confirmDelete = async() => {
-        await deleteSessionPlan({sessionPlanId: sessionPlan.id});
+    const confirmDelete = async () => {
+        await deleteSessionPlan({ sessionPlanId: sessionPlan.id });
         console.log(`Session plan ${sessionPlan.id} deleted`);
         setDeleteModalOpen(false);
         onDelete(sessionPlan.id)
@@ -65,15 +65,19 @@ const SessionPlan: React.FC<SessionPlanProps> = ( { sessionPlan, onDelete } ) =>
                     <p className='text-gray-400 text-sm'> {trainingCount} training(s) added </p>
                     <p className='text-blue-800 text-xs px-2 py-1 bg-blue-300 text-center rounded-lg self-start font-semibold mb-4'> {totalDuration || 0} </p>
                     <div className="card-actions justify-end">
-                        <ViewTrainingsButton sessionPlanId={sessionPlan.id}></ViewTrainingsButton>
+                        <div>
+                            <a href={`/sessiontrainings/${sessionPlan.id}`}>
+                                <Button outline gradientDuoTone={'purpleToBlue'}> <PiBarbellFill size={20} /> </Button>
+                            </a>
+                        </div>
                         <Button gradientMonochrome={'failure'} outline onClick={handleDelete}>
-                            <FaTrashAlt size={17}/>
+                            <TbTrashFilled size={20} />
                         </Button>
                     </div>
                 </div>
             </div>
-            <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen} actions={deleteAction}> 
-                <h3 className='text-lg font-mono font-medium'>Delete Session Plan #{sessionPlan.id}?</h3>    
+            <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen} actions={deleteAction}>
+                <h3 className='text-lg font-mono font-medium'>Delete Session Plan #{sessionPlan.id}?</h3>
             </Modal>
         </div>
     )

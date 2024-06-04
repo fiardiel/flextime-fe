@@ -8,6 +8,7 @@ import { CustomizationForm, ICustomization } from '../../../../../types/Customiz
 import { RiEditBoxFill, RiLoopLeftFill } from 'react-icons/ri';
 import { Button, TextInput } from 'flowbite-react';
 import { MdOutlineTimer } from 'react-icons/md';
+import { TbTrashFilled } from 'react-icons/tb';
 
 interface PickedTrainingProps {
     sessionTraining: ISessionTraining;
@@ -119,7 +120,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
                     </p>
                     <div className="card-actions justify-end">
                         <Button outline size='sm' onClick={handleUpdate} gradientDuoTone="purpleToBlue"><RiEditBoxFill size={17}/></Button>
-                        <Button outline size='sm' onClick={handleDelete} gradientMonochrome="failure"><FaTrashAlt size={15}/></Button>
+                        <Button outline size='sm' onClick={handleDelete} gradientMonochrome="failure"><TbTrashFilled size={17}/></Button>
                     </div>
                 </div>
             </div>

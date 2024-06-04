@@ -4,6 +4,11 @@ export interface ISessionPlan {
     fitness_plan: number;
 }
 
+export interface SessionPlanForm {
+    training_type: string;
+    fitness_plan: number;
+}
+
 export interface Duration {
     total_duration: number;
 }
