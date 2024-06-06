@@ -1,6 +1,8 @@
 import React from 'react';
-import SessionPlansButton from './components/SessionPlansButton';
 import { getAllFitnessPlans } from '../../../api';
+import { Button } from 'flowbite-react';
+import Link from 'next/link';
+import { FaClock } from 'react-icons/fa';
 
 interface FitnessPlan {
   title: string;
@@ -23,10 +25,14 @@ const FitnessPlanPage = async () => {
                 </p>
                 <p className='text-gray-500 mb-4 text-sm'>Flex up with FlexTime!</p>
                 <div className="card-actions justify-end">
-                  <SessionPlansButton fitnessPlanId={plan.id}/>
+                  <Link href={`sessionplans/${plan.id}`}>
+                    <Button outline gradientDuoTone={'pinkToOrange'} className='flex items-center'>
+                      <span className='mr-2'> Session Plans </span>
+                      <span className='self-center'> <FaClock /> </span>
+                    </Button>
+                  </Link>
                 </div>
               </div>
-
             </div>
           ))}
         </div>

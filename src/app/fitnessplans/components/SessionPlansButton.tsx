@@ -12,12 +12,7 @@ interface SessionPlansButtonProps {
 const SessionPlansButton: React.FC<SessionPlansButtonProps> = ({ fitnessPlanId }) => {
   return (
     <div>
-      <Link href={`sessionplans/${fitnessPlanId}`}>
-        <Button outline gradientDuoTone={'pinkToOrange'} className='flex items-center'>
-          <span className='mr-2'> Session Plans </span>
-          <span className='self-center'> <FaClock /> </span>
-        </Button>
-      </Link>
+      
     </div>
   )
 }

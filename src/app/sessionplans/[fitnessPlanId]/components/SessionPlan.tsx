@@ -7,6 +7,7 @@ import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } fr
 import { Button } from 'flowbite-react';
 import { PiBarbellFill } from 'react-icons/pi';
 import { TbTrashFilled } from 'react-icons/tb';
+import Link from 'next/link';
 
 interface SessionPlanProps {
     sessionPlan: ISessionPlan;
@@ -68,9 +69,9 @@ const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
                     <p className='text-blue-800 text-xs px-2 py-1 bg-blue-300 text-center rounded-lg self-start font-semibold mb-4'> {totalDuration || 0} </p>
                     <div className="card-actions justify-end">
                         <div>
-                            <a href={`/sessiontrainings/${sessionPlan.id}`}>
+                            <Link href={`/sessiontrainings/${sessionPlan.id}`}>
                                 <Button outline gradientDuoTone={'purpleToBlue'}> <PiBarbellFill size={20} /> </Button>
-                            </a>
+                            </Link>
                         </div>
                         <Button gradientMonochrome={'failure'} outline onClick={handleDelete}>
                             <TbTrashFilled size={20} />
