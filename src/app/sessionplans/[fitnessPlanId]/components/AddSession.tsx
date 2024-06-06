@@ -41,16 +41,15 @@ const AddSession: React.FC<AddSessionProps> = ({ onAdd }) => {
                 <FaPlus className='self-center ml-2'></FaPlus>
             </Button>
             <Modal modalOpen={openAddModal} setModalOpen={setOpenAddModal}>
-                <h3 className='font-mono font-bold text-center mb-3 mt-3'>Select Training Type</h3>
-
+                <h3 className='font-mono font-bold text-xl text-center mb-5'>Select Training Type</h3>
                 <div className='flex flex-row justify-center'>
-                    <Button onClick={() => handleSubmit('HIIT')} size={'xl'} className='mx-2' outline gradientDuoTone={'purpleToPink'}>
+                    <Button onClick={() => handleSubmit('HIIT')} size={'xl'} className='mx-2 mb-1' outline gradientDuoTone={'purpleToPink'}>
                         HIIT
                     </Button>
-                    <Button onClick={() => handleSubmit('Strength')} size={'xl'} className='mx-2' outline gradientDuoTone={'purpleToPink'}>
+                    <Button onClick={() => handleSubmit('Strength')} size={'xl'} className='mx-2 mb-1' outline gradientDuoTone={'purpleToPink'}>
                         Strength
                     </Button>   
-                    <Button onClick={() => handleSubmit('Cardio')} size={'xl'} className='mx-2' outline gradientDuoTone={'purpleToPink'}>
+                    <Button onClick={() => handleSubmit('Cardio')} size={'xl'} className='mx-2 mb-1' outline gradientDuoTone={'purpleToPink'}>
                         Cardio
                     </Button>
                 </div>

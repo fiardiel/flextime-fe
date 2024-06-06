@@ -1,6 +1,7 @@
-import Image from "next/image";
+import { Button } from "flowbite-react";
 import Link from "next/link";
-import { IoFitnessOutline } from "react-icons/io5";
+import { GiBiceps } from "react-icons/gi";
+import { ImBook } from "react-icons/im";
 
 export default function Home() {
   return (
@@ -9,9 +10,24 @@ export default function Home() {
         <p className="text-start text-5xl font-bold font-mono">
           Flex Up With FlexTime!
         </p>
-        <Link className="btn btn-info btn-outline w-40 px-4 py-2 mt-5 text-start font-sans" href="/fitnessplans">
-          Fitness Plan <IoFitnessOutline size={20}/>
-        </Link>
+        <div className="flex">
+          <Link className="w-52 mt-5 text-start font-sans" href="/fitnessplans">
+            <Button gradientDuoTone="pinkToOrange" outline size={'xl'} className="flex items-center">
+              <span className="mr-2">Fitness Plans</span>
+              <span className="self-center">
+                <GiBiceps size={24}/>
+              </span>
+            </Button>
+          </Link>
+          <Link className="w-52 mt-5 text-start font-sans" href="/courseplan">
+            <Button gradientDuoTone="pinkToOrange" outline size={'xl'} className="flex items-center">
+              <span className="mr-2">Course Plan</span>
+              <span className="self-center">
+                <ImBook size={20}/>
+              </span>
+            </Button>
+          </Link>
+        </div>
       </div>
     </main>
   );

@@ -30,9 +30,11 @@ const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
     };
 
     const deleteAction = (
-        <Button outline gradientMonochrome={'failure'} onClick={confirmDelete}>
-            Delete
-        </Button>
+        <div className='items-center'>
+            <Button outline gradientMonochrome={'failure'} onClick={confirmDelete}>
+                Delete
+            </Button>
+        </div>
     );
 
     useEffect(() => {

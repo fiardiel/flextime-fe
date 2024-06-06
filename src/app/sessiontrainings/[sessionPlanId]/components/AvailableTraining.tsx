@@ -79,7 +79,6 @@ const AvailableTraining: React.FC<AvailableTrainingProps> = ({ training, onAdd }
                 <div className="card-body">
                     <div className='card-title -mb-1 font-mono font-extrabold'>
                         <span className='text-white'> {training.title} </span>
-                        <span className='text-gray-600 font-medium font-mono'>  #{training.id} </span>
                     </div>
                     <p className='text-gray-500 text-md h-12 overflow-scroll'>
                         {training.description}
@@ -97,7 +96,7 @@ const AvailableTraining: React.FC<AvailableTrainingProps> = ({ training, onAdd }
                         <span className='self-center'> Submit </span>
                     </Button>
             }>
-                <h3 className='text-lg font-mono font-semibold mb-4'>Customize {training.title} #{training.id}</h3>
+                <h3 className='text-lg font-mono font-semibold mb-4'>Customize {training.title}</h3>
                 <form id={`form-${training.id}`} onSubmit={handleSubmitCustomization}>
                     <div className='mb-3'>
                         <TextInput name="set" value={customization.set} onChange={handleInputChange} type="number" placeholder="Sets" icon={() => <FaListUl size={15} color='gray' />} required shadow />

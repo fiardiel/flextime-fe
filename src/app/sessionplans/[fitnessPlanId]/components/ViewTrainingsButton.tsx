@@ -1,6 +1,7 @@
 'use client';
 
 import { Button } from 'flowbite-react';
+import Link from 'next/link';
 import React from 'react'
 import { PiBarbellFill } from 'react-icons/pi';
 
@@ -11,9 +12,9 @@ type ViewTrainingsButtonProps = {
 const ViewTrainingsButton: React.FC<ViewTrainingsButtonProps> = ({ sessionPlanId }) => {
   return (
     <div>
-      <a href={`/sessiontrainings/${sessionPlanId}`}>
+      <Link href={`/sessiontrainings/${sessionPlanId}`}>
         <Button outline gradientDuoTone={'purpleToBlue'}> <PiBarbellFill size={20} /> </Button>
-      </a>
+      </Link>
     </div>
   )
 }

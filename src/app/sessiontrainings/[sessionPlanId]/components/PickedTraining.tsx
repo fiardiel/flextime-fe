@@ -3,7 +3,7 @@ import { deleteCustomization, deleteSessionTraining, getCustomizationById, getTr
 import { ISessionTraining } from '../../../../../types/SessionTraining';
 import { ITraining } from '../../../../../types/Training';
 import Modal from '@/app/components/Modal';
-import { FaListUl, FaTrashAlt } from 'react-icons/fa';
+import { FaListUl } from 'react-icons/fa';
 import { CustomizationForm, ICustomization } from '../../../../../types/Customization';
 import { RiEditBoxFill, RiLoopLeftFill } from 'react-icons/ri';
 import { Button, TextInput } from 'flowbite-react';
@@ -30,18 +30,18 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
 
     useEffect(() => {
         const fetchTraining = async () => {
-            const fetchedTraining = await getTrainingById({id: sessionTraining.training});
+            const fetchedTraining = await getTrainingById({ id: sessionTraining.training });
             setTraining(fetchedTraining);
         };
-    
+
         fetchTraining();
     }, [sessionTraining.id]);
 
-    
+
 
     useEffect(() => {
         const fetchCustomization = async () => {
-            const fetchedCustomization = await getCustomizationById({id: sessionTraining.customization});
+            const fetchedCustomization = await getCustomizationById({ id: sessionTraining.customization });
             setCustomization(fetchedCustomization);
             setInputCustomization({
                 sets: fetchedCustomization.sets,
@@ -57,7 +57,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         setDeleteModalOpen(true);
     };
 
-    const confirmDelete = async() => {
+    const confirmDelete = async () => {
         await deleteSessionTraining({ id: sessionTraining.id })
         await deleteCustomization({ id: sessionTraining.customization })
         console.log(`Session training ${sessionTraining.id} deleted`);
@@ -69,7 +69,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         <Button outline onClick={confirmDelete} gradientMonochrome="failure">Delete</Button>
     );
 
-    const handleUpdate = async() => {
+    const handleUpdate = async () => {
         setUpdateModalOpen(true);
     }
 
@@ -83,10 +83,10 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         };
 
         try {
-            const updatedCustomization = await updateCustomization({ id: sessionTraining.customization, customization: newCustomization});
+            const updatedCustomization = await updateCustomization({ id: sessionTraining.customization, customization: newCustomization });
             onUpdate(updatedCustomization.id);
             setCustomization(updatedCustomization)
-            
+
             console.log('Customization updated successfully with ID:', updatedCustomization.id);
         } catch (err) {
             console.error('Error updating custom training:', err);
@@ -112,24 +112,26 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
                 <div className="card-body">
                     <div className='card-title -mb-1 font-mono font-extrabold'>
                         <span className='text-white'> {training?.title} </span>
-                        <span className='text-gray-600 font-medium font-mono'>   #{sessionTraining.id} </span>
+                        <span className='text-gray-600 font-medium font-mono'> #{sessionTraining.id} </span>
                     </div>
                     <p className='text-gray-500 text-md mb-4 flex'>
                         <span className='self-end mr-3'>Sets: {customization?.sets}, Reps: {customization?.reps}</span>
                         <span className=' bg-blue-300 px-2 py-1 rounded-lg text-blue-800 text-xs font-semibold self-center'>{customization?.duration}s</span>
                     </p>
                     <div className="card-actions justify-end">
-                        <Button outline size='sm' onClick={handleUpdate} gradientDuoTone="purpleToBlue"><RiEditBoxFill size={17}/></Button>
-                        <Button outline size='sm' onClick={handleDelete} gradientMonochrome="failure"><TbTrashFilled size={17}/></Button>
+                        <Button outline size='sm' onClick={handleUpdate} gradientDuoTone="purpleToBlue"><RiEditBoxFill size={17} /></Button>
+                        <Button outline size='sm' onClick={handleDelete} gradientMonochrome="failure"><TbTrashFilled size={17} /></Button>
                     </div>
                 </div>
             </div>
-            <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen} actions={deleteAction}> 
-                <h3 className='text-lg font-mono font-medium'>Delete {training?.title} #{sessionTraining.id}?</h3>    
+            <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen} actions={deleteAction}>
+                <h3 className='text-xl font-mono font-medium'>Delete {training?.title} #{sessionTraining.id}?</h3>
             </Modal>
-            <Modal modalOpen={updateModalOpen} setModalOpen={setUpdateModalOpen} actions={<Button outline onClick={submitForm} gradientDuoTone="greenToBlue">Update</Button>}> 
-                <h3 className='text-xl font-mono font-semibold'>Customize {training?.title} #{sessionTraining.id}?</h3>  
-                <p className='mb-4 text-gray-500 font-sans font-normal'> {training?.description } </p>
+            <Modal modalOpen={updateModalOpen} setModalOpen={setUpdateModalOpen} actions={<Button outline onClick={submitForm} gradientDuoTone="greenToBlue">Update</Button>}>
+                <div className='flex flex-col'>
+                    <h3 className='text-xl font-mono font-semibold inline-block'>Customize {training?.title} #{sessionTraining.id}?</h3>
+                    <p className='mb-4 text-gray-500 font-sans font-normal text-left inline-block w-full'> {training?.description} </p>
+                </div>
                 <form id={`form-${customization?.id}`} onSubmit={handleSubmitCustomization}>
                     <div className='mb-3'>
                         <TextInput name="sets" value={inputCustomization.sets} onChange={handleInputChange} type="number" placeholder="Sets" icon={() => <FaListUl size={15} color='gray' />} required shadow />
