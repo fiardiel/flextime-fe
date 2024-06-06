@@ -20,3 +20,4 @@ const ViewTrainingsButton: React.FC<ViewTrainingsButtonProps> = ({ sessionPlanId
 }
 
 export default ViewTrainingsButton
+
