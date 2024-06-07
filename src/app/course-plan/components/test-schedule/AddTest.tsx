@@ -8,6 +8,7 @@ import { IoCalendarClearSharp } from 'react-icons/io5'
 import { MdDriveFileRenameOutline } from 'react-icons/md'
 import { TestSchedule, TestScheduleForm } from '../../../../../types/course_plan/TestSchedule'
 import { addTestSchedule } from '../../../../../apis/test_schedule_apis'
+import { FaPlus } from 'react-icons/fa'
 
 interface AddTestProps {
     onAdd: (testSchedule: TestSchedule) => void
@@ -58,7 +59,7 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
     return (
         <div>
             <Button outline gradientDuoTone={'cyanToBlue'} onClick={handleOpenAddModal}>
-                Add Test
+                Add Test <FaPlus size={10} className='self-center ml-2'/>
             </Button>
             <Modal modalOpen={openAddModal} setModalOpen={setOpenAddModal}>
                 <div className='flex flex-col mb-5 font-sans'>

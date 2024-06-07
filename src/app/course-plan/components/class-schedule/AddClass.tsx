@@ -8,6 +8,7 @@ import { addClassSchedule } from '../../../../../apis/class_schedule_apis'
 import { IoIosTime } from 'react-icons/io'
 import { IoCalendarClearSharp } from 'react-icons/io5'
 import { MdDriveFileRenameOutline } from 'react-icons/md'
+import { FaPlus } from 'react-icons/fa'
 
 interface AddClassProps {
     onAdd: (classSchedule: IClassSchedule) => void
@@ -66,7 +67,7 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
     return (
         <div>
             <Button outline gradientDuoTone={'cyanToBlue'} onClick={handleOpenAddModal}>
-                Add Class
+                Add Class <FaPlus size={10} className='self-center ml-2'/>
             </Button>
             <Modal modalOpen={openAddModal} setModalOpen={setOpenAddModal}>
                 <div className='flex flex-col mb-5 font-sans'>
