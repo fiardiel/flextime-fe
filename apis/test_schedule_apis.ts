@@ -3,7 +3,7 @@ import { TestSchedule, TestScheduleForm } from "../types/course_plan/TestSchedul
 
 const baseUrl = 'http://127.0.0.1:8000'
 
-export const getAllTestSchedule = async(): Promise<TestSchedule> => {
+export const getAllTestSchedule = async(): Promise<TestSchedule[]> => {
     const res = await fetch(`${baseUrl}/test-schedule/`)
     const data = await res.json()
     return data.results
