@@ -4,12 +4,6 @@ import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import { FaClock } from 'react-icons/fa';
 
-interface FitnessPlan {
-  title: string;
-  id: number
-  user: string;
-}
-
 const FitnessPlanPage = async () => {
   try {
     const fitnessPlans = await getAllFitnessPlans();
