@@ -1,5 +1,6 @@
 export interface IClassSchedule {
     id: number
+    class_name: string
     start_time: string
     end_time: string
     class_day: string
@@ -7,6 +8,7 @@ export interface IClassSchedule {
 }
 
 export interface ClassScheduleForm {
+    class_name: string
     start_time: string
     end_time: string
     class_day: string
