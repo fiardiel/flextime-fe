@@ -35,7 +35,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         };
 
         fetchTraining();
-    }, [sessionTraining.id]);
+    }, [sessionTraining.id, sessionTraining.training]);
 
 
 
@@ -51,7 +51,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         };
 
         fetchCustomization();
-    }, [sessionTraining.id]);
+    }, [sessionTraining.id, sessionTraining.customization]);
 
     const handleDelete = async () => {
         setDeleteModalOpen(true);
