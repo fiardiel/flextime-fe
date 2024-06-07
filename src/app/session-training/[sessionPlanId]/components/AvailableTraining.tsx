@@ -84,7 +84,7 @@ const AvailableTraining: React.FC<AvailableTrainingProps> = ({ training, onAdd }
                         {training.description}
                     </p>
                     <div className="card-actions justify-end">
-                        <Button outline pill gradientDuoTone="purpleToBlue" onClick={() => setAddModalOpen(true)}>  <HiPlus size={20} /> </Button>
+                        <Button className='w-10 h-10' size={'xs'} outline pill gradientDuoTone="purpleToBlue" onClick={() => setAddModalOpen(true)}>  <HiPlus className='self-center' size={20} /> </Button>
                     </div>
                 </div>
             </div>
