@@ -1,5 +1,5 @@
 import React from 'react';
-import { getAllFitnessPlans } from '../../../api';
+import { getAllFitnessPlans } from '../../../apis/fitness_plan_apis';
 import { Button } from 'flowbite-react';
 import Link from 'next/link';
 import { FaClock } from 'react-icons/fa';
@@ -25,7 +25,7 @@ const FitnessPlanPage = async () => {
                 </p>
                 <p className='text-gray-500 mb-4 text-sm'>Flex up with FlexTime!</p>
                 <div className="card-actions justify-end">
-                  <Link href={`sessionplans/${plan.id}`}>
+                  <Link href={`session-plan/${plan.id}`}>
                     <Button outline gradientDuoTone={'pinkToOrange'} className='flex items-center'>
                       <span className='mr-2'> Session Plans </span>
                       <span className='self-center'> <FaClock /> </span>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import SessionPlan from './SessionPlan';
-import { ISessionPlan } from '../../../../../types/SessionPlan';
+import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan';
 import AddSession from './AddSession';
 
 interface SessionPlansListProps {

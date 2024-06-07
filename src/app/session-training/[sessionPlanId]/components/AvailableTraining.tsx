@@ -1,16 +1,16 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { ITraining } from '../../../../../types/Training';
+import { ITraining } from '../../../../../types/fitness_plan/Training';
 import Modal from '@/app/components/Modal';
 import React, { FormEventHandler } from 'react';
 import { HiPlus } from 'react-icons/hi';
 import { MdOutlineTimer } from 'react-icons/md';
-import { addCustomization, addSessionTraining } from '../../../../../api';
+import { addCustomization, addSessionTraining } from '../../../../../apis/fitness_plan_apis';
 import { Button, TextInput } from "flowbite-react";
 import { FaListUl } from 'react-icons/fa';
 import { RiLoopLeftFill } from 'react-icons/ri';
-import { ISessionTraining } from '../../../../../types/SessionTraining';
+import { ISessionTraining } from '../../../../../types/fitness_plan/SessionTraining';
 
 interface AvailableTrainingProps {
     training: ITraining;

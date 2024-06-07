@@ -1,7 +1,7 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
-import { getSessionPlanByFitnessPlan } from '../../../../api';
-import { ISessionPlan } from '../../../../types/SessionPlan';
+import { getSessionPlanByFitnessPlan } from '../../../../apis/fitness_plan_apis';
+import { ISessionPlan } from '../../../../types/fitness_plan/SessionPlan';
 import SessionPlanList from './components/SessionPlanList';
 
 const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: number } }) => {

@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect } from 'react'
-import { ISessionPlan } from '../../../../../types/SessionPlan'
+import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan'
 import Modal from '../../../components/Modal';
-import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } from '../../../../../api';
+import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } from '../../../../../apis/fitness_plan_apis';
 import { Button } from 'flowbite-react';
 import { PiBarbellFill } from 'react-icons/pi';
 import { TbTrashFilled } from 'react-icons/tb';
@@ -69,7 +69,7 @@ const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
                     <p className='text-blue-800 text-xs px-2 py-1 bg-blue-300 text-center rounded-lg self-start font-semibold mb-4'> {totalDuration || 0} </p>
                     <div className="card-actions justify-end">
                         <div>
-                            <Link href={`/sessiontrainings/${sessionPlan.id}`}>
+                            <Link href={`/session-training/${sessionPlan.id}`}>
                                 <Button outline gradientDuoTone={'purpleToBlue'}> <PiBarbellFill size={20} /> </Button>
                             </Link>
                         </div>

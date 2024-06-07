@@ -4,9 +4,9 @@ import Modal from '@/app/components/Modal';
 import { Button } from 'flowbite-react'
 import React from 'react'
 import { FaPlus } from 'react-icons/fa'
-import { addSessionPlan } from '../../../../../api';
+import { addSessionPlan } from '../../../../../apis/fitness_plan_apis';
 import { useParams, useRouter } from 'next/navigation';
-import { ISessionPlan } from '../../../../../types/SessionPlan';
+import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan';
 
 interface AddSessionProps {
     onAdd: (newSessionPlan: ISessionPlan) => void;        

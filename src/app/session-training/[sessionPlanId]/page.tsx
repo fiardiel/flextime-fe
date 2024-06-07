@@ -1,5 +1,5 @@
 import React from 'react'
-import { getSessionPlanById, getSessionTrainingsBySessionPlan, getTrainingsByTrainingType } from '../../../../api';
+import { getSessionPlanById, getSessionTrainingsBySessionPlan, getTrainingsByTrainingType } from '../../../../apis/fitness_plan_apis';
 import Trainings from './components/Trainings';
 
 const SessionTrainingPage = async ({ params }: { params: { sessionPlanId: string } }) => {

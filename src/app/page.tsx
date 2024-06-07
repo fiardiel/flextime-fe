@@ -11,7 +11,7 @@ export default function Home() {
           Flex Up With FlexTime!
         </p>
         <div className="flex">
-          <Link className="w-52 mt-5 text-start font-sans" href="/fitnessplans">
+          <Link className="w-52 mt-5 text-start font-sans" href="/fitness-plan">
             <Button gradientDuoTone="pinkToOrange" outline size={'xl'} className="flex items-center">
               <span className="mr-2">Fitness Plans</span>
               <span className="self-center">
@@ -19,7 +19,7 @@ export default function Home() {
               </span>
             </Button>
           </Link>
-          <Link className="w-52 mt-5 text-start font-sans" href="/courseplan">
+          <Link className="w-52 mt-5 text-start font-sans" href="/course-plan">
             <Button gradientDuoTone="pinkToOrange" outline size={'xl'} className="flex items-center">
               <span className="mr-2">Course Plan</span>
               <span className="self-center">
