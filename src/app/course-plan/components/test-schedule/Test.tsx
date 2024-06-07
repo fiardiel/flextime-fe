@@ -1,12 +1,10 @@
 'use client';
 
-import { Button, Card, Datepicker, Select, TextInput } from 'flowbite-react';
+import { Button, Card, Datepicker, TextInput } from 'flowbite-react';
 import React, { FormEventHandler } from 'react'
-import { ClassScheduleForm, IClassSchedule } from '../../../../../types/course_plan/ClassSchedule';
 import { RiEditBoxFill } from 'react-icons/ri';
 import { TbTrashFilled } from 'react-icons/tb';
 import Modal from '@/app/components/Modal';
-import { deleteClassSchedule, updateClassSchedule } from '../../../../../apis/class_schedule_apis';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { IoCalendarClearSharp } from 'react-icons/io5';
 import { IoIosTime } from 'react-icons/io';
@@ -73,7 +71,7 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
     return (
         <div>
             <Card className="w-56 dark:bg-card-bg dark:border-gray-700 transition hover:scale-110 hover:-translate-y-3">
-                <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mb-3 overflow-scroll h-16">
+                <h5 className="font-mono text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mb-3 overflow-scroll h-16">
                     {testSchedule.test_name}
                 </h5>
                 <p className="font-normal text-gray-700 dark:text-gray-400 -mb-4">
