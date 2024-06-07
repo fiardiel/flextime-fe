@@ -6,7 +6,7 @@ import { ClassScheduleForm, IClassSchedule } from '../../../../../types/course_p
 import { RiEditBoxFill } from 'react-icons/ri';
 import { TbTrashFilled } from 'react-icons/tb';
 import Modal from '@/app/components/Modal';
-import { deleteClassSchedule, updateClassSchedule } from '../../../../../apis/course_plan_apis';
+import { deleteClassSchedule, updateClassSchedule } from '../../../../../apis/class_schedule_apis';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { IoCalendarClearSharp } from 'react-icons/io5';
 import { IoIosTime } from 'react-icons/io';

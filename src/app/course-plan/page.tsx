@@ -1,6 +1,6 @@
 import React from 'react'
 import ClassList from './components/class-schedule/ClassList'
-import { getAllClassSchedule } from '../../../apis/course_plan_apis'
+import { getAllClassSchedule } from '../../../apis/class_schedule_apis'
 import TabComponent from './components/TabComponent'
 
 
