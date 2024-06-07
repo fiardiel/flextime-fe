@@ -31,7 +31,7 @@ const AddSession: React.FC<AddSessionProps> = ({ onAdd }) => {
         console.log('Session Plan added successfully with ID: ', sessionPlan.id);
         onAdd(sessionPlan);
         setOpenAddModal(false);
-        router.push(`/sessiontrainings/${sessionPlan.id}`)
+        router.push(`/session-training/${sessionPlan.id}`)
     }
 
     return (
