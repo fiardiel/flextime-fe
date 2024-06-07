@@ -73,10 +73,14 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
     const handleUpdateModal = async () => { setUpdateModalOpen(true) }
     const handleDeleteModal = async () => { setDeleteModalOpen(true) }
     const deleteAction = <Button outline onClick={handleDelete} gradientMonochrome="failure">Delete</Button>
+    const formatTime = (time: string) => {
+        const [hours, minutes] = time.split(':');
+        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    }
 
     return (
         <div>
-            <Card className="w-56 bg-card-bg transition hover:scale-110 hover:-translate-y-3">
+            <Card className="w-56 dark:bg-card-bg dark:border-gray-700 transition hover:scale-110 hover:-translate-y-3">
                 <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mb-3 overflow-scroll h-16">
                     {classSchedule.class_name}
                 </h5>
@@ -84,7 +88,7 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
                     {DAYS_OF_WEEK.find(day => day.value === classSchedule.class_day)?.label + ' '}
                 </p>
                 <p className="font-normal text-gray-700 dark:text-gray-400">
-                    {classSchedule.start_time} - {classSchedule.end_time}
+                    {formatTime(classSchedule.start_time)} - {formatTime(classSchedule.end_time)}
                 </p>
                 <div className='flex flex-row justify-end'>
                     <Button className='mr-2' outline size='sm' onClick={handleUpdateModal} gradientDuoTone="purpleToBlue"><RiEditBoxFill size={17} /></Button>
