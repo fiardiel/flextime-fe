@@ -10,6 +10,7 @@ import { FaChalkboard } from "react-icons/fa";
 import { PiChalkboardSimple, PiChalkboardSimpleFill, PiExamFill } from "react-icons/pi";
 import TestList from "./test-schedule/TestList";
 import { TestSchedule } from "../../../../types/course_plan/TestSchedule";
+import AssignmentList from "./assignment-deadline/AssignmentList";
 
 interface TabComponentProps {
   initClassSchedules: IClassSchedule[]
@@ -24,7 +25,7 @@ const TabComponent: React.FC<TabComponentProps> = ({ initClassSchedules, initTes
           <ClassList initClassSchedules={initClassSchedules} />
         </Tabs.Item>
         <Tabs.Item active title="Assignment" className="focus:outline-none focus:ring-0 focus:ring-transparent" icon={MdAssignment}>
-          <ClassList initClassSchedules={initClassSchedules} />
+          <AssignmentList />
         </Tabs.Item>
         <Tabs.Item active title="Test" className="focus:outline-none focus:ring-0 focus:ring-transparent" icon={PiExamFill}>
           <TestList initTestSchedules={initTestSchedules} />

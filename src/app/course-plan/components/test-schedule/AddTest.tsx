@@ -59,7 +59,7 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
     return (
         <div>
             <Button outline gradientDuoTone={'cyanToBlue'} onClick={handleOpenAddModal}>
-                Add Test <FaPlus size={10} className='self-center ml-2'/>
+                Add Test <FaPlus size={10} className='self-center ml-2' />
             </Button>
             <Modal modalOpen={openAddModal} setModalOpen={setOpenAddModal}>
                 <div className='flex flex-col mb-5 font-sans'>
@@ -75,8 +75,20 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
                         <Datepicker autoHide={true} type='date' required shadow></Datepicker>
                     </div> */}
                     <div className='mb-3 font-sans'>
-                        <label htmlFor="test_date" className='mb-3 text-gray-400 text-sm'>Test date</label>
-                        <TextInput name="test_date" value={addInput.test_date} onChange={handleInputChange} icon={IoCalendarClearSharp} type="date" placeholder="Test date" required shadow />
+                        <label htmlFor="test_date" className='mb-3 text-gray-400 text-sm'>Date</label>
+                        <Datepicker
+                            name='test_date'
+                            value={addInput.test_date}
+                            onChange={handleInputChange}
+                            onSelectedDateChanged={(date) => {
+                                const formattedDate = date.getFullYear() + '-' +
+                                    ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                                    ('0' + date.getDate()).slice(-2);
+                                setAddInput({ ...addInput, test_date: formattedDate });
+                            }}
+                            required
+                        >
+                        </Datepicker>
                     </div>
                     <div className='mb-3 font-sans'>
                         <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>

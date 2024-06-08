@@ -104,8 +104,20 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
                         <Datepicker name='test_date' value={updateInput.test_date.toString()} onChange={handleInputChange} required></Datepicker>
                     </div> */}
                     <div className='mb-3 font-sans'>
-                        <label htmlFor="test_date" className='mb-3 text-gray-400 text-sm'>Test date</label>
-                        <TextInput name="test_date" value={updateInput.test_date} onChange={handleInputChange} icon={IoCalendarClearSharp} type="date" placeholder="Test date" required shadow />
+                        <label htmlFor="test_date" className='mb-3 text-gray-400 text-sm'>Date</label>
+                        <Datepicker
+                            name='test_date'
+                            value={updateInput.test_date}
+                            onChange={handleInputChange}
+                            onSelectedDateChanged={(date) => {
+                                const formattedDate = date.getFullYear() + '-' +
+                                    ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
+                                    ('0' + date.getDate()).slice(-2);
+                                setUpdateInput({ ...updateInput, test_date: formattedDate });
+                            }}
+                            required
+                        >
+                        </Datepicker>
                     </div>
                     <div className='mb-3 font-sans'>
                         <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>
