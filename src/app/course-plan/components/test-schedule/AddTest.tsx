@@ -4,7 +4,6 @@ import { Button, Datepicker, TextInput } from 'flowbite-react'
 import React, { FormEventHandler } from 'react'
 import Modal from '@/app/components/Modal'
 import { IoIosTime } from 'react-icons/io'
-import { IoCalendarClearSharp } from 'react-icons/io5'
 import { MdDriveFileRenameOutline } from 'react-icons/md'
 import { TestSchedule, TestScheduleForm } from '../../../../../types/course_plan/TestSchedule'
 import { addTestSchedule } from '../../../../../apis/test_schedule_apis'
@@ -30,8 +29,6 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
 
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
         setAddInput({ ...addInput, [event.target.name]: event.target.value });
-        // change the date from 
-
     }
 
     const handleAdd: FormEventHandler = async (e) => {
@@ -70,10 +67,6 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
                         <label htmlFor="test_name" className='mb-3 text-gray-400 text-sm'>Name</label>
                         <TextInput name="test_name" value={addInput.test_name} onChange={handleInputChange} icon={MdDriveFileRenameOutline} type="text" placeholder="Test name" required shadow />
                     </div>
-                    {/* <div className='mb-3 font-sans'>
-                        <label htmlFor="test_date" className='mb-3 text-gray-400 text-sm'>Date</label>
-                        <Datepicker autoHide={true} type='date' required shadow></Datepicker>
-                    </div> */}
                     <div className='mb-3 font-sans'>
                         <label htmlFor="test_date" className='mb-3 text-gray-400 text-sm'>Date</label>
                         <Datepicker
@@ -86,17 +79,20 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
                                     ('0' + date.getDate()).slice(-2);
                                 setAddInput({ ...addInput, test_date: formattedDate });
                             }}
+                            placeholder='Test date'
                             required
                         >
                         </Datepicker>
                     </div>
-                    <div className='mb-3 font-sans'>
-                        <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>
-                        <TextInput name="test_start" value={addInput.test_start} onChange={handleInputChange} type="time" placeholder="Start time" icon={IoIosTime} required shadow />
-                    </div>
-                    <div className='mb-8 font-sans'>
-                        <label htmlFor="test_end" className='mb-2 text-gray-400 text-sm'>End Time</label>
-                        <TextInput name="test_end" value={addInput.test_end} onChange={handleInputChange} type="time" placeholder="End time" icon={IoIosTime} required shadow />
+                    <div className='mb-8 font-sans grid grid-cols-2'>
+                        <div className='mr-3'>
+                            <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>
+                            <TextInput name="test_start" value={addInput.test_start} onChange={handleInputChange} type="time" placeholder="Start time" icon={IoIosTime} required shadow />
+                        </div>
+                        <div>
+                            <label htmlFor="test_end" className='mb-2 text-gray-400 text-sm'>End Time</label>
+                            <TextInput name="test_end" value={addInput.test_end} onChange={handleInputChange} type="time" placeholder="End time" icon={IoIosTime} required shadow />
+                        </div>
                     </div>
                     <Button type='submit' outline gradientDuoTone={'purpleToBlue'} className='w-full transition'>Add Test</Button>
                 </form>

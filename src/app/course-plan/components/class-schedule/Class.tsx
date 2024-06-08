@@ -117,13 +117,15 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
                             ))}
                         </Select>
                     </div>
-                    <div className='mb-3 font-sans'>
-                        <label htmlFor="start_time" className='mb-2 text-gray-400 text-sm'>Start Time</label>
-                        <TextInput name="start_time" value={updateInput.start_time} onChange={handleInputChange} type="time" placeholder="Start time" icon={IoIosTime} required shadow />
-                    </div>
-                    <div className='mb-8 font-sans'>
-                        <label htmlFor="end_time" className='mb-2 text-gray-400 text-sm'>End Time</label>
-                        <TextInput name="end_time" value={updateInput.end_time} onChange={handleInputChange} type="time" placeholder="End time" icon={IoIosTime} required shadow />
+                    <div className='mb-8 font-sans grid grid-cols-2'>
+                        <div className='mr-3'>
+                            <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>
+                            <TextInput name="test_start" value={updateInput.start_time} onChange={handleInputChange} type="time" placeholder="Start time" icon={IoIosTime} required shadow />
+                        </div>
+                        <div>
+                            <label htmlFor="test_end" className='mb-2 text-gray-400 text-sm'>End Time</label>
+                            <TextInput name="test_end" value={updateInput.end_time} onChange={handleInputChange} type="time" placeholder="End time" icon={IoIosTime} required shadow />
+                        </div>
                     </div>
                     <Button type='submit' outline gradientDuoTone={'purpleToBlue'} className='w-full transition'>Update Class</Button>
                 </form>

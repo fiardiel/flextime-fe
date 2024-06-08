@@ -6,7 +6,6 @@ import { RiEditBoxFill } from 'react-icons/ri';
 import { TbTrashFilled } from 'react-icons/tb';
 import Modal from '@/app/components/Modal';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
-import { IoCalendarClearSharp } from 'react-icons/io5';
 import { IoIosTime } from 'react-icons/io';
 import { TestSchedule, TestScheduleForm } from '../../../../../types/course_plan/TestSchedule';
 import { deleteTestSchedule, updateTestSchedule } from '../../../../../apis/test_schedule_apis';
@@ -29,7 +28,7 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
         course_plan: testSchedule.course_plan
     });
 
-    const handleDelete = async () => { 
+    const handleDelete = async () => {
         await deleteTestSchedule({ id: testSchedule.id });
         onDelete(testSchedule.id);
         setDeleteModalOpen(false);
@@ -119,14 +118,17 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
                         >
                         </Datepicker>
                     </div>
-                    <div className='mb-3 font-sans'>
-                        <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>
-                        <TextInput name="test_start" value={updateInput.test_start} onChange={handleInputChange} type="time" placeholder="Start time" icon={IoIosTime} required shadow />
+                    <div className='mb-8 font-sans grid grid-cols-2'>
+                        <div className='mr-3'>
+                            <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>
+                            <TextInput name="test_start" value={updateInput.test_start} onChange={handleInputChange} type="time" placeholder="Start time" icon={IoIosTime} required shadow />
+                        </div>
+                        <div>
+                            <label htmlFor="test_end" className='mb-2 text-gray-400 text-sm'>End Time</label>
+                            <TextInput name="test_end" value={updateInput.test_end} onChange={handleInputChange} type="time" placeholder="End time" icon={IoIosTime} required shadow />
+                        </div>
                     </div>
-                    <div className='mb-8 font-sans'>
-                        <label htmlFor="test_end" className='mb-2 text-gray-400 text-sm'>End Time</label>
-                        <TextInput name="test_end" value={updateInput.test_end} onChange={handleInputChange} type="time" placeholder="End time" icon={IoIosTime} required shadow />
-                    </div>
+
                     <Button type='submit' outline gradientDuoTone={'purpleToBlue'} className='w-full transition'>Update Test</Button>
                 </form>
             </Modal>
