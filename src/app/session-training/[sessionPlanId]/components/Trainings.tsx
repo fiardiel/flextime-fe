@@ -10,7 +10,6 @@ interface TrainingsProps {
     availableTrainings: ITraining[];
     initPickedTrainings: ISessionTraining[];
 }
-``
 
 const Trainings: React.FC<TrainingsProps> = ({ availableTrainings, initPickedTrainings }) => {
     const [pickedTrainings, setPickedTrainings] = useState<ISessionTraining[]>(initPickedTrainings);

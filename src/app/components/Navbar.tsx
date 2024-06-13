@@ -1,39 +1,87 @@
-import Link from 'next/link'
-import React from 'react'
+'use client'
+
+import React from "react";
+import {
+  Navbar as NextNavbar,
+  NavbarBrand as NextNavbarBrand,
+  NavbarContent as NextNavbarContent,
+  NavbarItem as NextNavbarItem,
+  Link,
+  DropdownItem,
+  DropdownTrigger,
+  Dropdown,
+  DropdownMenu,
+  Avatar
+} from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
-  return (
-    <div>
-      <div className="navbar bg-base-300 shadow-lg sticky top-0 z-50">
-        <div className="navbar-start">
-            <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-            </div>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                <li><Link href='/'>Homepage</Link></li>
-                <li><Link href='/fitness-plan'>Fitness Plan</Link></li>
-                <li><Link href='/course-plan'>Course Plan</Link></li>
-            </ul>
-            </div>
+    const pathname = usePathname()
+    const isActive = (href: string) => pathname === href
+
+    return (
+        <div>
+            <NextNavbar shouldHideOnScroll isBordered>
+                <NextNavbarBrand>
+                    <p className="font-bold text-inherit">ACME</p>
+                </NextNavbarBrand>
+
+                <NextNavbarContent className="hidden sm:flex gap-4" justify="center">
+                    <NextNavbarItem isActive={isActive("/")}>
+                        <Link color={isActive("/") ? "secondary" : "foreground"} href="/">
+                            Home
+                        </Link>
+                    </NextNavbarItem>
+                    <NextNavbarItem isActive={isActive("fitness-plan")}>
+                        <Link href="/fitness-plan" color={isActive("/fitness-plan") ? "secondary" : "foreground"} >
+                            Fitness Plan
+                        </Link>
+                    </NextNavbarItem>
+                    <NextNavbarItem isActive={isActive("course-plan")}>
+                        <Link color={isActive("/course-plan") ? "secondary" : "foreground"} href="/course-plan">
+                            Course Plan
+                        </Link>
+                    </NextNavbarItem>
+                    <NextNavbarItem isActive={isActive("activity-plan")}>
+                        <Link color={isActive("/activity-plan") ? "secondary" : "foreground"} href="/activity-plan">
+                            Activity Plan
+                        </Link>
+                    </NextNavbarItem>
+                </NextNavbarContent>
+
+                <NextNavbarContent as="div" justify="end">
+                    <Dropdown placement="bottom-end">
+                        <DropdownTrigger>
+                            <Avatar
+                                isBordered
+                                as="button"
+                                className="transition-transform"
+                                color="secondary"
+                                name="Jason Hughes"
+                                size="sm"
+                                src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
+                            />
+                        </DropdownTrigger>
+                        <DropdownMenu aria-label="Profile Actions" variant="flat">
+                            <DropdownItem key="profile" className="h-14 gap-2">
+                                <p className="font-semibold">Signed in as</p>
+                                <p className="font-semibold">zoey@example.com</p>
+                            </DropdownItem>
+                            <DropdownItem key="settings">My Settings</DropdownItem>
+                            <DropdownItem key="team_settings">Team Settings</DropdownItem>
+                            <DropdownItem key="analytics">Analytics</DropdownItem>
+                            <DropdownItem key="system">System</DropdownItem>
+                            <DropdownItem key="configurations">Configurations</DropdownItem>
+                            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+                            <DropdownItem key="logout" color="danger">
+                                Log Out
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
+                </NextNavbarContent>
+            </NextNavbar>
         </div>
-        <div className="navbar-center">
-            <a className="btn btn-ghost text-xl">FlexTime</a>
-        </div>
-        <div className="navbar-end">
-            <button className="btn btn-ghost btn-circle">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-            </button>
-            <button className="btn btn-ghost btn-circle">
-            <div className="indicator">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-                <span className="badge badge-xs badge-primary indicator-item"></span>
-            </div>
-            </button>
-        </div>
-        </div>
-    </div>
-  )
+    )
 }
 
 export default Navbar

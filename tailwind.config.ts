@@ -1,49 +1,15 @@
 import type { Config } from "tailwindcss";
 import flowbite from "flowbite-react/tailwind";
+import {nextui} from "@nextui-org/react";
 
 const config: Config = {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     flowbite.content(),
   ],
-  daisyui: {
-    themes: [
-      "light",
-      "dark",
-      "cupcake",
-      "bumblebee",
-      "emerald",
-      "corporate",
-      "synthwave",
-      "retro",
-      "cyberpunk",
-      "valentine",
-      "halloween",
-      "garden",
-      "forest",
-      "aqua",
-      "lofi",
-      "pastel",
-      "fantasy",
-      "wireframe",
-      "black",
-      "luxury",
-      "dracula",
-      "cmyk",
-      "autumn",
-      "business",
-      "acid",
-      "lemonade",
-      "night",
-      "coffee",
-      "winter",
-      "dim",
-      "nord",
-      "sunset",
-    ],
-  },
   theme: {
     extend: {
       backgroundImage: {
@@ -60,6 +26,7 @@ const config: Config = {
         'tokyo-night-terminal-black': '#414868',
       },
       fontFamily: {
+        'custom': ["Space Mono"],
         'body': [
           'Inter',
           'ui-sans-serif',
@@ -108,9 +75,11 @@ const config: Config = {
       }
     },
   },
+  darkMode: "class",
   plugins: [
     require("daisyui"),
     flowbite.plugin(),
+    nextui(),
   ],
 };
 export default config;

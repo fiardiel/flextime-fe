@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col justify-center p-52 -translate-y-16">
       <div className="z-10 w-full max-w-5xl justify-center text-center text-sm flex flex-col">
-        <p className="text-start text-5xl font-bold font-mono">
+        <p className="text-start text-5xl font-bold font-custom">
           Flex Up With FlexTime!
         </p>
         <div className="flex">
