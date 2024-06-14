@@ -1,9 +1,8 @@
 import { CustomizationForm, ICustomization } from '../types/fitness_plan/Customization';
-import { IFitnessPlan } from '../types/fitness_plan/FitnessPlan';
+import { FitnessPlanForm, IFitnessPlan } from '../types/fitness_plan/FitnessPlan';
 import { Duration, ISessionPlan, SessionPlanForm } from '../types/fitness_plan/SessionPlan';
 import { ISessionTraining, SessionTrainingForm } from '../types/fitness_plan/SessionTraining';
 import { ITraining } from '../types/fitness_plan/Training';
-
 
 const baseUrl = 'http://127.0.0.1:8000'
 
@@ -11,6 +10,36 @@ export const getAllFitnessPlans = async (): Promise<IFitnessPlan[]> => {
     const res = await fetch(`${baseUrl}/fitness-plan/`)
     const data = await res.json()
     return data.results
+}
+
+export const addFitnessPlan = async (fitnessPlan: FitnessPlanForm): Promise<IFitnessPlan> => {
+    const res = await fetch(`${baseUrl}/fitness-plan/`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(fitnessPlan)
+    })
+    const newFitnessPlan = await res.json()
+    return newFitnessPlan
+}
+
+export const getFitnessPlanById = async ({ id }: { id: number }): Promise<any> => {
+    const res = await fetch(`${baseUrl}/fitness-plan/${id}/`)
+    const data = await res.json()
+    return data
+}
+
+export const updateFitnessPlanById = async ({ id, fitnessPlan }: { id: number, fitnessPlan: FitnessPlanForm }): Promise<IFitnessPlan> => {
+    const res = await fetch(`${baseUrl}/fitness-plan/${id}/`, {
+        method: 'PUT',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(fitnessPlan)
+    })
+    const updatedFitnessPlan = await res.json()
+    return updatedFitnessPlan
 }
 
 export const getSessionPlanByFitnessPlan = async ( {fitnessPlanId}: { fitnessPlanId: number } ): Promise<ISessionPlan[]> => {

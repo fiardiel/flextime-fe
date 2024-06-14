@@ -2,16 +2,16 @@
 
 import React from "react";
 import {
-  Navbar as NextNavbar,
-  NavbarBrand as NextNavbarBrand,
-  NavbarContent as NextNavbarContent,
-  NavbarItem as NextNavbarItem,
-  Link,
-  DropdownItem,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  Avatar
+    Navbar as NextNavbar,
+    NavbarBrand as NextNavbarBrand,
+    NavbarContent as NextNavbarContent,
+    NavbarItem as NextNavbarItem,
+    Link,
+    DropdownItem,
+    DropdownTrigger,
+    Dropdown,
+    DropdownMenu,
+    Avatar
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 
@@ -23,7 +23,10 @@ const Navbar = () => {
         <div>
             <NextNavbar shouldHideOnScroll isBordered>
                 <NextNavbarBrand>
-                    <p className="font-bold text-inherit">ACME</p>
+                    <div className="flex flex-col">
+                        <p className="font-bold text-inherit">FlexTime</p>
+
+                    </div>
                 </NextNavbarBrand>
 
                 <NextNavbarContent className="hidden sm:flex gap-4" justify="center">
@@ -32,17 +35,17 @@ const Navbar = () => {
                             Home
                         </Link>
                     </NextNavbarItem>
-                    <NextNavbarItem isActive={isActive("fitness-plan")}>
-                        <Link href="/fitness-plan" color={isActive("/fitness-plan") ? "secondary" : "foreground"} >
+                    <NextNavbarItem isActive={isActive("/fitness-plan") || isActive("/session-plan") || isActive("/session-training")}>
+                        <Link href="/fitness-plan" color={isActive("/fitness-plan") || isActive("/session-plan") || isActive("/session-training") ? "secondary" : "foreground"} >
                             Fitness Plan
                         </Link>
                     </NextNavbarItem>
-                    <NextNavbarItem isActive={isActive("course-plan")}>
+                    <NextNavbarItem isActive={isActive("/course-plan")}>
                         <Link color={isActive("/course-plan") ? "secondary" : "foreground"} href="/course-plan">
                             Course Plan
                         </Link>
                     </NextNavbarItem>
-                    <NextNavbarItem isActive={isActive("activity-plan")}>
+                    <NextNavbarItem isActive={isActive("/activity-plan")}>
                         <Link color={isActive("/activity-plan") ? "secondary" : "foreground"} href="/activity-plan">
                             Activity Plan
                         </Link>
@@ -57,7 +60,7 @@ const Navbar = () => {
                                 as="button"
                                 className="transition-transform"
                                 color="secondary"
-                                name="Jason Hughes"
+                                name="Rafi Ardiel"
                                 size="sm"
                                 src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                             />
@@ -65,14 +68,9 @@ const Navbar = () => {
                         <DropdownMenu aria-label="Profile Actions" variant="flat">
                             <DropdownItem key="profile" className="h-14 gap-2">
                                 <p className="font-semibold">Signed in as</p>
-                                <p className="font-semibold">zoey@example.com</p>
+                                <p className="font-semibold">fiardiel19@gmail.com</p>
                             </DropdownItem>
-                            <DropdownItem key="settings">My Settings</DropdownItem>
-                            <DropdownItem key="team_settings">Team Settings</DropdownItem>
-                            <DropdownItem key="analytics">Analytics</DropdownItem>
-                            <DropdownItem key="system">System</DropdownItem>
-                            <DropdownItem key="configurations">Configurations</DropdownItem>
-                            <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem>
+                            <DropdownItem key="settings">Profile</DropdownItem>
                             <DropdownItem key="logout" color="danger">
                                 Log Out
                             </DropdownItem>

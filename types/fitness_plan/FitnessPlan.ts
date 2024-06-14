@@ -1,5 +1,10 @@
 export interface IFitnessPlan {
     id: number;
     title: string;
-    user: number;
+    user: string;
+}
+
+export interface FitnessPlanForm {
+    title: string
+    user: string
 }
