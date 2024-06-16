@@ -95,7 +95,7 @@ const FitnessPlan: React.FC<FitnessPlanProps> = ({ initFitnessPlan }) => {
                         <ModalContent>
                             {(onClose) => (
                                 <div>
-                                    <ModalHeader className="flex flex-col gap-1">Update Fitness Plan</ModalHeader>
+                                    <ModalHeader className="flex flex-col gap-1">Rename Fitness Plan</ModalHeader>
                                     <form onSubmit={(e) => {
                                         e.preventDefault();
                                         handleUpdate(e);
@@ -104,7 +104,7 @@ const FitnessPlan: React.FC<FitnessPlanProps> = ({ initFitnessPlan }) => {
                                             <Input
                                                 name='title'
                                                 autoFocus
-                                                label="Fitness Plan Name"
+                                                label="Title"
                                                 variant='bordered'
                                                 onChange={handleInputChange}
                                                 value={updateInput.title}

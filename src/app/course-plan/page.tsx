@@ -10,7 +10,7 @@ const CoursePlanPage = async () => {
   const testSchedules = await getAllTestSchedule()
   const assignmentDeadlines = await getAllAssignmentDeadline()
   return (
-    <div className='min-h-screen flex flex-col items-center justify-center -translate-y-20'>
+    <div className='flex flex-col items-center justify-center translate-y-10'>
       <TabComponent initClassSchedules={classSchedules} initTestSchedules={testSchedules} initAssignments={assignmentDeadlines} />
     </div>
   )

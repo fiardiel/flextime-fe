@@ -96,7 +96,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
                 </CardHeader>
                 <CardBody className='py-0'>
                     <p className='text-gray-500 text-md h-12 overflow-scroll'>
-                        <span>Sets: {customization?.sets}, Reps:{customization?.reps}</span>
+                        <span>Sets: {customization?.sets}, Reps: {customization?.reps}</span>
                         <span className=' bg-blue-300 px-2 py-1 rounded-lg text-blue-800 text-xs font-semibold self-center ml-3'>{customization?.duration}s</span>
                     </p>
                 </CardBody>
@@ -148,7 +148,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
                 <ModalContent>
                     {(onClose) => (
                         <div>
-                            <ModalHeader className="flex flex-col gap-1">Add training</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Customize {training?.title} #{ sessionTraining.id }</ModalHeader>
                             <form onSubmit={(e) => {
                                 e.preventDefault();
                                 handleSubmitCustomization(e);

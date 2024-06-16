@@ -9,11 +9,11 @@ interface ClassListProps {
     initClassSchedules: IClassSchedule[]
 }
 
-const ClassList: React.FC<ClassListProps> = ({initClassSchedules}) => {
+const ClassList: React.FC<ClassListProps> = ({ initClassSchedules }) => {
     const [classSchedules, setClassSchedules] = React.useState<IClassSchedule[]>(initClassSchedules)
-    
+
     const handleDeleteClassSchedule = (id: number) => {
-        setClassSchedules(prev => prev.filter(classSchedule => classSchedule.id  !== id))
+        setClassSchedules(prev => prev.filter(classSchedule => classSchedule.id !== id))
     }
 
     const handleAddClassSchedule = (newClassSchedule: IClassSchedule) => {
@@ -41,12 +41,12 @@ const ClassList: React.FC<ClassListProps> = ({initClassSchedules}) => {
 
     return (
         <div>
+            <div className='flex justify-center'>
+                <AddClass onAdd={handleAddClassSchedule}></AddClass>
+            </div>
             <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
-                <div className='col-span-3'>
-                    <AddClass onAdd={handleAddClassSchedule}></AddClass>
-                </div>    
                 {classSchedules.map(sched => (
-                    <Class key={sched.id} initClassSchedule={sched} onDelete={handleDeleteClassSchedule}/>
+                    <Class key={sched.id} initClassSchedule={sched} onDelete={handleDeleteClassSchedule} />
                 ))}
             </div>
         </div>

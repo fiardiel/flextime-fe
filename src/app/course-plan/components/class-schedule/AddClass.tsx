@@ -1,14 +1,17 @@
 'use client'
 
-import { Button, FloatingLabel, Select, TextInput } from 'flowbite-react'
 import React, { FormEventHandler, MouseEventHandler } from 'react'
 import { ClassScheduleForm, IClassSchedule } from '../../../../../types/course_plan/ClassSchedule'
-import Modal from '@/app/components/Modal'
 import { addClassSchedule } from '../../../../../apis/class_schedule_apis'
 import { IoIosTime } from 'react-icons/io'
 import { IoCalendarClearSharp } from 'react-icons/io5'
 import { MdDriveFileRenameOutline } from 'react-icons/md'
 import { FaPlus } from 'react-icons/fa'
+import { Button } from '@nextui-org/button'
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal'
+import { Input, Select, SelectItem, TimeInput } from '@nextui-org/react'
+import { BsCalendar2Fill } from 'react-icons/bs'
+import { parseTime, Time } from '@internationalized/date'
 
 interface AddClassProps {
     onAdd: (classSchedule: IClassSchedule) => void
@@ -25,21 +28,24 @@ const DAYS_OF_WEEK = [
 ];
 
 const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
-    const [openAddModal, setOpenAddModal] = React.useState<boolean>(false);
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [addInput, setAddInput] = React.useState<ClassScheduleForm>({
         class_name: '',
-        start_time: '',
-        end_time: '',
+        start_time: '10:00',
+        end_time: '11:00',
         class_day: 'MON',
         course_plan: 1
     });
-
-    const handleOpenAddModal = () => {
-        setOpenAddModal(true);
-    }
-
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
         setAddInput({ ...addInput, [event.target.name]: event.target.value });
+    }
+
+    const handleStartTimeChange = (value: Time) => {
+        setAddInput({ ...addInput, start_time: value.toString() });
+    }
+
+    const handleEndTimeChange = (value: Time) => {
+        setAddInput({ ...addInput, end_time: value.toString() });
     }
 
     const handleAdd: FormEventHandler = async (e) => {
@@ -60,44 +66,96 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
         } catch (err) {
             console.error('Error creating class schedule:', err);
         }
+        onClose()
+    }
 
-        setOpenAddModal(false);
+    const handleCloseModal = () => {
+        onClose();
+        setAddInput({
+            class_name: '',
+            start_time: '10:00',
+            end_time: '11:00',
+            class_day: 'MON',
+            course_plan: 1
+        });
     }
 
     return (
         <div>
-            <Button outline gradientDuoTone={'cyanToBlue'} onClick={handleOpenAddModal}>
-                Add Class <FaPlus size={10} className='self-center ml-2'/>
+            <Button variant='flat' color='primary' onPress={onOpen} className='mt-4'>
+                Add Class <FaPlus size={10} className='self-center ml-2' />
             </Button>
-            <Modal modalOpen={openAddModal} setModalOpen={setOpenAddModal}>
-                <div className='flex flex-col mb-5 font-sans'>
-                    <h3 className='text-xl font-mono font-semibold inline-block'> Create Class Schedule </h3>
-                </div>
-                <form onSubmit={handleAdd}>
-                    <div className='mb-3 font-sans'>
-                        <label htmlFor="class_name" className='mb-3 text-gray-400 text-sm'>Name</label>
-                        <TextInput name="class_name" value={addInput.class_name} onChange={handleInputChange} icon={MdDriveFileRenameOutline} type="text" placeholder="Class name" required shadow />
-                    </div>
-                    <div className='mb-3 font-sans'>
-                        <label htmlFor="class_day" className='mb-3 text-gray-400 text-sm'>Day</label>
-                        <Select name='class_day' value={addInput.class_day} onChange={handleInputChange} icon={IoCalendarClearSharp}>
-                            {DAYS_OF_WEEK.map(day => (
-                                <option key={day.value} value={day.value}>{day.label}</option>
-                            ))}
-                        </Select>
-                    </div>
-                    <div className='mb-8 font-sans grid grid-cols-2'>
-                        <div className='mr-3'>
-                            <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>
-                            <TextInput name="test_start" value={addInput.start_time} onChange={handleInputChange} type="time" placeholder="Start time" icon={IoIosTime} required shadow />
-                        </div>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
                         <div>
-                            <label htmlFor="test_end" className='mb-2 text-gray-400 text-sm'>End Time</label>
-                            <TextInput name="test_end" value={addInput.end_time} onChange={handleInputChange} type="time" placeholder="End time" icon={IoIosTime} required shadow />
+                            <ModalHeader className="flex flex-col gap-1">Add Class</ModalHeader>
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                handleAdd(e);
+                            }}>
+                                <ModalBody>
+                                    <Input
+                                        name='class_name'
+                                        type='text'
+                                        autoFocus
+                                        label="Name"
+                                        variant='bordered'
+                                        onChange={handleInputChange}
+                                        value={addInput.class_name}
+                                        startContent={<MdDriveFileRenameOutline />}
+                                    />
+                                    <Select
+                                        name='class_day'
+                                        autoFocus
+                                        label="Day"
+                                        variant='bordered'
+                                        onChange={handleInputChange}
+                                        defaultSelectedKeys={[addInput.class_day]}
+                                        value={addInput.class_day}
+                                        startContent={<BsCalendar2Fill size={12} />}
+                                    >
+                                        {DAYS_OF_WEEK.map(day => (
+                                            <SelectItem key={day.value} value={day.value}>{day.label}</SelectItem>
+                                        ))}
+                                    </Select>
+                                    <TimeInput
+                                        name='start_time'
+                                        autoFocus
+                                        label="Start"
+                                        variant='bordered'
+                                        onChange={handleStartTimeChange}
+                                        value={parseTime(addInput.start_time)}
+                                        startContent={<IoIosTime />}
+                                    />
+                                    <TimeInput
+                                        name='end_time'
+                                        autoFocus
+                                        label="End"
+                                        variant='bordered'
+                                        onChange={handleEndTimeChange}
+                                        value={parseTime(addInput.end_time)}
+                                        startContent={<IoIosTime />}
+                                    />
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="danger" variant="flat" onPress={handleCloseModal}>
+                                        Close
+                                    </Button>
+                                    <Button color="primary" type='submit'>
+                                        Submit
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+
+                            <div />
                         </div>
-                    </div>
-                    <Button type='submit' outline gradientDuoTone={'purpleToBlue'} className='w-full transition'>Add Class</Button>
-                </form>
+                    )}
+                </ModalContent>
             </Modal>
         </div>
     )

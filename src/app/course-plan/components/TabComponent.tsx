@@ -4,11 +4,14 @@ import { MdAssignment } from "react-icons/md";
 import ClassList, { } from "./class-schedule/ClassList";
 import React from 'react'
 import { IClassSchedule } from "../../../../types/course_plan/ClassSchedule";
-import { PiChalkboardSimpleFill, PiExamFill } from "react-icons/pi";
+import { PiExamFill } from "react-icons/pi";
 import TestList from "./test-schedule/TestList";
 import { TestSchedule } from "../../../../types/course_plan/TestSchedule";
 import AssignmentList from "./assignment-deadline/AssignmentList";
 import { IAssignmentDeadline } from "../../../../types/course_plan/AssignmentDeadline";
+
+import { FaBookOpen } from "react-icons/fa";
+import { Tab, Tabs } from "@nextui-org/react";
 
 interface TabComponentProps {
   initClassSchedules: IClassSchedule[]
@@ -19,17 +22,42 @@ interface TabComponentProps {
 const TabComponent: React.FC<TabComponentProps> = ({ initClassSchedules, initTestSchedules, initAssignments }) => {
   return (
     <div className="font-sans">
-      {/* <Tabs className="focus:outline-none focus:ring-0 focus:ring-transparent" aria-label="Tabs with underline" style="underline">
-        <Tabs.Item active title="Class" className="focus:outline-none focus:ring-0 focus:ring-transparent" icon={PiChalkboardSimpleFill}>
-          <ClassList initClassSchedules={initClassSchedules} />
-        </Tabs.Item>
-        <Tabs.Item active title="Assignment" className="focus:outline-none focus:ring-0 focus:ring-transparent" icon={MdAssignment}>
-          <AssignmentList initAssignmentDeadlines={initAssignments}/>
-        </Tabs.Item>
-        <Tabs.Item active title="Test" className="focus:outline-none focus:ring-0 focus:ring-transparent" icon={PiExamFill}>
-          <TestList initTestSchedules={initTestSchedules} />
-        </Tabs.Item>
-      </Tabs> */}
+      <div className="flex w-full flex-col items-center">
+        <Tabs aria-label="Options" color="primary" variant="bordered">
+          <Tab
+            key="class"
+            title={
+              <div className="flex items-center space-x-2">
+                <FaBookOpen />
+                <span>Class</span>
+              </div>
+            }
+          >
+            <div>
+              <ClassList initClassSchedules={initClassSchedules} />
+            </div>
+
+          </Tab>
+          <Tab
+            key="assignment"
+            title={
+              <div className="flex items-center space-x-2">
+                <MdAssignment />
+                <span>Assignment</span>
+              </div>
+            }
+          />
+          <Tab
+            key="test"
+            title={
+              <div className="flex items-center space-x-2">
+                <PiExamFill />
+                <span>Test</span>
+              </div>
+            }
+          />
+        </Tabs>
+      </div>
     </div>
 
   )

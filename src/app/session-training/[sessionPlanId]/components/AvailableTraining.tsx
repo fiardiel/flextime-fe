@@ -92,7 +92,7 @@ const AvailableTraining: React.FC<AvailableTrainingProps> = ({ training, onAdd }
                 <ModalContent>
                     {(onClose) => (
                         <div>
-                            <ModalHeader className="flex flex-col gap-1">Add training</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">Customize { training.title }</ModalHeader>
                             <form onSubmit={(e) => {
                                 e.preventDefault();
                                 handleSubmitCustomization(e);

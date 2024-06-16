@@ -21,7 +21,7 @@ const Navbar = () => {
 
     return (
         <div>
-            <NextNavbar shouldHideOnScroll isBordered>
+            <NextNavbar position="sticky" isBordered>
                 <NextNavbarBrand>
                     <div className="flex flex-col">
                         <p className="font-bold text-inherit">FlexTime</p>
