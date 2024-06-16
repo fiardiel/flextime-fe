@@ -71,14 +71,14 @@ const FitnessPlan: React.FC<FitnessPlanProps> = ({ initFitnessPlan }) => {
             const currentFitnessPlan = fitnessPlan as IFitnessPlan
             return (
                 <div>
-                    <Card className='p-5 w-80 h-60'>
+                    <Card className='p-5 w-80 h-60 scale-110 transition hover:-translate-y-1 hover:scale-125'>
                         <CardHeader>
-                            <h1 className='font-bold font-custom text-3xl mr-5'>{currentFitnessPlan.title}</h1>
-                            <Button isIconOnly className='bg-transparent' onPress={onOpen}>
+                            <p className='font-bold font-custom text-3xl mr-5 overflow-scroll max-h-[75px] items-end'>{currentFitnessPlan.title}</p>
+                            <Button isIconOnly className='bg-transparent self-end' onPress={onOpen}>
                                 <RiPencilFill size={22} />
                             </Button>
                         </CardHeader>
-                        <CardBody className='-mt-2'>
+                        <CardBody className='-mt-2 overflow-hidden'>
                             <p className='font-medium text-gray-500 text-lg'>Flex up with FlexTime!</p>
                         </CardBody>
                         <CardFooter className='justify-end'>

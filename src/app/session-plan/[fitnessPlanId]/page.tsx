@@ -9,8 +9,7 @@ const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: number } }
         const sessionPlans: ISessionPlan[] =  await getSessionPlanByFitnessPlan({ fitnessPlanId: params.fitnessPlanId });
 
         return (
-            <div className='flex flex-col items-center h-full w-full'>
-                <h1 className='text-5xl font-bold font-mono mb-2 col-span-3 text-start px-52 mt-28'>your session plans:</h1>
+            <div className='flex flex-col h-full w-full'>
                 <div className='self-center font-sans'>
                     <SessionPlanList initSessionPlans={sessionPlans}/>
                 </div>

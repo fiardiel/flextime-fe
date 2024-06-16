@@ -23,8 +23,9 @@ const SessionPlanList: React.FC<SessionPlansListProps> = ({ initSessionPlans }) 
 
     return (
         <div> 
+            <AddSession onAdd={handleAddSessionPlan}></AddSession>
+            <h3 className='text-4xl font-bold font-custom mb-2 col-span-3 text-start px-10 mt-4'>your session plans:</h3>
             <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
-                <AddSession onAdd={handleAddSessionPlan}></AddSession>
                 {sessionPlans.map(plan => (
                     <SessionPlan key={plan.id} sessionPlan={plan} onDelete={handleDeleteSessionPlan}/>
                 ))}

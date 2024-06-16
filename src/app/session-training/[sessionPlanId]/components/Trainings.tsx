@@ -26,17 +26,17 @@ const Trainings: React.FC<TrainingsProps> = ({ availableTrainings, initPickedTra
 
     return (
         <div>
-            <h1 className='text-5xl font-bold font-custom mb-2 col-span-3 text-start px-52 mt-28'>your {trainingType} trainings:</h1>
+            <h1 className='text-5xl font-bold font-custom mb-2 col-span-3 text-start px-10 mt-20 sm:max-w-16 lg:max-w-4xl'>your {trainingType} trainings:</h1>
             <div className='self-center font-sans'>
-                <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
+                <div className='grid lg:grid-cols-3 sm:grid-cols-1 content-start justify-items-start p-10 gap-9'>
                     {pickedTrainings.map(training => (
                         <PickedTraining key={training.id} sessionTraining={training} onDelete={handleDeleteTraining} onUpdate={() => null || true} />
                     ))}
                 </div>
             </div>
-            <h1 className='text-5xl font-bold font-custom mb-2 col-span-3 text-start px-52 mt-28'>available {trainingType} trainings:</h1>
+            <h1 className='text-5xl font-bold font-custom mb-2 col-span-3 text-start px-10 mt-28 sm:max-w-16 lg:max-w-4xl'>available {trainingType} trainings:</h1>
             <div className='self-center font-sans'>
-                <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
+                <div className='grid lg:grid-cols-3 sm:grid-cols-1 content-center justify-items-start p-10 gap-9'>
                     {availableTrainings.map(training => (
                         <AvailableTraining key={training.id} training={training} onAdd={handleAddTraining} />
                     ))}

@@ -30,8 +30,8 @@ const AddSession: React.FC<AddSessionProps> = ({ onAdd }) => {
     }
 
     return (
-        <div className='flex justify-center mt-4 col-span-3'>
-            <Button onPress={onOpen} color='primary' variant='faded' startContent={<FaPlus/>}>
+        <div className='flex px-10 mt-20'>
+            <Button onPress={onOpen} color='primary' variant='shadow' startContent={<FaPlus/>}>
                 <span>Add Session</span>
             </Button>
             <Modal

@@ -20,8 +20,8 @@ const Navbar = () => {
     const isActive = (href: string) => pathname === href
 
     return (
-        <div>
-            <NextNavbar position="sticky" isBordered>
+        <>
+            <NextNavbar isBordered>
                 <NextNavbarBrand>
                     <div className="flex flex-col">
                         <p className="font-bold text-inherit">FlexTime</p>
@@ -78,7 +78,7 @@ const Navbar = () => {
                     </Dropdown>
                 </NextNavbarContent>
             </NextNavbar>
-        </div>
+        </>
     )
 }
 

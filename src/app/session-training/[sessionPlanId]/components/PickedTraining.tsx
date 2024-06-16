@@ -85,6 +85,15 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         setInputCustomization({ ...inputCustomization, [event.target.name]: event.target.value });
     }
 
+    const handleCloseEditModal = () => {
+        onEditClose();
+        setInputCustomization({
+            sets: customization?.sets || 0,
+            reps: customization?.reps || 0,
+            duration: customization?.duration || 0
+        });
+    }
+
     return (
         <div>
             <Card className='p-5 w-72 h-52 hover:-translate-y-2 hover:scale-110 transition'>
@@ -185,7 +194,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
                                     />
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" variant="flat" onPress={onClose}>
+                                    <Button color="danger" variant="flat" onPress={handleCloseEditModal}>
                                         Close
                                     </Button>
                                     <Button color="primary" type='submit'>

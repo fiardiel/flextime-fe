@@ -32,7 +32,7 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
         class_name: '',
         start_time: '10:00',
         end_time: '11:00',
-        class_day: 'MON',
+        class_day: '',
         course_plan: 1
     });
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
@@ -74,15 +74,15 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
             class_name: '',
             start_time: '10:00',
             end_time: '11:00',
-            class_day: 'MON',
+            class_day: '',
             course_plan: 1
         });
     }
 
     return (
         <div>
-            <Button variant='flat' color='primary' onPress={onOpen} className='mt-4'>
-                Add Class <FaPlus size={10} className='self-center ml-2' />
+            <Button variant='ghost' color='primary' onPress={onOpen} className='mt-4 text-white'>
+                Add Class <FaPlus size={10} className='self-center' />
             </Button>
             <Modal
                 isOpen={isOpen}
@@ -113,9 +113,9 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                                         label="Day"
                                         variant='bordered'
                                         onChange={handleInputChange}
-                                        defaultSelectedKeys={[addInput.class_day]}
                                         value={addInput.class_day}
                                         startContent={<BsCalendar2Fill size={12} />}
+                                        required
                                     >
                                         {DAYS_OF_WEEK.map(day => (
                                             <SelectItem key={day.value} value={day.value}>{day.label}</SelectItem>
