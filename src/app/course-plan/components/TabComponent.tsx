@@ -45,7 +45,11 @@ const TabComponent: React.FC<TabComponentProps> = ({ initClassSchedules, initTes
                 <span>Assignment</span>
               </div>
             }
-          />
+          >
+            <div>
+              <AssignmentList initAssignmentDeadlines={initAssignments} />
+            </div> 
+          </Tab>
           <Tab
             key="test"
             title={

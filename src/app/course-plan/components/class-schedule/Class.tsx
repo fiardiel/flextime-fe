@@ -9,7 +9,6 @@ import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { IoIosTime } from 'react-icons/io';
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, TimeInput, TimeInputValue, useDisclosure } from '@nextui-org/react';
 import { parseTime, Time } from '@internationalized/date';
-import { FaCalendar, FaCalendarDay } from 'react-icons/fa';
 import { BsCalendar2Fill } from 'react-icons/bs';
 
 
@@ -99,17 +98,17 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
 
     return (
         <div>
-            <Card className='p-5 w-72 h-52 hover:-translate-y-2 hover:scale-110 transition'>
+            <Card className='p-5 w-72 h-60 hover:-translate-y-2 hover:scale-110 transition'>
                 <CardHeader>
-                    <p className='font-bold font-custom text-3xl mr-5'>
+                    <p className='font-bold font-custom text-3xl mr-5 h-20'>
                         <span>{classSchedule.class_name}</span>
                     </p>
                 </CardHeader>
-                <CardBody className='py-0'>
-                    <p className='text-gray-500 text-md h-12 overflow-scroll'>
+                <CardBody className='px-3 pt-0 -mt-1 pb-3 overflow-hidden'>
+                    <p className='text-gray-500 text-md h-12'>
                         <span>{DAYS_OF_WEEK.find(day => day.value === classSchedule.class_day)?.label + ' '}</span>
                     </p>
-                    <p className='text-gray-500 text-md h-12 overflow-scroll'>
+                    <p className='text-gray-500 text-md h-12'>
                         <span>{formatTime(classSchedule.start_time.toString())} - {formatTime(classSchedule.end_time.toString())}</span>
                     </p>
                 </CardBody>
@@ -213,7 +212,7 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
                                     />
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" variant="flat" onPress={onEditClose}>
+                                    <Button color="danger" variant="flat" onPress={handleCloseEditModal}>
                                         Close
                                     </Button>
                                     <Button color="primary" type='submit'>

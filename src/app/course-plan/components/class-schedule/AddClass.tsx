@@ -107,6 +107,7 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                                         onChange={handleInputChange}
                                         value={addInput.class_name}
                                         startContent={<MdDriveFileRenameOutline />}
+                                        required
                                     />
                                     <Select
                                         name='class_day'
