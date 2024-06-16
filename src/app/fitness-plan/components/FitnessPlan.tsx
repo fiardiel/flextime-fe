@@ -8,7 +8,7 @@ import { FitnessPlanForm, IFitnessPlan } from '../../../../types/fitness_plan/Fi
 import { Button } from '@nextui-org/button';
 import { RiPencilFill } from 'react-icons/ri';
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal';
-import { Input } from '@nextui-org/react';
+import { Input, Link } from '@nextui-org/react';
 
 interface FitnessPlanProps {
     initFitnessPlan: any
@@ -82,7 +82,9 @@ const FitnessPlan: React.FC<FitnessPlanProps> = ({ initFitnessPlan }) => {
                             <p className='font-medium text-gray-500 text-lg'>Flex up with FlexTime!</p>
                         </CardBody>
                         <CardFooter className='justify-end'>
-                            <Button color="primary" variant='ghost' className='text-white'>Session Plans</Button>
+                            <Link href={`/session-plan/${fitnessPlan.id}`}>
+                                <Button color="primary" variant='ghost' className='text-white'>Session Plans</Button>
+                            </Link>
                         </CardFooter>
                     </Card>
                     <Modal

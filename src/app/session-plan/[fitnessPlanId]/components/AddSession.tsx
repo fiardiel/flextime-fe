@@ -1,15 +1,14 @@
 'use client';
 
-import Modal from '@/app/components/Modal';
-import { Button } from 'flowbite-react'
 import React from 'react'
 import { FaPlus } from 'react-icons/fa'
 import { addSessionPlan } from '../../../../../apis/fitness_plan_apis';
 import { useParams, useRouter } from 'next/navigation';
 import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan';
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link, Textarea } from "@nextui-org/react";
 
 interface AddSessionProps {
-    onAdd: (newSessionPlan: ISessionPlan) => void;        
+    onAdd: (newSessionPlan: ISessionPlan) => void;
 }
 
 const AddSession: React.FC<AddSessionProps> = ({ onAdd }) => {
@@ -17,42 +16,50 @@ const AddSession: React.FC<AddSessionProps> = ({ onAdd }) => {
 
     const { fitnessPlanId } = useParams();
 
-    const [openAddModal, setOpenAddModal] = React.useState<boolean>(false);
+    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
-    const openAddModalHandler = () => {
-        setOpenAddModal(true);
-    }
-
-    const handleSubmit = async (trainingType: string) => { 
+    const handleSubmit = async (trainingType: string) => {
         const sessionPlan = await addSessionPlan({
             training_type: trainingType,
-            fitness_plan: parseInt(fitnessPlanId as unknown as string) 
+            fitness_plan: parseInt(fitnessPlanId as unknown as string)
         })
         console.log('Session Plan added successfully with ID: ', sessionPlan.id);
         onAdd(sessionPlan);
-        setOpenAddModal(false);
-        router.push(`/session-training/${sessionPlan.id}`)
+        onClose();
+        // router.push(`/session-training/${sessionPlan.id}`)
     }
 
     return (
         <div className='flex justify-center mt-4 col-span-3'>
-            <Button onClick={openAddModalHandler} outline gradientDuoTone={'cyanToBlue'}>
-                <span>Add Session </span>
-                <FaPlus className='self-center ml-2'></FaPlus>
+            <Button onPress={onOpen} color='primary' variant='faded' startContent={<FaPlus/>}>
+                <span>Add Session</span>
             </Button>
-            <Modal modalOpen={openAddModal} setModalOpen={setOpenAddModal}>
-                <h3 className='font-mono font-bold text-xl text-center mb-5'>Select Training Type</h3>
-                <div className='flex flex-row justify-center'>
-                    <Button onClick={() => handleSubmit('HIIT')} size={'xl'} className='mx-2 mb-1' outline gradientDuoTone={'purpleToPink'}>
-                        HIIT
-                    </Button>
-                    <Button onClick={() => handleSubmit('Strength')} size={'xl'} className='mx-2 mb-1' outline gradientDuoTone={'purpleToPink'}>
-                        Strength
-                    </Button>   
-                    <Button onClick={() => handleSubmit('Cardio')} size={'xl'} className='mx-2 mb-1' outline gradientDuoTone={'purpleToPink'}>
-                        Cardio
-                    </Button>
-                </div>
+            <Modal
+                size='sm'
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <div>
+                            <ModalHeader className="flex flex-col gap-1 text-center">Pick Training Type</ModalHeader>
+                            <ModalBody>
+                                <div className='flex flex-row justify-center'>
+                                    <Button size='lg' name='trainingType' color="secondary" variant="ghost" className='mr-5 p-4' onClick={() => handleSubmit('HIIT')}>
+                                        HIIT
+                                    </Button>
+                                    <Button size='lg' name='trainingType' color="secondary" variant="ghost" className='mr-5 p-4' onClick={() => handleSubmit("Strength")} >
+                                        Strength
+                                    </Button>
+                                    <Button size='lg' name='trainingType' color="secondary" variant="ghost" className='p-4 mb-3' onClick={() => handleSubmit("Cardio")} >
+                                        Cardio
+                                    </Button>
+                                </div>
+                            </ModalBody>
+                        </div>
+                    )}
+                </ModalContent>
             </Modal>
         </div>
     )
