@@ -1,10 +1,9 @@
 'use client'
 
-import React, { FormEventHandler, MouseEventHandler } from 'react'
+import React, { FormEventHandler } from 'react'
 import { ClassScheduleForm, IClassSchedule } from '../../../../../types/course_plan/ClassSchedule'
 import { addClassSchedule } from '../../../../../apis/class_schedule_apis'
 import { IoIosTime } from 'react-icons/io'
-import { IoCalendarClearSharp } from 'react-icons/io5'
 import { MdDriveFileRenameOutline } from 'react-icons/md'
 import { FaPlus } from 'react-icons/fa'
 import { Button } from '@nextui-org/button'
@@ -111,7 +110,6 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                                     />
                                     <Select
                                         name='class_day'
-                                        autoFocus
                                         label="Day"
                                         variant='bordered'
                                         onChange={handleInputChange}
@@ -125,7 +123,6 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                                     </Select>
                                     <TimeInput
                                         name='start_time'
-                                        autoFocus
                                         label="Start"
                                         variant='bordered'
                                         onChange={handleStartTimeChange}
@@ -134,7 +131,6 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                                     />
                                     <TimeInput
                                         name='end_time'
-                                        autoFocus
                                         label="End"
                                         variant='bordered'
                                         onChange={handleEndTimeChange}

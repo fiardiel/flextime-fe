@@ -36,7 +36,6 @@ const TabComponent: React.FC<TabComponentProps> = ({ initClassSchedules, initTes
             <div>
               <ClassList initClassSchedules={initClassSchedules} />
             </div>
-
           </Tab>
           <Tab
             key="assignment"
