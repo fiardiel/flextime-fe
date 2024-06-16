@@ -9,7 +9,7 @@ const SessionTrainingPage = async ({ params }: { params: { sessionPlanId: string
 
     return (
         <div className='flex flex-col items-center h-full w-full'>
-            <Trainings initPickedTrainings={sessionTrainings} availableTrainings={availableTrainings}/>
+            <Trainings trainingType={sessionPlan.training_type} initPickedTrainings={sessionTrainings} availableTrainings={availableTrainings}/>
         </div>
     )
 }

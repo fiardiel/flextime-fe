@@ -2,13 +2,12 @@ import React, { FormEventHandler, useEffect } from 'react'
 import { deleteCustomization, deleteSessionTraining, getCustomizationById, getTrainingById, updateCustomization } from '../../../../../apis/fitness_plan_apis';
 import { ISessionTraining } from '../../../../../types/fitness_plan/SessionTraining';
 import { ITraining } from '../../../../../types/fitness_plan/Training';
-import Modal from '@/app/components/Modal';
 import { FaListUl } from 'react-icons/fa';
 import { CustomizationForm, ICustomization } from '../../../../../types/fitness_plan/Customization';
 import { RiEditBoxFill, RiLoopLeftFill } from 'react-icons/ri';
-import { Button, TextInput } from 'flowbite-react';
 import { MdOutlineTimer } from 'react-icons/md';
 import { TbTrashFilled } from 'react-icons/tb';
+import { Button, Card, CardBody, CardFooter, CardHeader, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react';
 
 interface PickedTrainingProps {
     sessionTraining: ISessionTraining;
@@ -17,9 +16,8 @@ interface PickedTrainingProps {
 }
 
 const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDelete, onUpdate }) => {
-
-    const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false);
-    const [updateModalOpen, setUpdateModalOpen] = React.useState<boolean>(false);
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure();
+    const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange, onClose: onEditClose } = useDisclosure();
     const [training, setTraining] = React.useState<ITraining | null>(null);
     const [customization, setCustomization] = React.useState<ICustomization | null>(null);
     const [inputCustomization, setInputCustomization] = React.useState<CustomizationForm>({
@@ -38,7 +36,6 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
     }, [sessionTraining.id, sessionTraining.training]);
 
 
-
     useEffect(() => {
         const fetchCustomization = async () => {
             const fetchedCustomization = await getCustomizationById({ id: sessionTraining.customization });
@@ -53,25 +50,14 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         fetchCustomization();
     }, [sessionTraining.id, sessionTraining.customization]);
 
-    const handleDelete = async () => {
-        setDeleteModalOpen(true);
-    };
 
     const confirmDelete = async () => {
         await deleteSessionTraining({ id: sessionTraining.id })
         await deleteCustomization({ id: sessionTraining.customization })
         console.log(`Session training ${sessionTraining.id} deleted`);
-        setDeleteModalOpen(false);
         onDelete(sessionTraining.id)
+        onDeleteClose()
     };
-
-    const deleteAction = (
-        <Button outline onClick={confirmDelete} gradientMonochrome="failure">Delete</Button>
-    );
-
-    const handleUpdate = async () => {
-        setUpdateModalOpen(true);
-    }
 
     const handleSubmitCustomization: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
@@ -92,57 +78,126 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
             console.error('Error updating custom training:', err);
         }
 
-        setUpdateModalOpen(false);
+        onEditClose()
     }
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputCustomization({ ...inputCustomization, [event.target.name]: event.target.value });
     }
 
-    const submitForm = () => {
-        const form = document.getElementById(`form-${customization?.id}`) as HTMLFormElement;
-        if (form) {
-            form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
-        }
-    };
-
     return (
         <div>
-            <div className="hover:-translate-y-2 hover:scale-110 transition card bg-card-bg w-72 shadow-xl">
-                <div className="card-body">
-                    <div className='card-title -mb-1 font-mono font-extrabold'>
-                        <span className='text-white'> {training?.title} </span>
-                        <span className='text-gray-600 font-medium font-mono'> #{sessionTraining.id} </span>
-                    </div>
-                    <p className='text-gray-500 text-md mb-4 flex'>
-                        <span className='self-end mr-3'>Sets: {customization?.sets}, Reps: {customization?.reps}</span>
-                        <span className=' bg-blue-300 px-2 py-1 rounded-lg text-blue-800 text-xs font-semibold self-center'>{customization?.duration}s</span>
+            <Card className='p-5 w-72 h-52 hover:-translate-y-2 hover:scale-110 transition'>
+                <CardHeader>
+                    <p className='font-bold font-custom text-3xl mr-5'>
+                        <span>{training?.title}</span>
+                        <span className='text-gray-600 font-medium'> #{sessionTraining.id} </span>
                     </p>
-                    <div className="card-actions justify-end">
-                        <Button outline size='sm' onClick={handleUpdate} gradientDuoTone="purpleToBlue"><RiEditBoxFill size={17} /></Button>
-                        <Button outline size='sm' onClick={handleDelete} gradientMonochrome="failure"><TbTrashFilled size={17} /></Button>
-                    </div>
-                </div>
-            </div>
-            <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen} actions={deleteAction}>
-                <h3 className='text-xl font-mono font-medium'>Delete {training?.title} #{sessionTraining.id}?</h3>
+                </CardHeader>
+                <CardBody className='py-0'>
+                    <p className='text-gray-500 text-md h-12 overflow-scroll'>
+                        <span>Sets: {customization?.sets}, Reps:{customization?.reps}</span>
+                        <span className=' bg-blue-300 px-2 py-1 rounded-lg text-blue-800 text-xs font-semibold self-center ml-3'>{customization?.duration}s</span>
+                    </p>
+                </CardBody>
+                <CardFooter className='justify-end'>
+                    <Button color='primary' className='border-2 border-gray-500 mr-2' isIconOnly onPress={onEditOpen}>
+                        <RiEditBoxFill size={17} />
+                    </Button>
+                    <Button color='danger' className='border-2 border-gray-500' isIconOnly onPress={onDeleteOpen}>
+                        <TbTrashFilled size={17} />
+                    </Button>
+                </CardFooter>
+            </Card>
+            <Modal
+                isOpen={isDeleteOpen}
+                onOpenChange={onDeleteOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <div>
+                            <ModalHeader className="flex flex-col gap-1">Delete Session Training</ModalHeader>
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                confirmDelete();
+                            }}>
+                                <ModalBody>
+                                    Are you sure you want to remove this training?
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button variant="faded" onPress={onClose}>
+                                        Close
+                                    </Button>
+                                    <Button color="danger" type='submit'>
+                                        Delete
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+
+                            <div />
+                        </div>
+                    )}
+                </ModalContent>
             </Modal>
-            <Modal modalOpen={updateModalOpen} setModalOpen={setUpdateModalOpen} actions={<Button outline onClick={submitForm} gradientDuoTone="greenToBlue">Update</Button>}>
-                <div className='flex flex-col'>
-                    <h3 className='text-xl font-mono font-semibold inline-block'>Customize {training?.title} #{sessionTraining.id}?</h3>
-                    <p className='mb-4 text-gray-500 font-sans font-normal text-left inline-block w-full'> {training?.description} </p>
-                </div>
-                <form id={`form-${customization?.id}`} onSubmit={handleSubmitCustomization}>
-                    <div className='mb-3'>
-                        <TextInput name="sets" value={inputCustomization.sets} onChange={handleInputChange} type="number" placeholder="Sets" icon={() => <FaListUl size={15} color='gray' />} required shadow />
-                    </div>
-                    <div className='mb-3'>
-                        <TextInput name='reps' value={inputCustomization.reps} onChange={handleInputChange} type="number" placeholder="Repetitions" icon={RiLoopLeftFill} required shadow />
-                    </div>
-                    <div className='mb-3'>
-                        <TextInput name='duration' value={inputCustomization.duration} onChange={handleInputChange} type="number" placeholder="Duration (seconds)" icon={MdOutlineTimer} required shadow />
-                    </div>
-                </form>
+            <Modal
+                isOpen={isEditOpen}
+                onOpenChange={onEditOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <div>
+                            <ModalHeader className="flex flex-col gap-1">Add training</ModalHeader>
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                handleSubmitCustomization(e);
+                            }}>
+                                <ModalBody>
+                                    <Input
+                                        name='sets'
+                                        type='number'
+                                        autoFocus
+                                        label="Sets"
+                                        variant='bordered'
+                                        onChange={handleInputChange}
+                                        value={inputCustomization.sets.toString()}
+                                        startContent={<FaListUl />}
+                                    />
+                                    <Input
+                                        name='reps'
+                                        autoFocus
+                                        label="Reps"
+                                        variant='bordered'
+                                        onChange={handleInputChange}
+                                        value={inputCustomization.reps.toString()}
+                                        startContent={<RiLoopLeftFill />}
+                                    />
+                                    <Input
+                                        name='duration'
+                                        autoFocus
+                                        label="Duration (in seconds)"
+                                        variant='bordered'
+                                        onChange={handleInputChange}
+                                        type='number'
+                                        value={inputCustomization.duration.toString()}
+                                        startContent={<MdOutlineTimer />}
+                                    />
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="danger" variant="flat" onPress={onClose}>
+                                        Close
+                                    </Button>
+                                    <Button color="primary" type='submit'>
+                                        Submit
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+
+                            <div />
+                        </div>
+                    )}
+                </ModalContent>
             </Modal>
         </div>
     )

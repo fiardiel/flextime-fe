@@ -9,9 +9,10 @@ import PickedTraining from './PickedTraining';
 interface TrainingsProps {
     availableTrainings: ITraining[];
     initPickedTrainings: ISessionTraining[];
+    trainingType: string;
 }
 
-const Trainings: React.FC<TrainingsProps> = ({ availableTrainings, initPickedTrainings }) => {
+const Trainings: React.FC<TrainingsProps> = ({ availableTrainings, initPickedTrainings, trainingType }) => {
     const [pickedTrainings, setPickedTrainings] = useState<ISessionTraining[]>(initPickedTrainings);
 
     const handleDeleteTraining = (id: number) => { 
@@ -25,7 +26,7 @@ const Trainings: React.FC<TrainingsProps> = ({ availableTrainings, initPickedTra
 
     return (
         <div>
-            <h1 className='text-5xl font-bold font-mono mb-2 col-span-3 text-start px-52 mt-28'>your session trainings:</h1>
+            <h1 className='text-5xl font-bold font-custom mb-2 col-span-3 text-start px-52 mt-28'>your {trainingType} trainings:</h1>
             <div className='self-center font-sans'>
                 <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
                     {pickedTrainings.map(training => (
@@ -33,7 +34,7 @@ const Trainings: React.FC<TrainingsProps> = ({ availableTrainings, initPickedTra
                     ))}
                 </div>
             </div>
-            <h1 className='text-5xl font-bold font-mono mb-2 col-span-3 text-start px-52 mt-28'>available trainings:</h1>
+            <h1 className='text-5xl font-bold font-custom mb-2 col-span-3 text-start px-52 mt-28'>available {trainingType} trainings:</h1>
             <div className='self-center font-sans'>
                 <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
                     {availableTrainings.map(training => (

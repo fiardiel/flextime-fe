@@ -5,7 +5,7 @@ import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan'
 import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } from '../../../../../apis/fitness_plan_apis';
 import { PiBarbellFill } from 'react-icons/pi';
 import { TbTrashFilled } from 'react-icons/tb';
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Textarea, Link } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 
 interface SessionPlanProps {
@@ -56,9 +56,9 @@ const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
                 </CardBody>
                 <CardFooter className='justify-end'>
                     <Link href={`/session-training/${sessionPlan.id}`} className='mr-2'>
-                        <Button color='primary' isIconOnly> <PiBarbellFill size={20} /> </Button>
+                        <Button className='border-2 border-gray-500' color='primary' isIconOnly> <PiBarbellFill size={20} /> </Button>
                     </Link>
-                    <Button color='danger' isIconOnly onPress={onOpen}>
+                    <Button color='danger' className='border-2 border-gray-500' isIconOnly onPress={onOpen}>
                         <TbTrashFilled size={20} />
                     </Button>
                 </CardFooter>
