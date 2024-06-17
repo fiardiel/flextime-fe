@@ -44,7 +44,7 @@ const ClassList: React.FC<ClassListProps> = ({ initClassSchedules }) => {
             <div className='flex justify-center'>
                 <AddClass onAdd={handleAddClassSchedule}></AddClass>
             </div>
-            <div className='grid sm:gird-cols-1 lg:grid-cols-3 content-center justify-items-start p-10 gap-9'>
+            <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 content-center justify-items-start py-10 gap-9'>
                 {classSchedules.map(sched => (
                     <Class key={sched.id} initClassSchedule={sched} onDelete={handleDeleteClassSchedule} />
                 ))}

@@ -1,14 +1,15 @@
 'use client';
 
-import { Button, Card, Datepicker, TextInput } from 'flowbite-react';
 import React, { FormEventHandler } from 'react'
 import { RiEditBoxFill } from 'react-icons/ri';
 import { TbTrashFilled } from 'react-icons/tb';
-import Modal from '@/app/components/Modal';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { IoIosTime } from 'react-icons/io';
 import { TestSchedule, TestScheduleForm } from '../../../../../types/course_plan/TestSchedule';
 import { deleteTestSchedule, updateTestSchedule } from '../../../../../apis/test_schedule_apis';
+import { Button, Card, CardBody, CardFooter, CardHeader, DatePicker, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, TimeInput, useDisclosure } from '@nextui-org/react';
+import { useDateFormatter } from '@react-aria/i18n';
+import { CalendarDate, getLocalTimeZone, parseDate, parseTime, Time } from '@internationalized/date';
 
 
 interface TestProps {
@@ -17,9 +18,10 @@ interface TestProps {
 }
 
 const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
+    const dateFormatter = useDateFormatter({ dateStyle: "full" });
+    const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure();
+    const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange, onClose: onEditClose } = useDisclosure();
     const [testSchedule, setTestSchedule] = React.useState<TestSchedule>(initTestSchedule);
-    const [deleteModalOpen, setDeleteModalOpen] = React.useState<boolean>(false);
-    const [updateModalOpen, setUpdateModalOpen] = React.useState<boolean>(false);
     const [updateInput, setUpdateInput] = React.useState<TestScheduleForm>({
         test_name: testSchedule.test_name,
         test_start: testSchedule.test_start,
@@ -28,10 +30,22 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
         course_plan: testSchedule.course_plan
     });
 
+    const handleStartTimeChange = (value: Time) => {
+        setUpdateInput({ ...updateInput, test_start: value.toString() });
+    }
+
+    const handleEndTimeChange = (value: Time) => {
+        setUpdateInput({ ...updateInput, test_end: value.toString() });
+    }
+
+    const handleDateChange = (value: CalendarDate) => {
+        setUpdateInput({ ...updateInput, test_date: value.toString() });
+    }
+
     const handleDelete = async () => {
         await deleteTestSchedule({ id: testSchedule.id });
         onDelete(testSchedule.id);
-        setDeleteModalOpen(false);
+        onDeleteClose();
     }
 
     const handleUpdate: FormEventHandler<HTMLFormElement> = async (e) => {
@@ -52,85 +66,156 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
         } catch (err) {
             console.error('Error updating custom training:', err);
         }
-        setUpdateModalOpen(false);
+        onEditClose();
     }
 
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
         setUpdateInput({ ...updateInput, [event.target.name]: event.target.value });
     }
 
-    const handleUpdateModal = async () => { setUpdateModalOpen(true) }
-    const handleDeleteModal = async () => { setDeleteModalOpen(true) }
-    const deleteAction = <Button outline onClick={handleDelete} gradientMonochrome="failure">Delete</Button>
     const formatTime = (time: string) => {
         const [hours, minutes] = time.split(':');
         return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
     }
 
+    const handleCloseEditModal = () => {   
+        setUpdateInput({
+            test_name: testSchedule.test_name,
+            test_start: testSchedule.test_start,
+            test_end: testSchedule.test_end,
+            test_date: testSchedule.test_date,
+            course_plan: testSchedule.course_plan
+        });
+        onEditClose();
+    }
+
     return (
         <div>
-            <Card className="w-56 dark:bg-card-bg dark:border-gray-700 transition hover:scale-110 hover:-translate-y-3">
-                <h5 className="font-mono text-2xl font-bold tracking-tight text-gray-900 dark:text-white -mb-3 overflow-scroll h-16">
-                    {testSchedule.test_name}
-                </h5>
-                <p className="font-normal text-gray-700 dark:text-gray-400 -mb-4">
-                    {testSchedule.test_date}
-                </p>
-                <p className="font-normal text-gray-700 dark:text-gray-400">
-                    {formatTime(testSchedule.test_start)} - {formatTime(testSchedule.test_end)}
-                </p>
-                <div className='flex flex-row justify-end'>
-                    <Button className='mr-2' outline size='sm' onClick={handleUpdateModal} gradientDuoTone="purpleToBlue"><RiEditBoxFill size={17} /></Button>
-                    <Button className='' outline size='sm' onClick={handleDeleteModal} gradientMonochrome="failure"><TbTrashFilled size={17} /></Button>
-                </div>
+            <Card className='p-5 w-72 h-60 hover:-translate-y-2 hover:scale-110 transition'>
+                <CardHeader>
+                    <p className='font-bold font-custom text-3xl mr-5 h-20'>
+                        <span>{testSchedule.test_name}</span>
+                    </p>
+                </CardHeader>
+                <CardBody className='px-3 pt-0 -mt-1 pb-3 overflow-hidden'>
+                    <p className='text-gray-500 text-md h-12'>
+                        <span>{dateFormatter.format(parseDate(testSchedule.test_date).toDate(getLocalTimeZone()))}</span>
+                    </p>
+                    <p className='text-gray-500 text-md h-12'>
+                        <span> {formatTime(testSchedule.test_start)} - {formatTime(testSchedule.test_end)} </span>
+                    </p>
+                </CardBody>
+                <CardFooter className='justify-end'>
+                    <Button color='primary' className='border-2 border-gray-500 mr-2' isIconOnly onPress={onEditOpen}>
+                        <RiEditBoxFill size={17} />
+                    </Button>
+                    <Button color='danger' className='border-2 border-gray-500' isIconOnly onPress={onDeleteOpen}>
+                        <TbTrashFilled size={17} />
+                    </Button>
+                </CardFooter>
             </Card>
 
-            <Modal modalOpen={deleteModalOpen} setModalOpen={setDeleteModalOpen} actions={deleteAction}>
-                <h3 className='text-xl font-mono font-medium'>Delete {testSchedule.test_name} #{testSchedule.id}</h3>
+            <Modal
+                isOpen={isDeleteOpen}
+                onOpenChange={onDeleteOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <div>
+                            <ModalHeader className="flex flex-col gap-1">Delete test {testSchedule.test_name}</ModalHeader>
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                handleDelete();
+                            }}>
+                                <ModalBody>
+                                    Are you sure you want to delete this test?
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button variant="faded" onPress={onClose}>
+                                        Close
+                                    </Button>
+                                    <Button color="danger" type='submit'>
+                                        Delete
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+                            <div />
+                        </div>
+                    )}
+                </ModalContent>
             </Modal>
 
-            <Modal modalOpen={updateModalOpen} setModalOpen={setUpdateModalOpen}>
-                <div className='flex flex-col mb-5 font-sans'>
-                    <h3 className='text-xl font-mono font-semibold inline-block'> Update {testSchedule.test_name} #{testSchedule.id} </h3>
-                </div>
-                <form onSubmit={handleUpdate}>
-                    <div className='mb-3 font-sans'>
-                        <label htmlFor="test_name" className='mb-3 text-gray-400 text-sm'>Name</label>
-                        <TextInput name="test_name" value={updateInput.test_name} onChange={handleInputChange} icon={MdDriveFileRenameOutline} type="text" placeholder="Class name" required shadow />
-                    </div>
-                    {/* <div className='mb-3 font-sans'>
-                        <label htmlFor="test_date" className='mb-3 text-gray-400 text-sm'>Day</label>
-                        <Datepicker name='test_date' value={updateInput.test_date.toString()} onChange={handleInputChange} required></Datepicker>
-                    </div> */}
-                    <div className='mb-3 font-sans'>
-                        <label htmlFor="test_date" className='mb-3 text-gray-400 text-sm'>Date</label>
-                        <Datepicker
-                            name='test_date'
-                            value={updateInput.test_date}
-                            onChange={handleInputChange}
-                            onSelectedDateChanged={(date) => {
-                                const formattedDate = date.getFullYear() + '-' +
-                                    ('0' + (date.getMonth() + 1)).slice(-2) + '-' +
-                                    ('0' + date.getDate()).slice(-2);
-                                setUpdateInput({ ...updateInput, test_date: formattedDate });
-                            }}
-                            required
-                        >
-                        </Datepicker>
-                    </div>
-                    <div className='mb-8 font-sans grid grid-cols-2'>
-                        <div className='mr-3'>
-                            <label htmlFor="test_start" className='mb-2 text-gray-400 text-sm'>Start Time</label>
-                            <TextInput name="test_start" value={updateInput.test_start} onChange={handleInputChange} type="time" placeholder="Start time" icon={IoIosTime} required shadow />
-                        </div>
+            <Modal
+                isOpen={isEditOpen}
+                onOpenChange={onEditOpenChange}
+                placement="top-center"
+            >
+                <ModalContent>
+                    {(onClose) => (
                         <div>
-                            <label htmlFor="test_end" className='mb-2 text-gray-400 text-sm'>End Time</label>
-                            <TextInput name="test_end" value={updateInput.test_end} onChange={handleInputChange} type="time" placeholder="End time" icon={IoIosTime} required shadow />
-                        </div>
-                    </div>
+                            <ModalHeader className="flex flex-col gap-1">Add Assignment</ModalHeader>
+                            <form onSubmit={(e) => {
+                                e.preventDefault();
+                                handleUpdate(e);
+                            }}>
+                                <ModalBody>
+                                    <Input
+                                        name='test_name'
+                                        label="Name"
+                                        type='text'
+                                        autoFocus
+                                        variant='bordered'
+                                        onChange={handleInputChange}
+                                        value={updateInput.test_name}
+                                        startContent={<MdDriveFileRenameOutline />}
+                                        required
+                                        isRequired
+                                    />
+                                    <DatePicker
+                                        name='test_date'
+                                        label='Date'
+                                        value={parseDate(updateInput.test_date)}
+                                        onChange={handleDateChange}
+                                        isRequired
+                                        variant='bordered'
+                                        className='w-full'
+                                    >
+                                    </DatePicker>
+                                    <TimeInput
+                                        name='test_start'
+                                        label="Start"
+                                        variant='bordered'
+                                        onChange={handleStartTimeChange}
+                                        value={parseTime(updateInput.test_start)}
+                                        startContent={<IoIosTime />}
+                                        isRequired
+                                    />
+                                    <TimeInput
+                                        name='test_end'
+                                        label="End"
+                                        variant='bordered'
+                                        onChange={handleEndTimeChange}
+                                        value={parseTime(updateInput.test_end)}
+                                        startContent={<IoIosTime />}
+                                        isRequired
+                                    />
 
-                    <Button type='submit' outline gradientDuoTone={'purpleToBlue'} className='w-full transition'>Update Test</Button>
-                </form>
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="danger" variant="flat" onPress={handleCloseEditModal}>
+                                        Close
+                                    </Button>
+                                    <Button color="primary" type='submit'>
+                                        Submit
+                                    </Button>
+                                </ModalFooter>
+                            </form>
+
+                            <div />
+                        </div>
+                    )}
+                </ModalContent>
             </Modal>
 
         </div>

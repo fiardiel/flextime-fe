@@ -10,11 +10,11 @@ interface TestListProps {
     initTestSchedules: TestSchedule[]
 }
 
-const TestList: React.FC<TestListProps> = ({initTestSchedules}) => {
+const TestList: React.FC<TestListProps> = ({ initTestSchedules }) => {
     const [testSchedules, setTestSchedule] = React.useState<TestSchedule[]>(initTestSchedules)
-    
+
     const handleDeleteTestSchedule = (id: number) => {
-        setTestSchedule(prev => prev.filter(testSchedule => testSchedule.id  !== id))
+        setTestSchedule(prev => prev.filter(testSchedule => testSchedule.id !== id))
     }
 
     const handleAddClassSchedule = (newTestSchedule: TestSchedule) => {
@@ -42,12 +42,12 @@ const TestList: React.FC<TestListProps> = ({initTestSchedules}) => {
 
     return (
         <div>
-            <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>
-                <div className='col-span-3'>
-                    <AddTest onAdd={handleAddClassSchedule}></AddTest>
-                </div>    
+            <div className='flex justify-center'>
+                <AddTest onAdd={handleAddClassSchedule}></AddTest>
+            </div>
+            <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 content-center justify-items-start py-10 gap-9'>
                 {testSchedules.map(sched => (
-                    <Test key={sched.id} initTestSchedule={sched} onDelete={handleDeleteTestSchedule}/>
+                    <Test key={sched.id} initTestSchedule={sched} onDelete={handleDeleteTestSchedule} />
                 ))}
             </div>
         </div>

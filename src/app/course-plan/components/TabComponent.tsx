@@ -21,8 +21,8 @@ interface TabComponentProps {
 
 const TabComponent: React.FC<TabComponentProps> = ({ initClassSchedules, initTestSchedules, initAssignments }) => {
   return (
-    <div className="font-sans">
-      <div className="flex w-full flex-col items-center">
+    <div className="font-sans px-10">
+      <div className="flex w-full flex-col items-center px-10">
         <Tabs aria-label="Options" color="primary" variant="bordered">
           <Tab
             key="class"
@@ -58,7 +58,11 @@ const TabComponent: React.FC<TabComponentProps> = ({ initClassSchedules, initTes
                 <span>Test</span>
               </div>
             }
-          />
+          >
+            <div>
+              <TestList initTestSchedules={initTestSchedules} />
+            </div>
+          </Tab>
         </Tabs>
       </div>
     </div>

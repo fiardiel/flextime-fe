@@ -44,7 +44,7 @@ const AssignmentList: React.FC<AssignmentListProps> = ({initAssignmentDeadlines}
             <div className='flex justify-center'>
                 <AddAssignment onAdd={handleAddAssignmentDeadline}></AddAssignment>
             </div>
-            <div className='grid grid-cols-3 content-center justify-items-start p-10 gap-9'>   
+            <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 content-center justify-items-start py-10 gap-9'>   
                 {assignmentDeadlines.map(sched => (
                     <AssignmentDeadline key={sched.id} initAssignmentDeadline={sched} onDelete={handleDeleteAssignmentDeadline}/>
                 ))}
