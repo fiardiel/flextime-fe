@@ -35,6 +35,11 @@ const Navbar = () => {
                             Home
                         </Link>
                     </NextNavbarItem>
+                    <NextNavbarItem isActive={isActive("/activity-plan")}>
+                        <Link color={isActive("/activity-plan") ? "secondary" : "foreground"} href="/activity-plan">
+                            Activity Plan
+                        </Link>
+                    </NextNavbarItem>
                     <NextNavbarItem isActive={isActive("/fitness-plan") || isActive("/session-plan") || isActive("/session-training")}>
                         <Link href="/fitness-plan" color={isActive("/fitness-plan") || isActive("/session-plan") || isActive("/session-training") ? "secondary" : "foreground"} >
                             Fitness Plan
@@ -43,11 +48,6 @@ const Navbar = () => {
                     <NextNavbarItem isActive={isActive("/course-plan")}>
                         <Link color={isActive("/course-plan") ? "secondary" : "foreground"} href="/course-plan">
                             Course Plan
-                        </Link>
-                    </NextNavbarItem>
-                    <NextNavbarItem isActive={isActive("/activity-plan")}>
-                        <Link color={isActive("/activity-plan") ? "secondary" : "foreground"} href="/activity-plan">
-                            Activity Plan
                         </Link>
                     </NextNavbarItem>
                 </NextNavbarContent>
