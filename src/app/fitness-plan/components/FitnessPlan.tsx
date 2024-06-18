@@ -82,7 +82,7 @@ const FitnessPlan: React.FC<FitnessPlanProps> = ({ initFitnessPlan }) => {
                             <p className='font-medium text-gray-500 text-lg'>Flex up with FlexTime!</p>
                         </CardBody>
                         <CardFooter className='justify-end'>
-                            <Link href={`/session-plan/${fitnessPlan.id}`}>
+                            <Link href={`/fitness-plan/${fitnessPlan.id}/session-plan`}>
                                 <Button color="primary" variant='ghost' className='text-white'>Session Plans</Button>
                             </Link>
                         </CardFooter>

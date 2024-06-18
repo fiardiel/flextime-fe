@@ -2,10 +2,12 @@
 
 import React from 'react'
 import { FaPlus } from 'react-icons/fa'
-import { addSessionPlan } from '../../../../../apis/fitness_plan_apis';
+
 import { useParams, useRouter } from 'next/navigation';
-import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan';
+
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure } from "@nextui-org/react";
+import { ISessionPlan } from '../../../../../../types/fitness_plan/SessionPlan';
+import { addSessionPlan } from '../../../../../../apis/fitness_plan_apis';
 
 interface AddSessionProps {
     onAdd: (newSessionPlan: ISessionPlan) => void;
