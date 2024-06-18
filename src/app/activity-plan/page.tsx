@@ -1,11 +1,12 @@
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date'
 import { Button } from '@nextui-org/button'
 import React from 'react'
-import { IoIosAdd } from 'react-icons/io'
 import { Card, CardBody } from '@nextui-org/react'
 import { getDayName, normalizeData, NormalizedSchedule, sortedSchedules } from './utils/Utils'
 import { getSchedules } from '../../../apis/activity_plan_apis'
 import { ActivityPlan } from '../../../types/activity_plan/ActivityPlan'
+import { IoEye } from 'react-icons/io5'
+import { FaCalendarCheck } from 'react-icons/fa'
 
 const months = [
     { value: 1, label: 'January' },
@@ -50,19 +51,26 @@ const page = async () => {
         const dateStr = date.toString()
         const activityPlan: ActivityPlan = await getSchedules(activityPlanId, dateStr)
         return sortedSchedules(normalizeData(activityPlan))
-    }   
+    }  
+
+    const formatTime = (time: string) => {
+        const [hours, minutes] = time.split(':');
+        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+    }
 
     return (
         <div className='flex flex-col m-10'>
-            <div className='flex flex-row mb-8 ml-5'>
-                <h3 className='font-custom text-3xl font-bold mr-4'>
+            <div className='flex flex-row mb-8 ml-6 justify-between md:justify-normal mr-6'>
+                <h3 className='font-custom text-4xl md:mr-6 font-bold'>
                     {todayMonth}
                 </h3>
-                <Button className='self-start' radius='full' color='primary' variant='flat' endContent={<IoIosAdd />}> Add Session </Button>
+                <Button className='self-end' color='primary' variant='ghost' size='md' endContent={<FaCalendarCheck size={12} />}>
+                    Schedule Sessions
+                </Button>
             </div>
-            <div className='flex flex-wrap ml-5'>
+            <div className='flex flex-wrap ml-6'>
                 {weekDates.map(async day => (
-                    <div className='flex flex-row w-full md:max-w-48 mr-7' key={day.toString()}>
+                    <div className='flex flex-row w-full md:max-w-48 mr-6' key={day.toString()}>
                         <div className='flex flex-col w-full mb-8 md:max-w-48'>
                             <div className="relative flex justify-between font-sans font-bold text-xl pb-2">
                                 <span className={`text-white text-2xl self-end font-extrabold ${today(getLocalTimeZone()).toString() === day.toString() ? 'opactiy-100' : 'opacity-30'}`}> {getDayName(day)} </span>
@@ -73,7 +81,7 @@ const page = async () => {
                                 <Card className='mt-3 w-full p-1' key={sched.id}>
                                     <CardBody>
                                         <p className='text-lg font-extrabold mb-3'> {sched.type} </p>
-                                        <p className='font-normal text-sm font-sans'> {sched.type === 'Deadline' ? 'Due ' : ''} {sched.start} {`${sched.end === '' ? '' : ' - ' + sched.end }`}</p>
+                                        <p className='font-normal text-sm font-sans'> {sched.type === 'Deadline' ? 'Due ' : ''} {formatTime(sched.start)} {`${sched.end === '' ? '' : ' - ' + formatTime(sched.end) }`}</p>
                                         <p className='font-normal text-sm font-sans max-h-5 whitespace-nowrap overflow-hidden overflow-ellipsis'> {sched.name} </p>
                                     </CardBody>
                                 </Card>

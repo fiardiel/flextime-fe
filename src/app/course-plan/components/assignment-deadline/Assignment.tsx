@@ -96,7 +96,7 @@ const AssignmentDeadline: React.FC<AssignmentProps> = ({ initAssignmentDeadline,
                         <span>{dateFormatter.format(parseDate(assignmentDeadline.assignment_due_date).toDate(getLocalTimeZone()))}</span>
                     </p>
                     <p className='text-gray-500 text-md h-12'>
-                        <span>{formatTime(assignmentDeadline.assignment_due_time.toString())}</span>
+                        <span>Due {formatTime(assignmentDeadline.assignment_due_time.toString())}</span>
                     </p>
                 </CardBody>
                 <CardFooter className='justify-end'>
