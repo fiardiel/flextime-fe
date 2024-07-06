@@ -6,12 +6,13 @@ import { getSessionPlanByFitnessPlan } from '../../../../../apis/fitness_plan_ap
 
 const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: number } }) => {
     try {
-        const sessionPlans: ISessionPlan[] =  await getSessionPlanByFitnessPlan({ fitnessPlanId: params.fitnessPlanId });
+        const sessionPlans: ISessionPlan[] = await getSessionPlanByFitnessPlan({ fitnessPlanId: params.fitnessPlanId });
 
         return (
-            <div className='flex flex-col h-full w-full'>
-                <div className='self-center font-sans'>
-                    <SessionPlanList initSessionPlans={sessionPlans}/>
+            <div className='flex flex-col h-full m-10 p-6'>
+                <div className='font-sans'>
+                    <h3 className='text-4xl font-bold font-custom col-span-3 text-start mt-4'>your session plans:</h3>
+                    <SessionPlanList initSessionPlans={sessionPlans} />
                 </div>
             </div>
         );

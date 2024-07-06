@@ -19,8 +19,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full dark">
       <body className={`${inter.className} h-full`}>
-        <Navbar />
-        <Providers> 
+        <Providers>
+          <Navbar />
           {children}
         </Providers>
       </body>

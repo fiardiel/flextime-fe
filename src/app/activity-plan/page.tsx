@@ -1,11 +1,10 @@
 import { CalendarDate, getLocalTimeZone, today } from '@internationalized/date'
 import { Button } from '@nextui-org/button'
 import React from 'react'
-import { Card, CardBody } from '@nextui-org/react'
+import { Card, CardBody, Link } from '@nextui-org/react'
 import { getDayName, normalizeData, NormalizedSchedule, sortedSchedules } from './utils/Utils'
 import { getSchedules } from '../../../apis/activity_plan_apis'
 import { ActivityPlan } from '../../../types/activity_plan/ActivityPlan'
-import { IoEye } from 'react-icons/io5'
 import { FaCalendarCheck } from 'react-icons/fa'
 
 const months = [
@@ -24,6 +23,9 @@ const months = [
 ]
 
 const page = async () => {
+    // TODO: Change this later
+    const activityPlanId = 1
+
     const thisDay = today(getLocalTimeZone())
     const todayMonth = months.find(month => month.value === thisDay.month)?.label
 
@@ -64,7 +66,7 @@ const page = async () => {
                 <h3 className='font-custom text-4xl md:mr-6 font-bold'>
                     {todayMonth}
                 </h3>
-                <Button className='self-end' color='primary' variant='ghost' size='md' endContent={<FaCalendarCheck size={12} />}>
+                <Button className='self-end' color='primary' variant='ghost' size='md' as={Link} href={`activity-plan/${activityPlanId}/view-sessions`} endContent={<FaCalendarCheck size={12} />}>
                     Schedule Sessions
                 </Button>
             </div>

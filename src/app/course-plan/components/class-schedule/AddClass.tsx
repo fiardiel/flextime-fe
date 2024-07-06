@@ -1,6 +1,6 @@
 'use client'
 
-import React, { FormEventHandler } from 'react'
+import React, { FormEventHandler, useState } from 'react'
 import { ClassScheduleForm, IClassSchedule } from '../../../../../types/course_plan/ClassSchedule'
 import { addClassSchedule } from '../../../../../apis/class_schedule_apis'
 import { IoIosTime } from 'react-icons/io'
@@ -27,6 +27,7 @@ const DAYS_OF_WEEK = [
 ];
 
 const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
+    const [error, setError] = useState<Error | null>(null);
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [addInput, setAddInput] = React.useState<ClassScheduleForm>({
         class_name: '',
@@ -62,13 +63,14 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
             const createdClassSchedule = await addClassSchedule({ classSchedule: newClassSchedule });
             onAdd(createdClassSchedule);
             console.log('Class Schedule added successfully with ID:', createdClassSchedule.id);
+            onClose();
         } catch (err) {
-            console.error('Error creating class schedule:', err);
+            setError(err as Error);
         }
-        onClose()
     }
 
     const handleCloseModal = () => {
+        setError(null);
         onClose();
         setAddInput({
             class_name: '',
@@ -88,6 +90,7 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 placement="top-center"
+                onClose={handleCloseModal}
             >
                 <ModalContent>
                     {(onClose) => (
@@ -138,9 +141,14 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                                         value={parseTime(addInput.end_time)}
                                         startContent={<IoIosTime />}
                                     />
+                                    {error ? (
+                                        <p className='text-danger'> {error.message} </p>
+                                    ) :
+                                        null
+                                    }
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" variant="flat" onPress={handleCloseModal}>
+                                    <Button color="danger" variant="flat" onPress={onClose}>
                                         Close
                                     </Button>
                                     <Button color="primary" type='submit'>
@@ -148,8 +156,6 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                                     </Button>
                                 </ModalFooter>
                             </form>
-
-                            <div />
                         </div>
                     )}
                 </ModalContent>
