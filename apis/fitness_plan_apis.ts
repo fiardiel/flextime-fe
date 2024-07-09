@@ -66,7 +66,7 @@ export const getSessionTrainingsBySessionPlan = async ({ sessionPlanId }: { sess
     return data.results;
 }
 
-export const getSessionPlanById = async ({ id }: { id: string }): Promise<ISessionPlan> => {
+export const getSessionPlanById = async ({ id }: { id: number }): Promise<ISessionPlan> => {
     const res = await fetch(`${baseUrl}/session-plan/${id}/`);
     const data = await res.json();
     return data;
