@@ -4,7 +4,7 @@ import FitnessPlan from './components/FitnessPlan';
 
 const FitnessPlanPage = async () => {
   try {
-    const fitnessPlan = await getFitnessPlanById({ id: 6 });
+    const fitnessPlan = await getFitnessPlanById({ id: 1 });
     console.log("fitnessplan:", fitnessPlan)
     return (
       <div className='min-h-screen flex flex-col items-center justify-center -translate-y-20'>

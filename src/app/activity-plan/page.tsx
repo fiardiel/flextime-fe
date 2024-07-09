@@ -45,21 +45,22 @@ const page = async () => {
         }
         return weekDates
     }
-
+    
     const weekDates = getWeekDates(thisDay)
 
     const getDailyActivityPlan = async (date: CalendarDate): Promise<NormalizedSchedule[]> => { 
         const activityPlanId = 1
         const dateStr = date.toString()
+        console.log('dateStr', dateStr)
         const activityPlan: ActivityPlan = await getSchedules(activityPlanId, dateStr)
-        return sortedSchedules(normalizeData(activityPlan))
+        return sortedSchedules(await normalizeData(activityPlan))
     }  
 
     const formatTime = (time: string) => {
         const [hours, minutes] = time.split(':');
         return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
     }
-
+    
     return (
         <div className='flex flex-col m-10'>
             <div className='flex flex-row mb-8 ml-6 justify-between md:justify-normal mr-6'>

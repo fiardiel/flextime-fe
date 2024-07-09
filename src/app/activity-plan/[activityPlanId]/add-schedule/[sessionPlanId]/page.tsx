@@ -1,15 +1,16 @@
 'use client'
 
-import { Button, Input, TimeInput } from '@nextui-org/react'
+import { Button, TimeInput } from '@nextui-org/react'
 import { Select, SelectItem } from '@nextui-org/select'
-import React, { FormEventHandler, useEffect } from 'react'
+import React, { FormEventHandler, useEffect, useState } from 'react'
 import { BsCalendar2Fill } from 'react-icons/bs'
 import { IoIosTime } from 'react-icons/io'
 import { ISessionPlan } from '../../../../../../types/fitness_plan/SessionPlan'
-import { redirect, useParams } from 'next/navigation'
+import { useRouter, useParams } from 'next/navigation'
 import { getSessionPlanById } from '../../../../../../apis/fitness_plan_apis'
 import { parseTime, Time } from '@internationalized/date'
 import { addSessionSchedule } from '../../../../../../apis/activity_plan_apis'
+import { SessionScheduleForm } from '../../../../../../types/activity_plan/SessionSchedule'
 
 const DAYS_OF_WEEK = [
     { value: 'MON', label: 'Monday' },
@@ -23,6 +24,8 @@ const DAYS_OF_WEEK = [
 
 
 const page = () => {
+    const router = useRouter()
+    const [error, setError] = useState<Error | null>(null)
     const { sessionPlanId, activityPlanId } = useParams()
     const [sessionPlan, setSessionPlan] = React.useState<ISessionPlan | null>(null);
     const [startTime, setStartTime] = React.useState<string>('10:00');
@@ -48,17 +51,22 @@ const page = () => {
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault()
-        addSessionSchedule(
-            {   
-                session_plan: sessionPlan! ,
-                start_time: startTime,
-                end_time: endTime,
-                activity_plan: Number(activityPlanId),
-                day: day
-            }
-        )
-        console.log('Session Schedule added')
-        redirect(`/activity-plan/${activityPlanId}`)
+
+        const form: SessionScheduleForm = {
+            session_plan: sessionPlan?.id!,
+            start_time: startTime,
+            end_time: endTime,
+            activity_plan: Number(activityPlanId),
+            day: day
+        }
+
+        try {
+            const sessionSchedule = await addSessionSchedule(form)
+            console.log("Session Schedule: ", sessionSchedule, " added successfully")
+            router.push(`/activity-plan/${activityPlanId}/view-sessions`)
+        } catch (error) {
+            setError(error as Error)
+        }
     }
 
     return (
@@ -99,6 +107,11 @@ const page = () => {
                                 <SelectItem key={day.value} value={day.value}>{day.label}</SelectItem>
                             ))}
                         </Select>
+                        {error ? (
+                            <p className='text-danger'> {error.message} </p>
+                        ) :
+                            null
+                        }
                     </div>
                     <Button color="primary" variant='flat' type='submit' className='mt-10 w-full'>Submit</Button>
                 </form>

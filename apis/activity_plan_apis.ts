@@ -6,7 +6,7 @@ const baseUrl = "http://127.0.0.1:8000"
 
 export const getSchedules = async (activityPlanId: number, dateStr: string): Promise<ActivityPlan> => {
     const formattedDate = dateStr.split('T')[0].replace(/-/g, '')
-    const url = `${baseUrl}/activity-plan/${activityPlanId}/get_schedules/?date=${formattedDate}&format=json`
+    const url = `${baseUrl}/activity-plan/${activityPlanId}/get_schedules/?date=${formattedDate}`
     const response = await fetch(`${url}`)
     return response.json()
 }
@@ -35,7 +35,12 @@ export const addSessionSchedule = async (sessionSchedule: SessionScheduleForm): 
         },
         body: JSON.stringify(sessionSchedule)
     })
-    return response.json()
+    const data = await response.json()
+    if (!response.ok) {
+        console.log(response.status, data.message, "ERROR")
+        throw new Error(data.message)
+    }
+    return data
 }
 
 export const getSessionScheduleById = async (sessionScheduleId: number): Promise<SessionSchedule> => {
@@ -51,5 +56,10 @@ export const updateSessionSchedule = async (sessionScheduleId: number, sessionSc
         },
         body: JSON.stringify(sessionSchedule)
     })
-    return response.json()
+
+    const data = await response.json()
+    if (!response.ok) {
+        throw new Error(data.message)
+    }
+    return data
 }

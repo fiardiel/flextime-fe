@@ -4,7 +4,7 @@ import Trainings from './components/Trainings';
 
 const SessionTrainingPage = async ({ params }: { params: { sessionPlanId: string } }) => {
     const sessionTrainings = await getSessionTrainingsBySessionPlan({ sessionPlanId: parseInt(params.sessionPlanId) });
-    const sessionPlan = await getSessionPlanById({ id: params.sessionPlanId });
+    const sessionPlan = await getSessionPlanById({ id: Number(params.sessionPlanId) });
     const availableTrainings = await getTrainingsByTrainingType({ trainingType: sessionPlan.training_type });
 
     return (
