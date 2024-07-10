@@ -7,6 +7,7 @@ import { getActivityPlanById, getAvailableSessionPlans, getSessionSchedulesByAct
 import { redirect } from 'next/navigation'
 import { SessionSchedule } from '../../../../../types/activity_plan/SessionSchedule'
 import { MdAdd, MdModeEdit } from 'react-icons/md'
+import DeleteSchedule from './DeleteSchedule'
 
 const page = async ({ params }: { params: { activityPlanId: number } }) => {
   console.log("Activity Plan Id: ", params.activityPlanId)
@@ -65,12 +66,13 @@ const page = async ({ params }: { params: { activityPlanId: number } }) => {
                 </p>
               </CardBody>
               <CardFooter className='justify-end gap-2'>
-                <Link href={``}>
+                <Link href={`/session-training/${sched.session_plan}`}>
                   <Button className='border-2 border-gray-500' color='primary' isIconOnly> <PiBarbellFill size={20} /> </Button>
                 </Link>
                 <Link href={`/activity-plan/${activityPlan.id}/edit-schedule/${sched.id}`}>
                   <Button className='border-2 border-gray-500' color='primary' isIconOnly> <MdModeEdit size={20} /> </Button>
                 </Link>
+                <DeleteSchedule sessionScheduleId={sched.id}></DeleteSchedule>
               </CardFooter>
             </Card>
           )})}

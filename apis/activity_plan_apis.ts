@@ -63,3 +63,7 @@ export const updateSessionSchedule = async (sessionScheduleId: number, sessionSc
     }
     return data
 }
+
+export const deleteSessionSchedule = async (sessionScheduleId: number) => {
+    await fetch (`${baseUrl}/session-schedule/${sessionScheduleId}/`, {method: 'DELETE'})
+}
