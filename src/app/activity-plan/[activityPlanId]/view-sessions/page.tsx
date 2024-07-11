@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation'
 import { SessionSchedule } from '../../../../../types/activity_plan/SessionSchedule'
 import { MdAdd, MdModeEdit } from 'react-icons/md'
 import DeleteSchedule from './DeleteSchedule'
+import BackButton from '@/app/components/BackButton'
 
 const page = async ({ params }: { params: { activityPlanId: number } }) => {
   console.log("Activity Plan Id: ", params.activityPlanId)
@@ -50,32 +51,36 @@ const page = async ({ params }: { params: { activityPlanId: number } }) => {
 
     return (
       <div className='mx-16 my-10 flex flex-col'>
+        <div className='z-48 mb-6 -ml-2'>
+          <BackButton />
+        </div>
         <h1 className='text-2xl font-sans font-semibold mb-5'>Scheduled Sessions</h1>
         <div className='flex flex-row gap-8 flex-wrap mb-16'>
           {sessionSchedules.map(async sched => {
             const sessionPlan = getSessionPlan(sched.session_plan)
             return (
-            <Card key={sched.id} className='p-5 w-72 h-52 hover:-translate-y-2 hover:scale-110 transition'>
-              <CardHeader>
-                <h1 className='font-bold font-custom text-3xl mr-5'> { (await sessionPlan).training_type } </h1>
-              </CardHeader>
-              <CardBody className='py-0'>
-                <p>
-                  <span className='text-blue-800 text-xs px-2 py-1 bg-blue-300 text-center rounded-lg self-start font-semibold mb-2 mr-2'>{sched.day}</span>
-                  <span className='text-gray-400 text-sm'> {sched.start_time.substring(0, 5)} - {sched.end_time.substring(0, 5)} </span>
-                </p>
-              </CardBody>
-              <CardFooter className='justify-end gap-2'>
-                <Link href={`/session-training/${sched.session_plan}`}>
-                  <Button className='border-2 border-gray-500' color='primary' isIconOnly> <PiBarbellFill size={20} /> </Button>
-                </Link>
-                <Link href={`/activity-plan/${activityPlan.id}/edit-schedule/${sched.id}`}>
-                  <Button className='border-2 border-gray-500' color='primary' isIconOnly> <MdModeEdit size={20} /> </Button>
-                </Link>
-                <DeleteSchedule sessionScheduleId={sched.id}></DeleteSchedule>
-              </CardFooter>
-            </Card>
-          )})}
+              <Card key={sched.id} className='p-5 w-72 h-52 hover:-translate-y-2 hover:scale-110 transition'>
+                <CardHeader>
+                  <h1 className='font-bold font-custom text-3xl mr-5'> {(await sessionPlan).training_type} </h1>
+                </CardHeader>
+                <CardBody className='py-0'>
+                  <p>
+                    <span className='text-blue-800 text-xs px-2 py-1 bg-blue-300 text-center rounded-lg self-start font-semibold mb-2 mr-2'>{sched.day}</span>
+                    <span className='text-gray-400 text-sm'> {sched.start_time.substring(0, 5)} - {sched.end_time.substring(0, 5)} </span>
+                  </p>
+                </CardBody>
+                <CardFooter className='justify-end gap-2'>
+                  <Link href={`/session-training/${sched.session_plan}`}>
+                    <Button className='bg-transparent fill-white' variant='light' color='primary' isIconOnly> <PiBarbellFill size={20} color='white' /> </Button>
+                  </Link>
+                  <Link href={`/activity-plan/${activityPlan.id}/edit-schedule/${sched.id}`}>
+                    <Button className='bg-transparent fill-white' variant='light' color='primary' isIconOnly> <MdModeEdit size={20} color='white' /> </Button>
+                  </Link>
+                  <DeleteSchedule sessionScheduleId={sched.id}></DeleteSchedule>
+                </CardFooter>
+              </Card>
+            )
+          })}
         </div>
         <h1 className='text-2xl font-sans font-semibold mb-5'>Available Session Plans</h1>
         <div className='flex flex-row gap-8 flex-wrap'>
@@ -90,10 +95,10 @@ const page = async ({ params }: { params: { activityPlanId: number } }) => {
               </CardBody>
               <CardFooter className='justify-end'>
                 <Link href={`/session-training/${plan.id}`} className='mr-2'>
-                  <Button className='border-2 border-gray-500' color='primary' isIconOnly> <PiBarbellFill size={20} /> </Button>
+                  <Button className='bg-transparent' color='primary' isIconOnly variant='light'> <PiBarbellFill size={20} color='white'/> </Button>
                 </Link>
-                <Link href={`/activity-plan/${activityPlan.id}/add-schedule/${plan.id}`} className='mr-2'>
-                  <Button className='border-2 border-gray-500' color='primary' isIconOnly> <MdAdd size={20} /> </Button>
+                <Link href={`/activity-plan/${activityPlan.id}/add-schedule/${plan.id}`}>
+                  <Button radius='lg' color='primary' variant='flat' isIconOnly> <MdAdd size={20} /> </Button>
                 </Link>
               </CardFooter>
             </Card>

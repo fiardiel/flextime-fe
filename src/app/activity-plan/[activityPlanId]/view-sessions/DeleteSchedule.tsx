@@ -25,7 +25,7 @@ const DeleteSchedule:React.FC<DeleteScheduleProps> = ( {sessionScheduleId} ) => 
 
     return (
         <div>
-            <Button className='border-2 border-gray-500' color='danger' isIconOnly onPress={onDeleteOpen}> <MdDelete size={20} /> </Button>
+            <Button color='danger' variant='light' isIconOnly onPress={onDeleteOpen}> <MdDelete size={20} /> </Button>
             <Modal
                 isOpen={isDeleteOpen}
                 onOpenChange={onDeleteOpenChange}
