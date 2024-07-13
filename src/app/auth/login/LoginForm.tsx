@@ -1,0 +1,63 @@
+'use client'
+
+import { Button, Input } from '@nextui-org/react'
+import React from 'react'
+import { FaEye, FaEyeSlash, FaLock, FaUser } from 'react-icons/fa'
+import { login } from '../../../apis/user_apis'
+import { useRouter } from 'next/navigation'
+import Cookies from 'js-cookie'
+
+const LoginForm = () => {
+    const router = useRouter()
+    const [isVisible, setIsVisible] = React.useState(false)
+    const toggleVisibility = () => setIsVisible(!isVisible)
+
+    const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const fd = new FormData(e.currentTarget)
+        const { username, password } = Object.fromEntries(fd)
+        const token = await login({loginForm: {username: username as string, password: password as string}})
+        Cookies.set('userToken', token)
+        router.push('/')
+        console.log(token)
+    }
+
+    return (
+        <div>
+            <form className='gap-6' onSubmit={submitHandler}>
+                <Input
+                    name='username'
+                    type='text'
+                    autoFocus
+                    label="Username"
+                    labelPlacement='outside'
+                    startContent={<FaUser size={12}/>}
+                    className='mb-12'
+                    size='lg'
+                    required
+                />
+                <Input
+                    name='password'
+                    type={isVisible ? 'text' : 'password'}
+                    autoFocus
+                    label="Password"
+                    labelPlacement='outside'
+                    startContent={<FaLock size={13}/>}
+                    endContent={
+                        <Button radius='full' size='sm' type='button' isIconOnly className='bg-transparent' color='default' onPress={toggleVisibility}>
+                            {isVisible ? (<FaEye size={15}></FaEye>) : (<FaEyeSlash size={15}></FaEyeSlash>)}
+                        </Button>
+                    }
+                    className='mb-12'
+                    size='lg'
+                    required
+                />
+                <Button color='primary' fullWidth type='submit'>
+                    Login
+                </Button>
+            </form>
+        </div>
+    )
+}
+
+export default LoginForm

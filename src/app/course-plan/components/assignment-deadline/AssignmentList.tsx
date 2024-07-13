@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { IAssignmentDeadline } from '../../../../../types/course_plan/AssignmentDeadline'
+import { IAssignmentDeadline } from '../../../../types/course_plan/AssignmentDeadline'
 import AddAssignment from './AddAssignment'
 import AssignmentDeadline from './Assignment'
 

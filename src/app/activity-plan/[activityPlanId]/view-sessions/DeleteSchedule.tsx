@@ -4,7 +4,7 @@ import { Button } from '@nextui-org/button'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal';
 import React from 'react'
 import { MdDelete, MdModeEdit } from 'react-icons/md'
-import { deleteSessionSchedule } from '../../../../../apis/activity_plan_apis';
+import { deleteSessionSchedule } from '../../../../apis/activity_plan_apis';
 
 interface DeleteScheduleProps {
     sessionScheduleId: number;

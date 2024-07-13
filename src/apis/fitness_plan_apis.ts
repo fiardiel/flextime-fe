@@ -3,6 +3,7 @@ import { FitnessPlanForm, IFitnessPlan } from '../types/fitness_plan/FitnessPlan
 import { Duration, ISessionPlan, SessionPlanForm } from '../types/fitness_plan/SessionPlan';
 import { ISessionTraining, SessionTrainingForm } from '../types/fitness_plan/SessionTraining';
 import { ITraining } from '../types/fitness_plan/Training';
+import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 const baseUrl = 'http://127.0.0.1:8000'
 
@@ -12,11 +13,12 @@ export const getAllFitnessPlans = async (): Promise<IFitnessPlan[]> => {
     return data.results
 }
 
-export const addFitnessPlan = async (fitnessPlan: FitnessPlanForm): Promise<IFitnessPlan> => {
+export const addFitnessPlan = async (fitnessPlan: FitnessPlanForm, token: string): Promise<IFitnessPlan> => {
     const res = await fetch(`${baseUrl}/fitness-plan/`, {
         method: 'POST',
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify(fitnessPlan)
     })
@@ -24,17 +26,27 @@ export const addFitnessPlan = async (fitnessPlan: FitnessPlanForm): Promise<IFit
     return newFitnessPlan
 }
 
-export const getFitnessPlanById = async ({ id }: { id: number }): Promise<any> => {
-    const res = await fetch(`${baseUrl}/fitness-plan/${id}/`)
+export const getFitnessPlanByUser = async (token: RequestCookie | undefined): Promise<IFitnessPlan> => {
+    const res = await fetch(`${baseUrl}/fitness-plan/get_fitness_plan_by_user`, { 
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token?.value}`
+        }
+    })
+    if (!res.ok) {
+        throw new Error('Fitness Plan not found')
+    }
     const data = await res.json()
     return data
 }
 
-export const updateFitnessPlanById = async ({ id, fitnessPlan }: { id: number, fitnessPlan: FitnessPlanForm }): Promise<IFitnessPlan> => {
+export const updateFitnessPlanById = async ({ id, fitnessPlan, token }: { id: number, fitnessPlan: FitnessPlanForm, token: string | undefined}): Promise<IFitnessPlan> => {
     const res = await fetch(`${baseUrl}/fitness-plan/${id}/`, {
         method: 'PUT',
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify(fitnessPlan)
     })
@@ -43,8 +55,14 @@ export const updateFitnessPlanById = async ({ id, fitnessPlan }: { id: number, f
 }
 
 export const getSessionPlanByFitnessPlan = async ( {fitnessPlanId}: { fitnessPlanId: number } ): Promise<ISessionPlan[]> => {
-    const res = await fetch(`${baseUrl}/session-plan/?fitness_plan=${fitnessPlanId}`, { next: { tags: ['sessionPlans'] } })
-    const data =  await res.json()
+    const res = await fetch(`${baseUrl}/session-plan/?fitness_plan=${fitnessPlanId}`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json'
+        }
+    } )
+    const data = await res.json()
+    console.log("data: ", data)
     return data.results
 }
 

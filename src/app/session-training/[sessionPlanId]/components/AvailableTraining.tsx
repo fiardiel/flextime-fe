@@ -1,14 +1,14 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import { ITraining } from '../../../../../types/fitness_plan/Training';
+import { ITraining } from '../../../../types/fitness_plan/Training';
 import React, { FormEventHandler } from 'react';
 import { HiPlus } from 'react-icons/hi';
 import { MdOutlineTimer } from 'react-icons/md';
-import { addCustomization, addSessionTraining } from '../../../../../apis/fitness_plan_apis';
+import { addCustomization, addSessionTraining } from '../../../../apis/fitness_plan_apis';
 import { FaListUl } from 'react-icons/fa';
 import { RiLoopLeftFill } from 'react-icons/ri';
-import { ISessionTraining } from '../../../../../types/fitness_plan/SessionTraining';
+import { ISessionTraining } from '../../../../types/fitness_plan/SessionTraining';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link, Textarea } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 

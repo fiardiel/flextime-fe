@@ -1,36 +1,29 @@
 'use client'
 
 import React, { FormEventHandler } from 'react'
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link, Textarea } from "@nextui-org/react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import { IoIosAdd } from 'react-icons/io';
-import { FitnessPlanForm, IFitnessPlan } from '../../../../types/fitness_plan/FitnessPlan';
-import { addFitnessPlan } from '../../../../apis/fitness_plan_apis';
+import { FitnessPlanForm, IFitnessPlan } from '../../../types/fitness_plan/FitnessPlan';
+import { addFitnessPlan } from '../../../apis/fitness_plan_apis';
+import Cookies from 'js-cookie'
+import { getUser } from '../../../apis/user_apis';
 
-interface AddFitnessPlanProps {
-    onAdd: (fitnessPlan: IFitnessPlan) => void
-}
 
-const AddFitnessPlan: React.FC<AddFitnessPlanProps> = ({ onAdd }) => {
+const AddFitnessPlan = () => {
+    const token = Cookies.get('userToken') ?? '';
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
-    const [addInput, setAddInput] = React.useState<FitnessPlanForm>({
-        title: '',
-        user: '1',
-    });
-    const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
-        setAddInput({ ...addInput, [event.target.name]: event.target.value });
-    }
+    const [addInput, setAddInput] = React.useState<string>('')
 
     const handleAdd: FormEventHandler = async (e) => {
         e.preventDefault();
 
         const newFitnessPlan: FitnessPlanForm = {
-            title: addInput.title,
-            user: addInput.user,
+            title: addInput,
+            user: await getUser(token)
         };
 
         try {
-            const createdFitnessPlan = await addFitnessPlan(newFitnessPlan);
-            onAdd(createdFitnessPlan);
+            const createdFitnessPlan = await addFitnessPlan(newFitnessPlan, token);
             console.log('Fitness Plan added successfully with ID:', createdFitnessPlan.id);
         } catch (err) {
             console.error('Error creating fitness plan:', err);
@@ -41,7 +34,7 @@ const AddFitnessPlan: React.FC<AddFitnessPlanProps> = ({ onAdd }) => {
     return (
         <div>
             <h3 className='text-5xl font-bold font-custom mb-5 w-full'>Want to flex up with FlexTime?</h3>
-            <Button onPress={onOpen} color="secondary" variant='flat' endContent={<IoIosAdd size={20} />}>Add Fitness Plan</Button>
+            <Button onPress={onOpen} color="secondary" variant='ghost' endContent={<IoIosAdd size={20} />}>Add Fitness Plan</Button>
             <Modal
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
@@ -61,8 +54,8 @@ const AddFitnessPlan: React.FC<AddFitnessPlanProps> = ({ onAdd }) => {
                                         autoFocus
                                         label="Fitness Plan Name"
                                         variant='bordered'
-                                        onChange={handleInputChange}
-                                        value={addInput.title}
+                                        onChange={(e) => setAddInput(e.target.value)}
+                                        value={addInput}
                                     />
                                 </ModalBody>
                                 <ModalFooter>

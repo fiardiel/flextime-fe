@@ -1,5 +1,5 @@
 import React from 'react'
-import { getSessionPlanById, getSessionTrainingsBySessionPlan, getTrainingsByTrainingType } from '../../../../apis/fitness_plan_apis';
+import { getSessionPlanById, getSessionTrainingsBySessionPlan, getTrainingsByTrainingType } from '../../../apis/fitness_plan_apis';
 import Trainings from './components/Trainings';
 import BackButton from '@/app/components/BackButton';
 

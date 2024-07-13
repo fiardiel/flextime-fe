@@ -1,9 +1,9 @@
 'use client'
 
 import React, { useState } from 'react'
-import { SessionSchedule } from '../../../../../../types/activity_plan/SessionSchedule'
-import { ISessionPlan } from '../../../../../../types/fitness_plan/SessionPlan'
-import { updateSessionSchedule } from '../../../../../../apis/activity_plan_apis'
+import { SessionSchedule } from '../../../../../types/activity_plan/SessionSchedule'
+import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan'
+import { updateSessionSchedule } from '../../../../../apis/activity_plan_apis'
 import { parseTime, Time } from '@internationalized/date'
 import { Button, Select, SelectItem, TimeInput } from '@nextui-org/react'
 import { IoIosTime } from 'react-icons/io'

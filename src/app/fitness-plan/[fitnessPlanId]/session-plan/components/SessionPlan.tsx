@@ -5,8 +5,8 @@ import { PiBarbellFill } from 'react-icons/pi';
 import { TbTrashFilled } from 'react-icons/tb';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Link } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
-import { ISessionPlan } from '../../../../../../types/fitness_plan/SessionPlan';
-import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } from '../../../../../../apis/fitness_plan_apis';
+import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan';
+import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } from '../../../../../apis/fitness_plan_apis';
 import BackButton from '@/app/components/BackButton';
 
 interface SessionPlanProps {

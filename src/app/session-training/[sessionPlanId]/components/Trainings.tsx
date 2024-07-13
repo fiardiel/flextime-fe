@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react'
-import { ITraining } from '../../../../../types/fitness_plan/Training';
-import { ISessionTraining } from '../../../../../types/fitness_plan/SessionTraining';
+import { ITraining } from '../../../../types/fitness_plan/Training';
+import { ISessionTraining } from '../../../../types/fitness_plan/SessionTraining';
 import AvailableTraining from './AvailableTraining';
 import PickedTraining from './PickedTraining';
 

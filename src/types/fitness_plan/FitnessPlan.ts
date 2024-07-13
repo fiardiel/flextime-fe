@@ -6,5 +6,5 @@ export interface IFitnessPlan {
 
 export interface FitnessPlanForm {
     title: string
-    user: string
+    user: number
 }

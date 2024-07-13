@@ -1,7 +1,7 @@
 import React from 'react'
-import { getSessionScheduleById } from '../../../../../../apis/activity_plan_apis'
+import { getSessionScheduleById } from '../../../../../apis/activity_plan_apis'
 import EditForm from './EditForm'
-import { getSessionPlanById } from '../../../../../../apis/fitness_plan_apis'
+import { getSessionPlanById } from '../../../../../apis/fitness_plan_apis'
 import BackButton from '@/app/components/BackButton'
 
 const page = async ({ params }: { params: { activityPlanId: number, sessionScheduleId: number } }) => {

@@ -1,10 +1,10 @@
 'use client';
 
 import React, { FormEventHandler } from 'react'
-import { ClassScheduleForm, IClassSchedule } from '../../../../../types/course_plan/ClassSchedule';
+import { ClassScheduleForm, IClassSchedule } from '../../../../types/course_plan/ClassSchedule';
 import { RiEditBoxFill } from 'react-icons/ri';
 import { TbTrashFilled } from 'react-icons/tb';
-import { deleteClassSchedule, updateClassSchedule } from '../../../../../apis/class_schedule_apis';
+import { deleteClassSchedule, updateClassSchedule } from '../../../../apis/class_schedule_apis';
 import { MdDriveFileRenameOutline } from 'react-icons/md';
 import { IoIosTime } from 'react-icons/io';
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, TimeInput, TimeInputValue, useDisclosure } from '@nextui-org/react';

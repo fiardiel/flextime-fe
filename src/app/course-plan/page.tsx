@@ -1,8 +1,8 @@
 import React from 'react'
-import { getAllClassSchedule } from '../../../apis/class_schedule_apis'
+import { getAllClassSchedule } from '../../apis/class_schedule_apis'
 import TabComponent from './components/TabComponent'
-import { getAllTestSchedule } from '../../../apis/test_schedule_apis'
-import { getAllAssignmentDeadline } from '../../../apis/assignment_deadline_apis'
+import { getAllTestSchedule } from '../../apis/test_schedule_apis'
+import { getAllAssignmentDeadline } from '../../apis/assignment_deadline_apis'
 import BackButton from '../components/BackButton'
 
 

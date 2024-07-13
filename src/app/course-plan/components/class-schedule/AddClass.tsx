@@ -1,8 +1,8 @@
 'use client'
 
 import React, { FormEventHandler, useState } from 'react'
-import { ClassScheduleForm, IClassSchedule } from '../../../../../types/course_plan/ClassSchedule'
-import { addClassSchedule } from '../../../../../apis/class_schedule_apis'
+import { ClassScheduleForm, IClassSchedule } from '../../../../types/course_plan/ClassSchedule'
+import { addClassSchedule } from '../../../../apis/class_schedule_apis'
 import { IoIosTime } from 'react-icons/io'
 import { MdDriveFileRenameOutline } from 'react-icons/md'
 import { FaPlus } from 'react-icons/fa'

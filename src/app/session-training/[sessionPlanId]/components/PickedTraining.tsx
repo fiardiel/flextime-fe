@@ -1,9 +1,9 @@
 import React, { FormEventHandler, useEffect } from 'react'
-import { deleteCustomization, deleteSessionTraining, getCustomizationById, getTrainingById, updateCustomization } from '../../../../../apis/fitness_plan_apis';
-import { ISessionTraining } from '../../../../../types/fitness_plan/SessionTraining';
-import { ITraining } from '../../../../../types/fitness_plan/Training';
+import { deleteCustomization, deleteSessionTraining, getCustomizationById, getTrainingById, updateCustomization } from '../../../../apis/fitness_plan_apis';
+import { ISessionTraining } from '../../../../types/fitness_plan/SessionTraining';
+import { ITraining } from '../../../../types/fitness_plan/Training';
 import { FaListUl } from 'react-icons/fa';
-import { CustomizationForm, ICustomization } from '../../../../../types/fitness_plan/Customization';
+import { CustomizationForm, ICustomization } from '../../../../types/fitness_plan/Customization';
 import { RiEditBoxFill, RiLoopLeftFill } from 'react-icons/ri';
 import { MdOutlineTimer } from 'react-icons/md';
 import { TbTrashFilled } from 'react-icons/tb';

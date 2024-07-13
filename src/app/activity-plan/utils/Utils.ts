@@ -1,7 +1,7 @@
 import { CalendarDate, getLocalTimeZone } from "@internationalized/date"
 import { format } from 'date-fns'
-import { ActivityPlan } from "../../../../types/activity_plan/ActivityPlan"
-import { getSessionPlanById } from "../../../../apis/fitness_plan_apis"
+import { ActivityPlan } from "../../../types/activity_plan/ActivityPlan"
+import { getSessionPlanById } from "../../../apis/fitness_plan_apis"
 
 export interface NormalizedSchedule {
     id: number

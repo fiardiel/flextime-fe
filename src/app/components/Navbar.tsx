@@ -1,25 +1,23 @@
 'use client'
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
     Navbar as NextNavbar,
     NavbarBrand as NextNavbarBrand,
     NavbarContent as NextNavbarContent,
     NavbarItem as NextNavbarItem,
     Link,
-    DropdownItem,
-    DropdownTrigger,
-    Dropdown,
-    DropdownMenu,
-    Avatar,
     NavbarMenuToggle as NextNavbarMenuToggle,
     Button,
     NavbarMenu as NextNavbarMenu,
     NavbarMenuItem as NextNavbarMenuItem,
 } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
+import Cookies from "js-cookie";
+import { logout } from "../../apis/user_apis";
 
 const Navbar = () => {
+    const [userToken, setUserToken] = React.useState<string | undefined>(undefined);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const menuItems = [
         "Home",
@@ -29,7 +27,28 @@ const Navbar = () => {
         "Log Out",
     ];
     const pathname = usePathname()
-    const isActive = (href: string) => pathname === href
+    const isActive = (href: string) => pathname === href    
+    
+    useEffect(() => {
+        const token = Cookies.get("userToken")
+        setUserToken(token)
+    }, [])
+
+    const handleLogout = async () => {
+        Cookies.remove("userToken")
+        await logout()
+        window.location.href = "/auth/register"
+    }
+    
+    const rightButton = userToken ? (
+        <Button color="danger" onPress={handleLogout} variant="flat">
+            Logout
+        </Button>
+    ) : (
+        <Button as={Link} color="primary" href="/auth/register" variant="flat">
+            Sign Up
+        </Button>
+    )
 
     return (
         <>
@@ -69,9 +88,7 @@ const Navbar = () => {
 
                 <NextNavbarContent justify="end" className="mr-10">
                     <NextNavbarItem>
-                        <Button as={Link} color="primary" href="#" variant="flat">
-                            Sign Up
-                        </Button>
+                        {rightButton}
                     </NextNavbarItem>
                 </NextNavbarContent>
                 <NextNavbarMenu>
