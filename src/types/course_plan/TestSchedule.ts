@@ -12,5 +12,4 @@ export interface TestScheduleForm {
     test_name: string
     test_start: string
     test_end: string
-    course_plan: number
 }

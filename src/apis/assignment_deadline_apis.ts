@@ -1,18 +1,26 @@
+import { Token } from "@/types/user/User"
 import { AssignmentDeadlineForm, IAssignmentDeadline } from "../types/course_plan/AssignmentDeadline"
 
 const baseUrl = 'http://127.0.0.1:8000'
 
-export const getAllAssignmentDeadline = async(): Promise<IAssignmentDeadline[]> => {
-    const res = await fetch(`${baseUrl}/assignment-deadline/`)
+export const getAllAssignmentDeadline = async(token: Token): Promise<IAssignmentDeadline[]> => {
+    const res = await fetch(`${baseUrl}/assignment-deadline/`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
     const data = await res.json()
-    return data.results
+    return data
 }
 
-export const addAssignmentDeadline = async ({ assignmentDeadline }: { assignmentDeadline: AssignmentDeadlineForm }): Promise<IAssignmentDeadline> => {
+export const addAssignmentDeadline = async (assignmentDeadline: AssignmentDeadlineForm, token: Token): Promise<IAssignmentDeadline> => {
     const res = await fetch(`${baseUrl}/assignment-deadline/`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify(assignmentDeadline)
     })
@@ -20,11 +28,12 @@ export const addAssignmentDeadline = async ({ assignmentDeadline }: { assignment
     return data
 }
 
-export const updateAssignmentDeadline = async ({ id, assignmentDeadline }: { id: number, assignmentDeadline: AssignmentDeadlineForm }): Promise<IAssignmentDeadline> => {
+export const updateAssignmentDeadline = async (id: number, assignmentDeadline: AssignmentDeadlineForm, token:Token): Promise<IAssignmentDeadline> => {
     const res = await fetch(`${baseUrl}/assignment-deadline/${id}/`, {
         method: 'PUT',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify(assignmentDeadline)
     })
@@ -32,9 +41,13 @@ export const updateAssignmentDeadline = async ({ id, assignmentDeadline }: { id:
     return data
 }
 
-export const deleteAssignmentDeadline = async ({ id }: { id: number }): Promise<void> => {
+export const deleteAssignmentDeadline = async (id: number, token: Token): Promise<void> => {
     await fetch(`${baseUrl}/assignment-deadline/${id}/`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
     })
 }
     

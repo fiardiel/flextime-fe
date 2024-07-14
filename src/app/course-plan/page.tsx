@@ -11,7 +11,7 @@ const CoursePlanPage = async () => {
   const token = cookies().get('userToken')?.value
   const classSchedules = await getAllClassSchedule(token)
   const testSchedules = await getAllTestSchedule(token)
-  const assignmentDeadlines = await getAllAssignmentDeadline()
+  const assignmentDeadlines = await getAllAssignmentDeadline(token)
   return (
     <div className='relative'>
       <div className='absolute top-0 left-0 mt-10 ml-14 z-48'>

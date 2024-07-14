@@ -26,7 +26,6 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
         test_start: now(getLocalTimeZone()).toString().slice(11, 16),
         test_end: now(getLocalTimeZone()).add({ hours: 1 }).toString().slice(11, 16),
         test_date: today(getLocalTimeZone()).toString(),
-        course_plan: 1
     });
 
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
@@ -53,7 +52,6 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
             test_start: addInput.test_start,
             test_end: addInput.test_end,
             test_date: addInput.test_date,
-            course_plan: addInput.course_plan
         };
 
         try {
@@ -72,7 +70,6 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
             test_start: now(getLocalTimeZone()).toString().slice(11, 16),
             test_end: now(getLocalTimeZone()).add({ hours: 1 }).toString().slice(11, 16),
             test_date: today(getLocalTimeZone()).toString(),
-            course_plan: 1
         });
         onClose();
     }
@@ -137,7 +134,7 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
                                         startContent={<IoIosTime />}
                                         isRequired
                                     />
-
+                                    {error ? (<p className='text-danger'> {error.message} </p>) : null}
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button color="danger" variant="flat" onPress={onClose}>

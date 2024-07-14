@@ -11,6 +11,7 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure
 import { CalendarDate, getLocalTimeZone, parseDate, parseTime, Time } from '@internationalized/date';
 import { Button, Card, CardBody, CardFooter, CardHeader, DatePicker, Input, TimeInput } from '@nextui-org/react';
 import { useDateFormatter } from '@react-aria/i18n';
+import Cookies from 'js-cookie';
 
 
 interface AssignmentProps {
@@ -19,6 +20,8 @@ interface AssignmentProps {
 }
 
 const AssignmentDeadline: React.FC<AssignmentProps> = ({ initAssignmentDeadline, onDelete }) => {
+    const [error, setError] = React.useState<Error | null>(null);
+    const token = Cookies.get('userToken');
     const dateFormatter = useDateFormatter({ dateStyle: "full" });
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange, onClose: onEditClose } = useDisclosure();
@@ -27,11 +30,10 @@ const AssignmentDeadline: React.FC<AssignmentProps> = ({ initAssignmentDeadline,
         assignment_name: assignmentDeadline.assignment_name,
         assignment_due_date: assignmentDeadline.assignment_due_date,
         assignment_due_time: assignmentDeadline.assignment_due_time,
-        course_plan: assignmentDeadline.course_plan
     });
 
     const handleDelete = async () => {
-        await deleteAssignmentDeadline({ id: assignmentDeadline.id });
+        await deleteAssignmentDeadline(assignmentDeadline.id, token);
         onDelete(assignmentDeadline.id);
         onDeleteClose()
     }
@@ -43,17 +45,17 @@ const AssignmentDeadline: React.FC<AssignmentProps> = ({ initAssignmentDeadline,
             assignment_name: updateInput.assignment_name,
             assignment_due_date: updateInput.assignment_due_date,
             assignment_due_time: updateInput.assignment_due_time,
-            course_plan: updateInput.course_plan
         };
 
         try {
-            const updatedAssignmentDeadline = await updateAssignmentDeadline({ id: assignmentDeadline.id, assignmentDeadline: newAssignmentDeadline });
+            const updatedAssignmentDeadline = await updateAssignmentDeadline(assignmentDeadline.id, newAssignmentDeadline, token);
             console.log('Assignment updated successfully with ID:', updatedAssignmentDeadline.id);
             setAssignmentDeadline(updatedAssignmentDeadline);
+            onEditClose();
         } catch (err) {
-            console.error('Error updating assignment:', err);
+            setError(err as Error);
         }
-        onEditClose()
+
     }
 
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
@@ -78,11 +80,10 @@ const AssignmentDeadline: React.FC<AssignmentProps> = ({ initAssignmentDeadline,
             assignment_name: assignmentDeadline.assignment_name,
             assignment_due_date: assignmentDeadline.assignment_due_date,
             assignment_due_time: assignmentDeadline.assignment_due_time,
-            course_plan: assignmentDeadline.course_plan
         });
         onEditClose();
     }
- 
+
     return (
         <div>
             <Card className='p-5 w-72 h-60 hover:-translate-y-2 hover:scale-110 transition'>
@@ -145,6 +146,7 @@ const AssignmentDeadline: React.FC<AssignmentProps> = ({ initAssignmentDeadline,
                 isOpen={isEditOpen}
                 onOpenChange={onEditOpenChange}
                 placement="top-center"
+                onClose={handleCloseEditModal}
             >
                 <ModalContent>
                     {(onClose) => (
@@ -187,10 +189,10 @@ const AssignmentDeadline: React.FC<AssignmentProps> = ({ initAssignmentDeadline,
                                         startContent={<IoIosTime />}
                                         isRequired
                                     />
-
+                                    {error ? (<p className='text-danger'> {error.message} </p>) : null}
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" variant="flat" onPress={handleCloseEditModal}>
+                                    <Button color="danger" variant="flat" onPress={onClose}>
                                         Close
                                     </Button>
                                     <Button color="primary" type='submit'>

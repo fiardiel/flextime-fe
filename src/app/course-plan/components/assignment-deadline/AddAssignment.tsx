@@ -9,17 +9,19 @@ import { addAssignmentDeadline } from '../../../../apis/assignment_deadline_apis
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal'
 import { Button, DatePicker, Input, Select, TimeInput } from '@nextui-org/react'
 import { CalendarDate, getLocalTimeZone, now, parseDate, parseTime, Time, today } from '@internationalized/date'
+import Cookies from 'js-cookie'
 
 interface AddAssignmentProps {
     onAdd: (assignmentDeadline: IAssignmentDeadline) => void | boolean
 }
 
 const AddAssignment: React.FC<AddAssignmentProps> = ({ onAdd }) => {
+    const [error, setError] = React.useState<Error | null>(null);
+    const token = Cookies.get('userToken');
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [addInput, setAddInput] = React.useState<AssignmentDeadlineForm>({
         assignment_name: '',
         assignment_due_date: today(getLocalTimeZone()).toString(),
-        course_plan: 1,
         assignment_due_time: now(getLocalTimeZone()).toString().slice(11, 16)
     });
 
@@ -42,25 +44,22 @@ const AddAssignment: React.FC<AddAssignmentProps> = ({ onAdd }) => {
             assignment_name: addInput.assignment_name,
             assignment_due_date: addInput.assignment_due_date,
             assignment_due_time: addInput.assignment_due_time,
-            course_plan: addInput.course_plan
         };
 
         try {
-            const createdAssignmentDeadline = await addAssignmentDeadline({ assignmentDeadline: newAssignmentDeadline });
+            const createdAssignmentDeadline = await addAssignmentDeadline(newAssignmentDeadline, token);
             onAdd(createdAssignmentDeadline);
             console.log('Assignment Deadline added successfully with ID:', createdAssignmentDeadline.id);
+            onClose();
         } catch (err) {
-            console.error('Error creating assignment deadline:', err);
+            setError(err as Error)
         }
-
-        onClose()
     }
 
     const handleCloseAddModal = () => {
         setAddInput({
             assignment_name: '',
             assignment_due_date: today(getLocalTimeZone()).toString(),
-            course_plan: 1,
             assignment_due_time: now(getLocalTimeZone()).toString().slice(11, 16)
         });
         onClose();
@@ -75,6 +74,7 @@ const AddAssignment: React.FC<AddAssignmentProps> = ({ onAdd }) => {
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 placement="top-center"
+                onClose={handleCloseAddModal}
             >
                 <ModalContent>
                     {(onClose) => (
@@ -105,7 +105,7 @@ const AddAssignment: React.FC<AddAssignmentProps> = ({ onAdd }) => {
                                         isRequired
                                         variant='bordered'
                                         className='w-full'
-                                        >
+                                    >
 
                                     </DatePicker>
                                     <TimeInput
@@ -117,10 +117,10 @@ const AddAssignment: React.FC<AddAssignmentProps> = ({ onAdd }) => {
                                         startContent={<IoIosTime />}
                                         isRequired
                                     />
-
+                                    {error ? (<p className='text-danger'> {error.message} </p>) : null}
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" variant="flat" onPress={handleCloseAddModal}>
+                                    <Button color="danger" variant="flat" onPress={onClose}>
                                         Close
                                     </Button>
                                     <Button color="primary" type='submit'>

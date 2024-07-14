@@ -29,7 +29,6 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
         test_start: testSchedule.test_start,
         test_end: testSchedule.test_end,
         test_date: testSchedule.test_date,
-        course_plan: testSchedule.course_plan
     });
 
     const handleStartTimeChange = (value: Time) => {
@@ -58,7 +57,6 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
             test_start: updateInput.test_start,
             test_end: updateInput.test_end,
             test_date: updateInput.test_date,
-            course_plan: updateInput.course_plan
         };
 
         try {
@@ -69,7 +67,7 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
         } catch (err) {
             setError(err as Error);
         }
-        
+
     }
 
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
@@ -81,13 +79,12 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
         return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
     }
 
-    const handleCloseEditModal = () => {   
+    const handleCloseEditModal = () => {
         setUpdateInput({
             test_name: testSchedule.test_name,
             test_start: testSchedule.test_start,
             test_end: testSchedule.test_end,
             test_date: testSchedule.test_date,
-            course_plan: testSchedule.course_plan
         });
         onEditClose();
     }
@@ -204,7 +201,7 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
                                         startContent={<IoIosTime />}
                                         isRequired
                                     />
-
+                                    {error ? (<p className='text-danger'> {error.message} </p>) : null}
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button color="danger" variant="flat" onPress={onClose}>
