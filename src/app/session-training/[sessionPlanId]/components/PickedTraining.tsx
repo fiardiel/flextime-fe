@@ -35,7 +35,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         };
 
         fetchTraining();
-    }, [sessionTraining.id, sessionTraining.training]);
+    }, [sessionTraining.id, sessionTraining.training, token]);
 
 
     useEffect(() => {
@@ -50,7 +50,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         };
 
         fetchCustomization();
-    }, [sessionTraining.id, sessionTraining.customization]);
+    }, [sessionTraining.id, sessionTraining.customization, token]);
 
 
     const confirmDelete = async () => {

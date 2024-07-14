@@ -36,7 +36,7 @@ const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
             setTotalDuration(formattedDuration);
         }
         fetchTotalDuration();
-    }, [sessionPlan.id]);
+    }, [sessionPlan.id, token]);
 
     useEffect(() => {
         const fetchTrainingCount = async () => {
@@ -44,7 +44,7 @@ const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
             setTrainingCount(fetchedCount);
         }
         fetchTrainingCount();
-    }, [sessionPlan.id])
+    }, [sessionPlan.id, token])
 
     return (
         <div>

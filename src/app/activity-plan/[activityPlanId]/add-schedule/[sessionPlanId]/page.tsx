@@ -25,7 +25,7 @@ const DAYS_OF_WEEK = [
 ];
 
 
-const page = () => {
+const Page = () => {
     const token = Cookies.get('userToken')
     const router = useRouter()
     const [error, setError] = useState<Error | null>(null)
@@ -49,7 +49,7 @@ const page = () => {
             setSessionPlan(fetchedSessionPlan);
         }
         fetchSessionPlan();
-    }, []);
+    }, [sessionPlanId, token]);
 
     const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault()
@@ -125,4 +125,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
