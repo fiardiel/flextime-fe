@@ -10,7 +10,7 @@ import { deleteTestSchedule, updateTestSchedule } from '../../../../apis/test_sc
 import { Button, Card, CardBody, CardFooter, CardHeader, DatePicker, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, TimeInput, useDisclosure } from '@nextui-org/react';
 import { useDateFormatter } from '@react-aria/i18n';
 import { CalendarDate, getLocalTimeZone, parseDate, parseTime, Time } from '@internationalized/date';
-
+import Cookies from 'js-cookie';
 
 interface TestProps {
     initTestSchedule: TestSchedule
@@ -18,6 +18,8 @@ interface TestProps {
 }
 
 const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
+    const token = Cookies.get('userToken');
+    const [error, setError] = React.useState<Error | null>(null);
     const dateFormatter = useDateFormatter({ dateStyle: "full" });
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange, onClose: onEditClose } = useDisclosure();
@@ -43,7 +45,7 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
     }
 
     const handleDelete = async () => {
-        await deleteTestSchedule({ id: testSchedule.id });
+        await deleteTestSchedule(testSchedule.id, token);
         onDelete(testSchedule.id);
         onDeleteClose();
     }
@@ -51,7 +53,7 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
     const handleUpdate: FormEventHandler<HTMLFormElement> = async (e) => {
         e.preventDefault();
 
-        const newClassSchedule: TestScheduleForm = {
+        const newTestSchedule: TestScheduleForm = {
             test_name: updateInput.test_name,
             test_start: updateInput.test_start,
             test_end: updateInput.test_end,
@@ -60,13 +62,14 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
         };
 
         try {
-            const updatedTest = await updateTestSchedule({ id: testSchedule.id, testSchedule: newClassSchedule });
+            const updatedTest = await updateTestSchedule(testSchedule.id, newTestSchedule, token);
             console.log('Class updated successfully with ID:', updatedTest.id);
             setTestSchedule(updatedTest);
+            onEditClose();
         } catch (err) {
-            console.error('Error updating custom training:', err);
+            setError(err as Error);
         }
-        onEditClose();
+        
     }
 
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
@@ -150,6 +153,7 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
                 isOpen={isEditOpen}
                 onOpenChange={onEditOpenChange}
                 placement="top-center"
+                onClose={handleCloseEditModal}
             >
                 <ModalContent>
                     {(onClose) => (
@@ -203,7 +207,7 @@ const Test: React.FC<TestProps> = ({ initTestSchedule, onDelete }) => {
 
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" variant="flat" onPress={handleCloseEditModal}>
+                                    <Button color="danger" variant="flat" onPress={onClose}>
                                         Close
                                     </Button>
                                     <Button color="primary" type='submit'>

@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import { IClassSchedule } from '../../../../types/course_plan/ClassSchedule'
 import { TestSchedule } from '../../../../types/course_plan/TestSchedule'
 import Test from './Test'
 import AddTest from './AddTest'

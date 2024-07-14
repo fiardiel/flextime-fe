@@ -10,13 +10,16 @@ import { Button } from '@nextui-org/button'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal'
 import { DatePicker, Input, TimeInput } from '@nextui-org/react'
 import { CalendarDate, getLocalTimeZone, now, parseDate, parseTime, Time, today } from '@internationalized/date'
+import Cookies from 'js-cookie'
 
 interface AddTestProps {
     onAdd: (testSchedule: TestSchedule) => void
 }
 
 const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
+    const token = Cookies.get('userToken')
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+    const [error, setError] = React.useState<Error | null>(null);
 
     const [addInput, setAddInput] = React.useState<TestScheduleForm>({
         test_name: '',
@@ -54,14 +57,13 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
         };
 
         try {
-            const createdTestSchedule = await addTestSchedule({ testSchedule: newTestSchedule });
+            const createdTestSchedule = await addTestSchedule(newTestSchedule, token);
             onAdd(createdTestSchedule);
             console.log('Test Schedule added successfully with ID:', createdTestSchedule.id);
+            onClose()
         } catch (err) {
-            console.error('Error creating test schedule:', err);
+            setError(err as Error);
         }
-
-        onClose()
     }
 
     const handleCloseAddModal = () => {
@@ -84,6 +86,7 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
                 isOpen={isOpen}
                 onOpenChange={onOpenChange}
                 placement="top-center"
+                onClose={handleCloseAddModal}
             >
                 <ModalContent>
                     {(onClose) => (
@@ -137,7 +140,7 @@ const AddTest: React.FC<AddTestProps> = ({ onAdd }) => {
 
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" variant="flat" onPress={handleCloseAddModal}>
+                                    <Button color="danger" variant="flat" onPress={onClose}>
                                         Close
                                     </Button>
                                     <Button color="primary" type='submit'>

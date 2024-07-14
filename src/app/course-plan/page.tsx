@@ -10,7 +10,7 @@ import { cookies } from 'next/headers'
 const CoursePlanPage = async () => {
   const token = cookies().get('userToken')?.value
   const classSchedules = await getAllClassSchedule(token)
-  const testSchedules = await getAllTestSchedule()
+  const testSchedules = await getAllTestSchedule(token)
   const assignmentDeadlines = await getAllAssignmentDeadline()
   return (
     <div className='relative'>
