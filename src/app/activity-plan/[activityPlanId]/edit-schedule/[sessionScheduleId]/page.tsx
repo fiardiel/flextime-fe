@@ -7,7 +7,7 @@ import { cookies } from 'next/headers'
 
 const page = async ({ params }: { params: { activityPlanId: number, sessionScheduleId: number } }) => {
     const token = cookies().get('userToken')?.value
-    const sessionSchedule = await getSessionScheduleById(params.sessionScheduleId)
+    const sessionSchedule = await getSessionScheduleById(params.sessionScheduleId, token)
     const sessionPlan = await getSessionPlanById(sessionSchedule.session_plan, token)
     return (
         <div className='relative'>

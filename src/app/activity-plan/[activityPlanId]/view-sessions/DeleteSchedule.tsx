@@ -3,20 +3,25 @@
 import { Button } from '@nextui-org/button'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/modal';
 import React from 'react'
-import { MdDelete, MdModeEdit } from 'react-icons/md'
+import { MdDelete } from 'react-icons/md'
 import { deleteSessionSchedule } from '../../../../apis/activity_plan_apis';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/navigation';
 
 interface DeleteScheduleProps {
     sessionScheduleId: number;
 }
 
 const DeleteSchedule:React.FC<DeleteScheduleProps> = ( {sessionScheduleId} ) => {
+    const token = Cookies.get('userToken');
+    const router = useRouter();
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure();
     const handleDelete = () => {
         try {
-            deleteSessionSchedule(sessionScheduleId)
+            deleteSessionSchedule(sessionScheduleId, token)
             console.log("Deleted Session Schedule with id ", sessionScheduleId)
             onDeleteClose()
+            router.refresh()
         } catch {
             console.log("Error deleting Session Schedule with id ", sessionScheduleId)
         }

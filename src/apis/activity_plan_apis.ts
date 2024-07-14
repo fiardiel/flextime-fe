@@ -37,15 +37,30 @@ export const getActivityPlanById = async (activityPlanId: number): Promise<IActi
     return response.json()
 }
 
-export const getAvailableSessionPlans = async (activityPlanId: number): Promise<ISessionPlan[]> => {
-    const response = await fetch(`${baseUrl}/activity-plan/${activityPlanId}/get_available_session_plans/`)
-    return response.json()
+export const getAvailableSessionPlans = async (activityPlanId: number, token: Token): Promise<ISessionPlan[]> => {
+    const response = await fetch(`${baseUrl}/activity-plan/${activityPlanId}/get_available_session_plans`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
+    const data = await response.json()
+    console.log("available session plan", data)
+    return data
 }
 
-export const getSessionSchedulesByActivityPlan = async (activityPlanId: number): Promise<SessionSchedule[]> => {
-    const response = await fetch(`${baseUrl}/session-schedule/?activity_plan=${activityPlanId}`)
+export const getSessionSchedulesByActivityPlan = async (activityPlanId: number, token: Token): Promise<SessionSchedule[]> => {
+    const response = await fetch(`${baseUrl}/session-schedule/?activity_plan=${activityPlanId}`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
     const data = await response.json()
-    return data.results
+    console.log('Fetched session schedules', data)
+    return data
 }
 
 export const addSessionSchedule = async (sessionSchedule: SessionScheduleForm): Promise<SessionSchedule> => {
@@ -58,15 +73,21 @@ export const addSessionSchedule = async (sessionSchedule: SessionScheduleForm): 
     })
     const data = await response.json()
     if (!response.ok) {
-        console.log(response.status, data.message, "ERROR")
         throw new Error(data.message)
     }
     return data
 }
 
-export const getSessionScheduleById = async (sessionScheduleId: number): Promise<SessionSchedule> => {
-    const response = await fetch(`${baseUrl}/session-schedule/${sessionScheduleId}/`)
-    return response.json()
+export const getSessionScheduleById = async (sessionScheduleId: number, token: Token): Promise<SessionSchedule> => {
+    const response = await fetch(`${baseUrl}/session-schedule/${sessionScheduleId}/`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
+    const data = await response.json()
+    return data
 }
 
 export const updateSessionSchedule = async (sessionScheduleId: number, sessionSchedule: SessionScheduleForm): Promise<SessionSchedule> => {
@@ -85,6 +106,12 @@ export const updateSessionSchedule = async (sessionScheduleId: number, sessionSc
     return data
 }
 
-export const deleteSessionSchedule = async (sessionScheduleId: number) => {
-    await fetch (`${baseUrl}/session-schedule/${sessionScheduleId}/`, {method: 'DELETE'})
+export const deleteSessionSchedule = async (sessionScheduleId: number, token: Token) => {
+    await fetch (`${baseUrl}/session-schedule/${sessionScheduleId}/`, {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
 }
