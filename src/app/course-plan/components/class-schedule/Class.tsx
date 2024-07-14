@@ -10,6 +10,7 @@ import { IoIosTime } from 'react-icons/io';
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, Select, SelectItem, TimeInput, TimeInputValue, useDisclosure } from '@nextui-org/react';
 import { parseTime, Time } from '@internationalized/date';
 import { BsCalendar2Fill } from 'react-icons/bs';
+import Cookies from 'js-cookie';
 
 
 interface ClassProps {
@@ -28,6 +29,8 @@ const DAYS_OF_WEEK = [
 ];
 
 const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
+    const token = Cookies.get('userToken');
+    const [error, setError] = React.useState<Error | null>(null);
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange, onClose: onEditClose } = useDisclosure();
     const [classSchedule, setClassSchedule] = React.useState<IClassSchedule>(initClassSchedule);
@@ -36,13 +39,12 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
         start_time: classSchedule.start_time,
         end_time: classSchedule.end_time,
         class_day: classSchedule.class_day,
-        course_plan: classSchedule.course_plan
     });
     const [startTime, setStartTime] = React.useState<string>(updateInput.start_time);
     const [endTime, setEndTime] = React.useState<string>(updateInput.end_time);
 
     const handleDelete = async () => {
-        await deleteClassSchedule({ id: classSchedule.id });
+        await deleteClassSchedule(classSchedule.id, token);
         onDelete(classSchedule.id);
         onDeleteClose();
     }
@@ -52,20 +54,19 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
 
         const newClassSchedule: ClassScheduleForm = {
             class_name: updateInput.class_name,
-            start_time: updateInput.start_time,
-            end_time: updateInput.end_time,
+            start_time: startTime,
+            end_time: endTime,
             class_day: updateInput.class_day,
-            course_plan: updateInput.course_plan
         };
 
         try {
-            const updatedClass = await updateClassSchedule({ id: classSchedule.id, classSchedule: newClassSchedule });
+            const updatedClass = await updateClassSchedule(classSchedule.id, newClassSchedule, token);
             console.log('Class updated successfully with ID:', updatedClass.id);
             setClassSchedule(updatedClass);
+            onEditClose();
         } catch (err) {
-            console.error('Error updating custom training:', err);
+            setError(err as Error);
         }
-        onEditClose();
     }
 
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
@@ -74,10 +75,12 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
 
     const handleStartTimeInputChange = (value: Time) => { 
         setStartTime(value.toString());
+        console.log('starttime', value.toString());
     }
 
     const handleEndTimeInputChange = (value: Time) => {
         setEndTime(value.toString());
+        console.log('endtime', value.toString());
     }
 
     const formatTime = (time: string) => {
@@ -92,8 +95,10 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
             start_time: classSchedule.start_time,
             end_time: classSchedule.end_time,
             class_day: classSchedule.class_day,
-            course_plan: classSchedule.course_plan
         });
+        setStartTime(classSchedule.start_time);
+        setEndTime(classSchedule.end_time);
+        setError(null)
     }
 
     return (
@@ -158,14 +163,14 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
                 isOpen={isEditOpen}
                 onOpenChange={onEditOpenChange}
                 placement="top-center"
+                onClose={handleCloseEditModal}
             >
                 <ModalContent>
                     {(onClose) => (
                         <div>
                             <ModalHeader className="flex flex-col gap-1">Edit class</ModalHeader>
                             <form onSubmit={(e) => {
-                                e.preventDefault();
-                                handleUpdate(e);
+                                handleUpdate(e)
                             }}>
                                 <ModalBody>
                                     <Input
@@ -210,9 +215,10 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
                                         value={parseTime(endTime)}
                                         startContent={<IoIosTime />}
                                     />
+                                    {error ? (<p className='text-danger'> {error.message} </p>) : null}
                                 </ModalBody>
                                 <ModalFooter>
-                                    <Button color="danger" variant="flat" onPress={handleCloseEditModal}>
+                                    <Button color="danger" variant="flat" onPress={onClose}>
                                         Close
                                     </Button>
                                     <Button color="primary" type='submit'>
@@ -220,8 +226,6 @@ const Class: React.FC<ClassProps> = ({ initClassSchedule, onDelete }) => {
                                     </Button>
                                 </ModalFooter>
                             </form>
-
-                            <div />
                         </div>
                     )}
                 </ModalContent>

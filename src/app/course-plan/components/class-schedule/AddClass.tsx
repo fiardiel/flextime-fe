@@ -11,6 +11,7 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure
 import { Input, Select, SelectItem, TimeInput } from '@nextui-org/react'
 import { BsCalendar2Fill } from 'react-icons/bs'
 import { parseTime, Time } from '@internationalized/date'
+import Cookies from 'js-cookie'
 
 interface AddClassProps {
     onAdd: (classSchedule: IClassSchedule) => void
@@ -27,6 +28,7 @@ const DAYS_OF_WEEK = [
 ];
 
 const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
+    const token = Cookies.get('userToken');
     const [error, setError] = useState<Error | null>(null);
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [addInput, setAddInput] = React.useState<ClassScheduleForm>({
@@ -34,7 +36,6 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
         start_time: '10:00',
         end_time: '11:00',
         class_day: '',
-        course_plan: 1
     });
     const handleInputChange = (event: React.ChangeEvent<{ name: string; value: unknown }>) => {
         setAddInput({ ...addInput, [event.target.name]: event.target.value });
@@ -56,11 +57,10 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
             start_time: addInput.start_time,
             end_time: addInput.end_time,
             class_day: addInput.class_day,
-            course_plan: addInput.course_plan
         };
 
         try {
-            const createdClassSchedule = await addClassSchedule({ classSchedule: newClassSchedule });
+            const createdClassSchedule = await addClassSchedule(newClassSchedule, token);
             onAdd(createdClassSchedule);
             console.log('Class Schedule added successfully with ID:', createdClassSchedule.id);
             onClose();
@@ -77,7 +77,6 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
             start_time: '10:00',
             end_time: '11:00',
             class_day: '',
-            course_plan: 1
         });
     }
 
@@ -141,11 +140,7 @@ const AddClass: React.FC<AddClassProps> = ({ onAdd }) => {
                                         value={parseTime(addInput.end_time)}
                                         startContent={<IoIosTime />}
                                     />
-                                    {error ? (
-                                        <p className='text-danger'> {error.message} </p>
-                                    ) :
-                                        null
-                                    }
+                                    {error ? (<p className='text-danger'> {error.message} </p>) : null}
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button color="danger" variant="flat" onPress={onClose}>

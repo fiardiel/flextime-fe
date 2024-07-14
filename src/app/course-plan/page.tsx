@@ -4,10 +4,12 @@ import TabComponent from './components/TabComponent'
 import { getAllTestSchedule } from '../../apis/test_schedule_apis'
 import { getAllAssignmentDeadline } from '../../apis/assignment_deadline_apis'
 import BackButton from '../components/BackButton'
+import { cookies } from 'next/headers'
 
 
 const CoursePlanPage = async () => {
-  const classSchedules = await getAllClassSchedule()
+  const token = cookies().get('userToken')?.value
+  const classSchedules = await getAllClassSchedule(token)
   const testSchedules = await getAllTestSchedule()
   const assignmentDeadlines = await getAllAssignmentDeadline()
   return (

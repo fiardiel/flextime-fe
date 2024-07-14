@@ -3,7 +3,7 @@
 import React, { FormEventHandler } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Input } from "@nextui-org/react";
 import { IoIosAdd } from 'react-icons/io';
-import { FitnessPlanForm, IFitnessPlan } from '../../../types/fitness_plan/FitnessPlan';
+import { FitnessPlanForm } from '../../../types/fitness_plan/FitnessPlan';
 import { addFitnessPlan } from '../../../apis/fitness_plan_apis';
 import Cookies from 'js-cookie'
 import { getUser } from '../../../apis/user_apis';
