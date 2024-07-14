@@ -12,6 +12,7 @@ import { parseTime, Time } from '@internationalized/date'
 import { addSessionSchedule } from '../../../../../apis/activity_plan_apis'
 import { SessionScheduleForm } from '../../../../../types/activity_plan/SessionSchedule'
 import BackButton from '@/app/components/BackButton'
+import Cookies from 'js-cookie'
 
 const DAYS_OF_WEEK = [
     { value: 'MON', label: 'Monday' },
@@ -25,6 +26,7 @@ const DAYS_OF_WEEK = [
 
 
 const page = () => {
+    const token = Cookies.get('userToken')
     const router = useRouter()
     const [error, setError] = useState<Error | null>(null)
     const { sessionPlanId, activityPlanId } = useParams()
@@ -43,10 +45,9 @@ const page = () => {
 
     useEffect(() => {
         const fetchSessionPlan = async () => {
-            const fetchedSessionPlan = await getSessionPlanById({ id: Number(sessionPlanId) });
+            const fetchedSessionPlan = await getSessionPlanById(Number(sessionPlanId), token);
             setSessionPlan(fetchedSessionPlan);
         }
-
         fetchSessionPlan();
     }, []);
 
@@ -112,11 +113,7 @@ const page = () => {
                                     <SelectItem key={day.value} value={day.value}>{day.label}</SelectItem>
                                 ))}
                             </Select>
-                            {error ? (
-                                <p className='text-danger'> {error.message} </p>
-                            ) :
-                                null
-                            }
+                            {error ? (<p className='text-danger'> {error.message} </p>) : null}
                         </div>
                         <Button color="primary" variant='flat' type='submit' className='mt-10 w-full'>Submit</Button>
                     </form>

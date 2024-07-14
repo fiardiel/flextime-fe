@@ -3,10 +3,11 @@ import { Button } from '@nextui-org/button'
 import React from 'react'
 import { Card, CardBody, Link } from '@nextui-org/react'
 import { getDayName, normalizeData, NormalizedSchedule, sortedSchedules } from './utils/Utils'
-import { getSchedules } from '../../apis/activity_plan_apis'
+import { getActivityPlan, getSchedules } from '../../apis/activity_plan_apis'
 import { ActivityPlan } from '../../types/activity_plan/ActivityPlan'
 import { FaCalendarCheck } from 'react-icons/fa'
 import BackButton from '../components/BackButton'
+import { cookies } from 'next/headers'
 
 const months = [
     { value: 1, label: 'January' },
@@ -24,8 +25,8 @@ const months = [
 ]
 
 const page = async () => {
-    // TODO: Change this later
-    const activityPlanId = 1
+    const token = cookies().get('userToken')?.value
+    const activityPlanId = (await getActivityPlan(token)).id
 
     const thisDay = today(getLocalTimeZone())
     const todayMonth = months.find(month => month.value === thisDay.month)?.label
@@ -50,11 +51,9 @@ const page = async () => {
     const weekDates = getWeekDates(thisDay)
 
     const getDailyActivityPlan = async (date: CalendarDate): Promise<NormalizedSchedule[]> => {
-        const activityPlanId = 1
         const dateStr = date.toString()
-        console.log('dateStr', dateStr)
-        const activityPlan: ActivityPlan = await getSchedules(activityPlanId, dateStr)
-        return sortedSchedules(await normalizeData(activityPlan))
+        const activityPlan: ActivityPlan = await getSchedules(activityPlanId, dateStr, token)
+        return sortedSchedules(await normalizeData(activityPlan, token))
     }
 
     const formatTime = (time: string) => {

@@ -2,6 +2,7 @@ import { CalendarDate, getLocalTimeZone } from "@internationalized/date"
 import { format } from 'date-fns'
 import { ActivityPlan } from "../../../types/activity_plan/ActivityPlan"
 import { getSessionPlanById } from "../../../apis/fitness_plan_apis"
+import { Token } from "@/types/user/User"
 
 export interface NormalizedSchedule {
     id: number
@@ -11,11 +12,12 @@ export interface NormalizedSchedule {
     end: string
 }
 
-export const normalizeData = async (activityPlan: ActivityPlan): Promise<NormalizedSchedule[]> => {
+export const normalizeData = async (activityPlan: ActivityPlan, token: Token): Promise<NormalizedSchedule[]> => {
+    console.log(activityPlan)
     const normalized: NormalizedSchedule[] = [];
 
     const sessionPromises = activityPlan.session_schedules.map(async (sched) => {
-        const sessionPlan = await getSessionPlanById({ id: sched.session_plan });
+        const sessionPlan = await getSessionPlanById(sched.session_plan, token);
         return {
             id: sched.id,
             name: sessionPlan.training_type,
@@ -57,9 +59,6 @@ export const normalizeData = async (activityPlan: ActivityPlan): Promise<Normali
             end: ''
         });
     });
-
-    console.log(normalized);
-
     return normalized;
 };
 

@@ -2,14 +2,14 @@ import React from 'react';
 import FitnessPlan from './components/FitnessPlan';
 import BackButton from '../components/BackButton';
 import { cookies } from 'next/headers';
-import { getFitnessPlanByUser } from '../../apis/fitness_plan_apis';
+import { getFitnessPlan } from '../../apis/fitness_plan_apis';
 import AddFitnessPlan from './components/AddFitnessPlan';
 
 const FitnessPlanPage = async () => {
-  const token = cookies().get('userToken');
+  const token = cookies().get('userToken')?.value;
   let fitnessPlanComponent = null
   try {
-    const fitnessPlan = await getFitnessPlanByUser(token);
+    const fitnessPlan = await getFitnessPlan(token);
     console.log("fitnessplan:", fitnessPlan)
     fitnessPlanComponent = (
       <div className='p-52 gap-8 self-center'>

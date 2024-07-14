@@ -21,6 +21,18 @@ export const addFitnessPlan = async (fitnessPlan: FitnessPlanForm, token: string
     return newFitnessPlan
 }
 
+export const getFitnessPlan = async (token: Token): Promise<IFitnessPlan> => {
+    const res = await fetch(`${baseUrl}/fitness-plan/`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`   
+        }
+    })
+    const data = await res.json()
+    return data
+}
+
 export const getFitnessPlanByUser = async (token: RequestCookie | undefined): Promise<IFitnessPlan> => {
     const res = await fetch(`${baseUrl}/fitness-plan/get_fitness_plan_by_user`, { 
         method: 'GET',
@@ -109,7 +121,7 @@ export const getTotalDuration = async ( { sessionPlanId, token }: { sessionPlanI
 }
 
 export const getTrainingCountBySessionPlan = async (sessionPlanId: number, token: Token): Promise<number> => {
-    const res = await fetch(`${baseUrl}/session-training/count/?session-plan=${sessionPlanId}`, {
+    const res = await fetch(`${baseUrl}/session-training/count/?session_plan=${sessionPlanId}`, {
         method: 'GET',
         headers: {
             'Content-type': 'application/json',
@@ -118,7 +130,6 @@ export const getTrainingCountBySessionPlan = async (sessionPlanId: number, token
     })
     const data = await res.json()
     return data.count
-
 }
 
 
