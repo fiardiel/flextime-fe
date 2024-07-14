@@ -11,15 +11,20 @@ const LoginForm = () => {
     const router = useRouter()
     const [isVisible, setIsVisible] = React.useState(false)
     const toggleVisibility = () => setIsVisible(!isVisible)
+    const [error, setError] = React.useState<Error | null>(null)
 
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const fd = new FormData(e.currentTarget)
-        const { username, password } = Object.fromEntries(fd)
-        const token = await login({loginForm: {username: username as string, password: password as string}})
-        Cookies.set('userToken', token)
-        router.push('/')
-        console.log(token)
+        try {
+            e.preventDefault()
+            const fd = new FormData(e.currentTarget)
+            const { username, password } = Object.fromEntries(fd)
+            const token = await login({ loginForm: { username: username as string, password: password as string } })
+            Cookies.set('userToken', token)
+            router.push('/')
+            console.log(token)
+        } catch (err) {
+            setError(err as Error)
+        }
     }
 
     return (
@@ -31,7 +36,7 @@ const LoginForm = () => {
                     autoFocus
                     label="Username"
                     labelPlacement='outside'
-                    startContent={<FaUser size={12}/>}
+                    startContent={<FaUser size={12} />}
                     className='mb-12'
                     size='lg'
                     required
@@ -42,17 +47,21 @@ const LoginForm = () => {
                     autoFocus
                     label="Password"
                     labelPlacement='outside'
-                    startContent={<FaLock size={13}/>}
+                    startContent={<FaLock size={13} />}
                     endContent={
                         <Button radius='full' size='sm' type='button' isIconOnly className='bg-transparent' color='default' onPress={toggleVisibility}>
                             {isVisible ? (<FaEye size={15}></FaEye>) : (<FaEyeSlash size={15}></FaEyeSlash>)}
                         </Button>
                     }
-                    className='mb-12'
                     size='lg'
                     required
                 />
-                <Button color='primary' fullWidth type='submit'>
+                {error ? (
+                    <p className='text-danger text-center p-5'> {error.message} </p>
+                ) :
+                    null
+                }
+                <Button className={error ? `mt-2` : 'mt-12'} color='primary' fullWidth type='submit'>
                     Login
                 </Button>
             </form>

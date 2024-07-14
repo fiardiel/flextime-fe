@@ -12,6 +12,12 @@ export const register = async ({ user }: { user: User }): Promise<User> => {
         body: JSON.stringify(user)
     })
     const data = await res.json()
+    if (!res.ok) {
+        if (data.email) {
+            throw new Error(data.email)
+        }
+        throw new Error(data.username)
+    }
     return data
 }
 
@@ -25,6 +31,9 @@ export const login = async ({ loginForm }: { loginForm: LoginForm }): Promise<st
         body: JSON.stringify(loginForm)
     })
     const data = await res.json()
+    if (!res.ok) {
+        throw new Error("Invalid username or password")
+    }
     return data.token
 }
 

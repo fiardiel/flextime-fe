@@ -19,14 +19,19 @@ const RegisterForm = () => {
 
         return validateEmail(email) ? false : true;
     }, [email]);
+    const [error, setError] = React.useState<Error | null>(null)
 
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const fd = new FormData(e.currentTarget)
-        const { username, email, password } = Object.fromEntries(fd)
-        const user = await register({ user: { username: username as string, email: email as string, password: password as string } })
-        router.push('/auth/login')
-        console.log(user)
+        try {
+            e.preventDefault()
+            const fd = new FormData(e.currentTarget)
+            const { username, email, password } = Object.fromEntries(fd)
+            const user = await register({ user: { username: username as string, email: email as string, password: password as string } })
+            router.push('/auth/login')
+            console.log(user)
+        } catch (err) {
+            setError(err as Error)
+        }
     }
 
     return (
@@ -78,7 +83,12 @@ const RegisterForm = () => {
                         size='lg'
                         required
                     />
-                    <Link href={'/auth/login'} className='text-blue-400 mb-3 text-center underline hover:text-blue-500' >Already have an account?</Link>
+                    {error ? (
+                        <p className='text-danger text-center'> {error.message} </p>
+                    ) :
+                        null
+                    }
+                    <Link href={'/auth/login'} className='text-blue-400 mt-5 mb-3 text-center underline hover:text-blue-500' >Already have an account?</Link>
                     <Button color='primary' fullWidth type='submit'>
                         Register
                     </Button>
