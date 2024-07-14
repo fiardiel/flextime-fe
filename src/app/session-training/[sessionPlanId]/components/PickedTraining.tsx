@@ -1,5 +1,5 @@
 import React, { FormEventHandler, useEffect } from 'react'
-import { deleteCustomization, deleteSessionTraining, getCustomizationById, getTrainingById, updateCustomization } from '../../../../apis/fitness_plan_apis';
+import { deleteCustomization, getCustomizationById, getTrainingById, updateCustomization } from '../../../../apis/fitness_plan_apis';
 import { ISessionTraining } from '../../../../types/fitness_plan/SessionTraining';
 import { ITraining } from '../../../../types/fitness_plan/Training';
 import { FaListUl } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import { RiEditBoxFill, RiLoopLeftFill } from 'react-icons/ri';
 import { MdOutlineTimer } from 'react-icons/md';
 import { TbTrashFilled } from 'react-icons/tb';
 import { Button, Card, CardBody, CardFooter, CardHeader, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@nextui-org/react';
+import Cookies from 'js-cookie';
 
 interface PickedTrainingProps {
     sessionTraining: ISessionTraining;
@@ -16,6 +17,7 @@ interface PickedTrainingProps {
 }
 
 const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDelete, onUpdate }) => {
+    const token = Cookies.get('userToken');
     const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onOpenChange: onDeleteOpenChange, onClose: onDeleteClose } = useDisclosure();
     const { isOpen: isEditOpen, onOpen: onEditOpen, onOpenChange: onEditOpenChange, onClose: onEditClose } = useDisclosure();
     const [training, setTraining] = React.useState<ITraining | null>(null);
@@ -28,7 +30,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
 
     useEffect(() => {
         const fetchTraining = async () => {
-            const fetchedTraining = await getTrainingById({ id: sessionTraining.training });
+            const fetchedTraining = await getTrainingById(sessionTraining.training, token);
             setTraining(fetchedTraining);
         };
 
@@ -38,7 +40,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
 
     useEffect(() => {
         const fetchCustomization = async () => {
-            const fetchedCustomization = await getCustomizationById({ id: sessionTraining.customization });
+            const fetchedCustomization = await getCustomizationById(sessionTraining.customization, token);
             setCustomization(fetchedCustomization);
             setInputCustomization({
                 sets: fetchedCustomization.sets,
@@ -52,9 +54,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
 
 
     const confirmDelete = async () => {
-        await deleteSessionTraining({ id: sessionTraining.id })
-        await deleteCustomization({ id: sessionTraining.customization })
-        console.log(`Session training ${sessionTraining.id} deleted`);
+        await deleteCustomization(sessionTraining.customization, token)
         onDelete(sessionTraining.id)
         onDeleteClose()
     };
@@ -69,7 +69,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
         };
 
         try {
-            const updatedCustomization = await updateCustomization({ id: sessionTraining.customization, customization: newCustomization });
+            const updatedCustomization = await updateCustomization(sessionTraining.customization, newCustomization, token);
             onUpdate(updatedCustomization.id);
             setCustomization(updatedCustomization)
 
@@ -96,7 +96,7 @@ const PickedTraining: React.FC<PickedTrainingProps> = ({ sessionTraining, onDele
 
     return (
         <div>
-            <Card className='p-5 w-72 h-52 hover:-translate-y-2 hover:scale-110 transition'>
+            <Card className='p-5 w-72 h-60 hover:-translate-y-2 hover:scale-110 transition'>
                 <CardHeader>
                     <p className='font-bold font-custom text-3xl mr-5'>
                         <span>{training?.title}</span>

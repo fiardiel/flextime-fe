@@ -3,3 +3,5 @@ export default interface User {
     email: string
     password: string
 }
+
+export type Token = string | undefined

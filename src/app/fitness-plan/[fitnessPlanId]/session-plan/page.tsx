@@ -4,10 +4,12 @@ import SessionPlanList from './components/SessionPlanList';
 import { ISessionPlan } from '../../../../types/fitness_plan/SessionPlan';
 import { getSessionPlanByFitnessPlan } from '../../../../apis/fitness_plan_apis';
 import BackButton from '@/app/components/BackButton';
+import { cookies } from 'next/headers';
 
 const SessionPlanPage = async ({ params }: { params: { fitnessPlanId: number } }) => {
+    const token = cookies().get('userToken')?.value
     try {
-        const sessionPlans: ISessionPlan[] = await getSessionPlanByFitnessPlan({ fitnessPlanId: params.fitnessPlanId });
+        const sessionPlans: ISessionPlan[] = await getSessionPlanByFitnessPlan({ fitnessPlanId: params.fitnessPlanId, token: token });
         console.log('sessionPlans:', sessionPlans);
 
         return (

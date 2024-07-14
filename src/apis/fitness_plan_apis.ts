@@ -1,3 +1,4 @@
+import { Token } from '@/types/user/User';
 import { CustomizationForm, ICustomization } from '../types/fitness_plan/Customization';
 import { FitnessPlanForm, IFitnessPlan } from '../types/fitness_plan/FitnessPlan';
 import { Duration, ISessionPlan, SessionPlanForm } from '../types/fitness_plan/SessionPlan';
@@ -6,12 +7,6 @@ import { ITraining } from '../types/fitness_plan/Training';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
 const baseUrl = 'http://127.0.0.1:8000'
-
-export const getAllFitnessPlans = async (): Promise<IFitnessPlan[]> => {
-    const res = await fetch(`${baseUrl}/fitness-plan/`)
-    const data = await res.json()
-    return data.results
-}
 
 export const addFitnessPlan = async (fitnessPlan: FitnessPlanForm, token: string): Promise<IFitnessPlan> => {
     const res = await fetch(`${baseUrl}/fitness-plan/`, {
@@ -41,7 +36,7 @@ export const getFitnessPlanByUser = async (token: RequestCookie | undefined): Pr
     return data
 }
 
-export const updateFitnessPlanById = async ({ id, fitnessPlan, token }: { id: number, fitnessPlan: FitnessPlanForm, token: string | undefined}): Promise<IFitnessPlan> => {
+export const updateFitnessPlanById = async ({ id, fitnessPlan, token }: { id: number, fitnessPlan: FitnessPlanForm, token: Token}): Promise<IFitnessPlan> => {
     const res = await fetch(`${baseUrl}/fitness-plan/${id}/`, {
         method: 'PUT',
         headers: {
@@ -54,65 +49,133 @@ export const updateFitnessPlanById = async ({ id, fitnessPlan, token }: { id: nu
     return updatedFitnessPlan
 }
 
-export const getSessionPlanByFitnessPlan = async ( {fitnessPlanId}: { fitnessPlanId: number } ): Promise<ISessionPlan[]> => {
+export const getSessionPlanByFitnessPlan = async ( {fitnessPlanId, token}: { fitnessPlanId: number, token: Token } ): Promise<ISessionPlan[]> => {
     const res = await fetch(`${baseUrl}/session-plan/?fitness_plan=${fitnessPlanId}`, {
         method: 'GET',
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
         }
-    } )
+    })
     const data = await res.json()
-    console.log("data: ", data)
-    return data.results
+    return data
 }
 
-export const deleteSessionPlan = async ( {sessionPlanId}: { sessionPlanId: number } ): Promise<void> => {
-    await fetch(`${baseUrl}/session-plan/${sessionPlanId}/`, {
-        method: 'DELETE'
+export const getSessionPlanById = async (id: number, token: Token): Promise<ISessionPlan> => {
+    const res = await fetch(`${baseUrl}/session-plan/${id}/`, {
+        method: 'GET', 
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
     });
-}
-
-export const getTrainingsByTrainingType = async ({ trainingType }: { trainingType: string }): Promise<ITraining[]> => {
-    const res = await fetch(`${baseUrl}/training/?training_type=${trainingType}`);
-    const data = await res.json()
-    return data.results;
-}
-
-export const getSessionTrainingsBySessionPlan = async ({ sessionPlanId }: { sessionPlanId: number }): Promise<ISessionTraining[]> => {
-    const res = await fetch(`${baseUrl}/session-training/?session_plan=${sessionPlanId}`, { next: { tags: ['sessionTrainings'] } });
-    const data = await res.json();
-    return data.results;
-}
-
-export const getSessionPlanById = async ({ id }: { id: number }): Promise<ISessionPlan> => {
-    const res = await fetch(`${baseUrl}/session-plan/${id}/`);
     const data = await res.json();
     return data;
 }
 
-export const deleteSessionTraining = async ({ id }: { id: number }): Promise<void> => {
-    await fetch(`${baseUrl}/session-training/${id}/`, {
-        method: 'DELETE'
+export const addSessionPlan = async (sessionPlan: SessionPlanForm, token: Token): Promise<ISessionPlan> => {
+    const res = await fetch(`${baseUrl}/session-plan/`, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        },
+        body: JSON.stringify(sessionPlan)
+    })
+    const newSessionPlan = await res.json()
+    return newSessionPlan
+}
+
+export const deleteSessionPlan = async ( {sessionPlanId, token}: { sessionPlanId: number, token: Token } ): Promise<void> => {
+    await fetch(`${baseUrl}/session-plan/${sessionPlanId}/`, {
+        method: 'DELETE',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
     });
 }
 
-export const getTrainingById = async ({ id }: { id: number }): Promise<ITraining> => {
-    const res = await fetch(`${baseUrl}/training/${id}/`)
+export const getTotalDuration = async ( { sessionPlanId, token }: { sessionPlanId: number, token: Token } ): Promise<Duration> => {
+    const res = await fetch(`${baseUrl}/session-plan/${sessionPlanId}/total_duration/`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
     const data = await res.json()
     return data
 }
 
-export const getCustomizationById = async ({ id }: { id: number }): Promise<ICustomization> => {
-    const res = await fetch(`${baseUrl}/customization/${id}/`)
+export const getTrainingCountBySessionPlan = async (sessionPlanId: number, token: Token): Promise<number> => {
+    const res = await fetch(`${baseUrl}/session-training/count/?session-plan=${sessionPlanId}`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
+    const data = await res.json()
+    return data.count
+
+}
+
+
+export const getTrainingsByTrainingType = async (trainingType: string, token: Token): Promise<ITraining[]> => {
+    const res = await fetch(`${baseUrl}/training/?training_type=${trainingType}`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    });
+    const data = await res.json()
+    return data;
+}
+
+export const getSessionTrainingsBySessionPlan = async (sessionPlanId: number, token: Token): Promise<ISessionTraining[]> => {
+    const res = await fetch(`${baseUrl}/session-training/?session_plan=${sessionPlanId}`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    });
+    const data = await res.json();
+    return data;
+}
+
+export const getTrainingById = async (id: number, token: Token): Promise<ITraining> => {
+    const res = await fetch(`${baseUrl}/training/${id}/`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
     const data = await res.json()
     return data
 }
 
-export const addCustomization = async ( customization: CustomizationForm ): Promise<ICustomization> => {
+export const getCustomizationById = async (id:number, token:Token): Promise<ICustomization> => {
+    const res = await fetch(`${baseUrl}/customization/${id}/`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
+    const data = await res.json()
+    return data
+}
+
+export const addCustomization = async ( customization: CustomizationForm, token: Token ): Promise<ICustomization> => {
     const res = await fetch(`${baseUrl}/customization/`, {
         method: 'POST',
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify(customization)
     })
@@ -120,11 +183,12 @@ export const addCustomization = async ( customization: CustomizationForm ): Prom
     return newCustomziation
 }
 
-export const addSessionTraining = async ( sessionTraining: SessionTrainingForm ): Promise<ISessionTraining> => {
+export const addSessionTraining = async ( sessionTraining: SessionTrainingForm, token: Token ): Promise<ISessionTraining> => {
     const res = await fetch(`${baseUrl}/session-training/`, {
         method: 'POST',
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify(sessionTraining)
     })
@@ -132,11 +196,12 @@ export const addSessionTraining = async ( sessionTraining: SessionTrainingForm )
     return newSessionTraining
 }
 
-export const updateCustomization = async ( { id, customization }: { id: number, customization: CustomizationForm } ): Promise<ICustomization> => {
+export const updateCustomization = async ( id: number, customization: CustomizationForm, token: Token ): Promise<ICustomization> => {
     const res = await fetch(`${baseUrl}/customization/${id}/`, {
         method: 'PUT',
         headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
         },
         body: JSON.stringify(customization)
     })
@@ -144,32 +209,13 @@ export const updateCustomization = async ( { id, customization }: { id: number, 
     return updatedCustomization
 }
 
-export const deleteCustomization = async ( { id }: { id: number } ): Promise<void> => {
+export const deleteCustomization = async ( id: number, token: Token ): Promise<void> => {
     await fetch(`${baseUrl}/customization/${id}/`, {
-        method: 'DELETE'
-    });
-}
-
-export const getTotalDuration = async ( { sessionPlanId }: { sessionPlanId: number } ): Promise<Duration> => {
-    const res = await fetch(`${baseUrl}/session-plan/${sessionPlanId}/total_duration/`)
-    const data = await res.json()
-    return data
-}
-
-export const getTrainingCountBySessionPlan = async ({ sessionPlanId }: { sessionPlanId: number }): Promise<number> => {
-    const res = await fetch(`${baseUrl}/session-training/?session_plan=${sessionPlanId}`)
-    const data = await res.json()
-    return data.count
-}
-
-export const addSessionPlan = async (sessionPlan: SessionPlanForm): Promise<ISessionPlan> => {
-    const res = await fetch(`${baseUrl}/session-plan/`, {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify(sessionPlan)
-    })
-    const newSessionPlan = await res.json()
-    return newSessionPlan
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    });
+    console.log(`Customization with id ${id} deleted successfully`);
 }

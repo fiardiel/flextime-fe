@@ -11,6 +11,7 @@ import { RiLoopLeftFill } from 'react-icons/ri';
 import { ISessionTraining } from '../../../../types/fitness_plan/SessionTraining';
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Link, Textarea } from "@nextui-org/react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import Cookies from 'js-cookie';
 
 
 interface AvailableTrainingProps {
@@ -19,6 +20,7 @@ interface AvailableTrainingProps {
 }
 
 const AvailableTraining: React.FC<AvailableTrainingProps> = ({ training, onAdd }) => {
+    const token = Cookies.get('userToken');
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
     const { sessionPlanId } = useParams()
@@ -33,12 +35,12 @@ const AvailableTraining: React.FC<AvailableTrainingProps> = ({ training, onAdd }
         };
 
         try {
-            const createdCustomization = await addCustomization(newCustomization);
+            const createdCustomization = await addCustomization(newCustomization, token);
             const createdSessionTraining = await addSessionTraining({
                 training: training.id,
                 customization: createdCustomization.id,
                 session_plan: parseInt(sessionPlanId as unknown as string)
-            });
+            }, token);
             onAdd(createdSessionTraining);
 
             console.log('Customization added successfully with ID:', createdCustomization.id,

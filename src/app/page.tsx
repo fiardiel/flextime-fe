@@ -1,9 +1,15 @@
 import { Button } from "@nextui-org/button";
+import { cookies } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { GiBiceps } from "react-icons/gi";
 import { ImBook } from "react-icons/im";
 
 export default function Home() {
+  const token = cookies().get("userToken")?.value;
+  if (!token) {
+    redirect("/auth/register");
+  }
   return (
     <main className="flex -translate-y-20 h-screen flex-col justify-center mx-10 p-6">
       <div className="z-10 w-full max-w-5xl text-center text-sm flex flex-col">

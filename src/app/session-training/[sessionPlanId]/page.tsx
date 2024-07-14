@@ -2,11 +2,13 @@ import React from 'react'
 import { getSessionPlanById, getSessionTrainingsBySessionPlan, getTrainingsByTrainingType } from '../../../apis/fitness_plan_apis';
 import Trainings from './components/Trainings';
 import BackButton from '@/app/components/BackButton';
+import { cookies } from 'next/headers';
 
-const SessionTrainingPage = async ({ params }: { params: { sessionPlanId: string } }) => {
-    const sessionTrainings = await getSessionTrainingsBySessionPlan({ sessionPlanId: parseInt(params.sessionPlanId) });
-    const sessionPlan = await getSessionPlanById({ id: Number(params.sessionPlanId) });
-    const availableTrainings = await getTrainingsByTrainingType({ trainingType: sessionPlan.training_type });
+const SessionTrainingPage = async ({ params }: { params: { sessionPlanId: number } }) => {
+    const token = cookies().get('userToken')?.value;
+    const sessionTrainings = await getSessionTrainingsBySessionPlan(params.sessionPlanId, token);
+    const sessionPlan = await getSessionPlanById(params.sessionPlanId, token);
+    const availableTrainings = await getTrainingsByTrainingType(sessionPlan.training_type, token);
 
     return (
         <div>
@@ -17,7 +19,6 @@ const SessionTrainingPage = async ({ params }: { params: { sessionPlanId: string
                 <Trainings trainingType={sessionPlan.training_type} initPickedTrainings={sessionTrainings} availableTrainings={availableTrainings} />
             </div>
         </div>
-
     )
 }
 

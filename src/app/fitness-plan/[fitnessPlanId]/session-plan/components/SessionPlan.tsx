@@ -7,7 +7,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDi
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
 import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan';
 import { deleteSessionPlan, getTotalDuration, getTrainingCountBySessionPlan } from '../../../../../apis/fitness_plan_apis';
-import BackButton from '@/app/components/BackButton';
+import Cookies from 'js-cookie';
 
 interface SessionPlanProps {
     sessionPlan: ISessionPlan;
@@ -15,12 +15,13 @@ interface SessionPlanProps {
 }
 
 const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
+    const token = Cookies.get('userToken');
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [totalDuration, setTotalDuration] = React.useState<string | null>(null);
     const [trainingCount, setTrainingCount] = React.useState<number | null>(null);
 
     const confirmDelete = async () => {
-        await deleteSessionPlan({ sessionPlanId: sessionPlan.id });
+        await deleteSessionPlan({ sessionPlanId: sessionPlan.id, token: token});
         console.log(`Session plan ${sessionPlan.id} deleted`);
         onClose()
         onDelete(sessionPlan.id)
@@ -28,7 +29,7 @@ const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
 
     useEffect(() => {
         const fetchTotalDuration = async () => {
-            const fetchedDuration = await getTotalDuration({ sessionPlanId: sessionPlan.id });
+            const fetchedDuration = await getTotalDuration({ sessionPlanId: sessionPlan.id, token: token });
             const minutes = Math.floor(fetchedDuration.total_duration / 60);
             const seconds = fetchedDuration.total_duration % 60;
             const formattedDuration = `${minutes.toString().padStart(2, '0')}m${seconds.toString().padStart(2, '0')}s`;
@@ -39,7 +40,7 @@ const SessionPlan: React.FC<SessionPlanProps> = ({ sessionPlan, onDelete }) => {
 
     useEffect(() => {
         const fetchTrainingCount = async () => {
-            const fetchedCount = await getTrainingCountBySessionPlan({ sessionPlanId: sessionPlan.id });
+            const fetchedCount = await getTrainingCountBySessionPlan(sessionPlan.id, token);
             setTrainingCount(fetchedCount);
         }
         fetchTrainingCount();

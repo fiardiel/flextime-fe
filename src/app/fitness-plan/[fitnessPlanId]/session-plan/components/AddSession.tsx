@@ -2,12 +2,11 @@
 
 import React from 'react'
 import { FaPlus } from 'react-icons/fa'
-
 import { useParams, useRouter } from 'next/navigation';
-
 import { Modal, ModalContent, ModalHeader, ModalBody, Button, useDisclosure } from "@nextui-org/react";
 import { ISessionPlan } from '../../../../../types/fitness_plan/SessionPlan';
 import { addSessionPlan } from '../../../../../apis/fitness_plan_apis';
+import Cookies from 'js-cookie';
 
 interface AddSessionProps {
     onAdd: (newSessionPlan: ISessionPlan) => void;
@@ -24,7 +23,7 @@ const AddSession: React.FC<AddSessionProps> = ({ onAdd }) => {
         const sessionPlan = await addSessionPlan({
             training_type: trainingType,
             fitness_plan: parseInt(fitnessPlanId as unknown as string)
-        })
+        }, Cookies.get('userToken'));
         console.log('Session Plan added successfully with ID: ', sessionPlan.id);
         onAdd(sessionPlan);
         onClose();
