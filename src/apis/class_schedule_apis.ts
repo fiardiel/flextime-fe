@@ -1,7 +1,7 @@
 import { Token } from "@/types/user/User"
 import { ClassScheduleForm, IClassSchedule } from "../types/course_plan/ClassSchedule"
 
-const baseUrl = 'http://127.0.0.1:8000'
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export const getAllClassSchedule = async(token: Token): Promise<IClassSchedule[]> => {
     const res = await fetch(`${baseUrl}/class-schedule`, {

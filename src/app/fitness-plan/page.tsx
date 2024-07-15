@@ -8,19 +8,17 @@ import AddFitnessPlan from './components/AddFitnessPlan';
 const FitnessPlanPage = async () => {
   const token = cookies().get('userToken')?.value;
   let fitnessPlanComponent = null
-  try {
-    const fitnessPlan = await getFitnessPlan(token);
-    console.log("fitnessplan:", fitnessPlan)
+  const fitnessPlan = await getFitnessPlan(token);
+  if (fitnessPlan) {
     fitnessPlanComponent = (
       <div className='p-52 gap-8 self-center'>
         <FitnessPlan initFitnessPlan={fitnessPlan}></FitnessPlan>
       </div>
     )
-  } catch (error) {
-    console.error('Error fetching fitness plans:', error);
+  } else {
     fitnessPlanComponent = (
-      <div className='p-16 gap-8'>
-        <AddFitnessPlan />
+      <div className='p-52 gap-8 self-center'>
+        <AddFitnessPlan></AddFitnessPlan>
       </div>
     )
   }

@@ -1,8 +1,7 @@
 import { Token } from "@/types/user/User"
 import { TestSchedule, TestScheduleForm } from "../types/course_plan/TestSchedule"
 
-
-const baseUrl = 'http://127.0.0.1:8000'
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export const getAllTestSchedule = async(token: Token): Promise<TestSchedule[]> => {
     const res = await fetch(`${baseUrl}/test-schedule/`, {

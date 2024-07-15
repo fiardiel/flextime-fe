@@ -1,7 +1,7 @@
 import LoginForm from "../types/user/LoginForm"
 import User from "../types/user/User"
 
-const baseUrl = 'http://127.0.0.1:8000'
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export const register = async ({ user }: { user: User }): Promise<User> => {
     const res = await fetch(`${baseUrl}/register`, {
@@ -23,6 +23,7 @@ export const register = async ({ user }: { user: User }): Promise<User> => {
 
 
 export const login = async ({ loginForm }: { loginForm: LoginForm }): Promise<string> => {
+    console.log('baseUrl', baseUrl)
     const res = await fetch(`${baseUrl}/login`, {
         method: 'POST',
         headers: {

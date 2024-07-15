@@ -6,7 +6,7 @@ import { ISessionTraining, SessionTrainingForm } from '../types/fitness_plan/Ses
 import { ITraining } from '../types/fitness_plan/Training';
 import { RequestCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 
-const baseUrl = 'http://127.0.0.1:8000'
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export const addFitnessPlan = async (fitnessPlan: FitnessPlanForm, token: string): Promise<IFitnessPlan> => {
     const res = await fetch(`${baseUrl}/fitness-plan/`, {
@@ -30,6 +30,7 @@ export const getFitnessPlan = async (token: Token): Promise<IFitnessPlan> => {
         }
     })
     const data = await res.json()
+    console.log('fitnessPlan', data)
     return data
 }
 

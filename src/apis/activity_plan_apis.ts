@@ -3,7 +3,7 @@ import { ActivityPlan, IActivityPlan } from "../types/activity_plan/ActivityPlan
 import { SessionSchedule, SessionScheduleForm } from "../types/activity_plan/SessionSchedule"
 import { ISessionPlan } from "../types/fitness_plan/SessionPlan"
 
-const baseUrl = "http://127.0.0.1:8000"
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export const getSchedules = async (activityPlanId: number, dateStr: string, token: Token): Promise<ActivityPlan> => {
     const formattedDate = dateStr.split('T')[0].replace(/-/g, '')
