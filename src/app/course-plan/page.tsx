@@ -14,10 +14,10 @@ const CoursePlanPage = async () => {
   const assignmentDeadlines = await getAllAssignmentDeadline(token)
   return (
     <div className='relative'>
-      <div className='absolute top-0 left-0 mt-10 ml-14 z-48'>
+      <div className='md:absolute top-0 left-0 mt-10 ml-14 z-48'>
         <BackButton></BackButton>
       </div>
-      <div className='flex flex-col items-center justify-center translate-y-10'>
+      <div className='flex flex-col items-center justify-center translate-y-3 md:translate-y-10'>
         <TabComponent initClassSchedules={classSchedules} initTestSchedules={testSchedules} initAssignments={assignmentDeadlines} />
       </div>
     </div>

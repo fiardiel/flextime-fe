@@ -23,7 +23,7 @@ const TabComponent: React.FC<TabComponentProps> = ({ initClassSchedules, initTes
   return (
     <div className="font-sans px-10">
       <div className="flex w-full flex-col items-center px-10">
-        <Tabs aria-label="Options" color="primary" variant="bordered">
+        <Tabs size="sm" aria-label="Options" color="primary" variant="bordered">
           <Tab
             key="class"
             title={

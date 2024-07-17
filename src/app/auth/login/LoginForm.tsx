@@ -20,6 +20,7 @@ const LoginForm = () => {
             const { username, password } = Object.fromEntries(fd)
             const token = await login({ loginForm: { username: username as string, password: password as string } })
             Cookies.set('userToken', token)
+            router.prefetch('/')
             router.push('/')
             console.log(token)
         } catch (err) {
