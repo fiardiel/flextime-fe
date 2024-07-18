@@ -11,12 +11,15 @@ import {
     Button,
     NavbarMenu as NextNavbarMenu,
     NavbarMenuItem as NextNavbarMenuItem,
+    Spinner,
 } from "@nextui-org/react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { logout } from "../../apis/user_apis";
 
 const Navbar = () => {
+    const router = useRouter()
+    const [isLogoutLoading, setIsLogoutLoading] = React.useState(false);
     const [navbar, setNavbar] = React.useState<JSX.Element | null>(null);
     const token = Cookies.get("userToken");
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -28,22 +31,31 @@ const Navbar = () => {
         "Log Out",
     ];
     const pathname = usePathname()
-    const isActive = (href: string) => pathname.startsWith(href) && pathname !== "/"   
+    const isActive = (href: string) => pathname.startsWith(href) && pathname !== "/"
     const isHome = pathname === "/"
 
-    const handleLogout = async () => {
-        Cookies.remove("userToken")
-        await logout()
-        window.location.href = "/auth/register"
+    const handleLogout = async (e: React.FormEvent<HTMLFormElement>) => {
+        try {
+            setIsLogoutLoading(true);
+            e.preventDefault();
+            Cookies.remove("userToken");
+            await logout();
+            router.push("/auth/register")
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setIsLogoutLoading(false);
+        }
     }
-    
+
     const rightButton = (
-        <Button color="danger" onPress={handleLogout} variant="flat">
-            Logout
-        </Button>
+        <form onSubmit={handleLogout}>
+            <Button color={isLogoutLoading ? 'default' : 'danger'} type="submit" variant="flat">
+                {isLogoutLoading ? (<Spinner />) : 'Log Out'}
+            </Button>
+        </form>
     )
 
-    // use effect to check whether it has token or not, if it has token then it will return the navbar
     useEffect(() => {
         if (!token && !pathname.startsWith("/auth")) {
             setNavbar(null)
@@ -100,9 +112,7 @@ const Navbar = () => {
                     {menuItems.map((item, index) => (
                         <NextNavbarMenuItem key={`${item}-${index}`} className="mx-10">
                             <Link
-                                color={
-                                    isActive(item === 'Home' ? '/' : `/${item.toLowerCase().replace(" ", "-")}`) ? "primary" : index === menuItems.length - 1 ? "danger" : "foreground"
-                                }
+                                color={item === 'Log Out' ? 'danger' : 'foreground'}
                                 className="w-full"
                                 href={item === 'Home' ? '/' : `/${item.toLowerCase().replace(" ", "-")}`}
                                 size="lg"

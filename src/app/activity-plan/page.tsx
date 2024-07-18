@@ -66,11 +66,11 @@ const page = async () => {
             <div className='z-48 ml-4 mb-6'>
                 <BackButton />
             </div>
-            <div className='flex flex-row mb-8 ml-6 justify-between md:justify-normal mr-6'>
-                <h3 className='font-custom text-4xl md:mr-6 font-bold'>
+            <div className='md:flex md:flex-row mb-8 ml-6 justify-between md:justify-normal mr-6'>
+                <h3 className='font-custom text-4xl md:mr-6 font-bold mb-4'>
                     {todayMonth}
                 </h3>
-                <Button className='self-end' color='primary' variant='ghost' size='md' as={Link} href={`activity-plan/${activityPlanId}/view-sessions`} endContent={<FaCalendarCheck size={12} />}>
+                <Button className='self-end mb-4' color='primary' variant='ghost' size='md' as={Link} href={`activity-plan/${activityPlanId}/view-sessions`} endContent={<FaCalendarCheck size={12} />}>
                     Schedule Sessions
                 </Button>
             </div>

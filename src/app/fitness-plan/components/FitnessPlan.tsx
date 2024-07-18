@@ -41,7 +41,7 @@ const FitnessPlan: React.FC<FitnessPlanProps> = ({ initFitnessPlan }) => {
 
     return (
         <div>
-            <Card className='p-5 w-80 h-60 scale-110 transition hover:-translate-y-1 hover:scale-125'>
+            <Card className='p-5 w-80 h-60 transition hover:-translate-y-1 hover:scale-110'>
                 <CardHeader>
                     <p className='font-bold font-custom text-3xl mr-5 overflow-scroll max-h-[75px] items-end'>{fitnessPlan.title}</p>
                     <Button isIconOnly className='bg-transparent self-end' onPress={onOpen}>
