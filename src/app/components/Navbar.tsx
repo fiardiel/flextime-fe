@@ -17,7 +17,8 @@ import Cookies from "js-cookie";
 import { logout } from "../../apis/user_apis";
 
 const Navbar = () => {
-    const [userToken, setUserToken] = React.useState<string | undefined>(undefined);
+    const [navbar, setNavbar] = React.useState<JSX.Element | null>(null);
+    const token = Cookies.get("userToken");
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     const menuItems = [
         "Home",
@@ -27,12 +28,8 @@ const Navbar = () => {
         "Log Out",
     ];
     const pathname = usePathname()
-    const isActive = (href: string) => pathname === href    
-    
-    useEffect(() => {
-        const token = Cookies.get("userToken")
-        setUserToken(token)
-    }, [])
+    const isActive = (href: string) => pathname.startsWith(href) && pathname !== "/"   
+    const isHome = pathname === "/"
 
     const handleLogout = async () => {
         Cookies.remove("userToken")
@@ -40,17 +37,25 @@ const Navbar = () => {
         window.location.href = "/auth/register"
     }
     
-    const rightButton = userToken ? (
+    const rightButton = (
         <Button color="danger" onPress={handleLogout} variant="flat">
             Logout
         </Button>
-    ) : (
-        <Button as={Link} color="primary" href="/auth/register" variant="flat">
-            Sign Up
-        </Button>
     )
 
-    return (
+    // use effect to check whether it has token or not, if it has token then it will return the navbar
+    useEffect(() => {
+        if (!token && !pathname.startsWith("/auth")) {
+            setNavbar(null)
+            window.location.href = "/auth/register"
+        } else if (!token && pathname.startsWith("/auth")) {
+            setNavbar(null)
+        } else {
+            setNavbar(toBeNavbar)
+        }
+    }, [token])
+
+    const toBeNavbar = (
         <>
             <NextNavbar shouldHideOnScroll onMenuOpenChange={setIsMenuOpen} isBordered maxWidth="full">
                 <NextNavbarContent className="ml-10">
@@ -64,8 +69,8 @@ const Navbar = () => {
                 </NextNavbarContent>
 
                 <NextNavbarContent className="w-full hidden sm:flex gap-4" justify="center">
-                    <NextNavbarItem isActive={isActive("/")}>
-                        <Link color={isActive("/") ? "primary" : "foreground"} href="/">
+                    <NextNavbarItem isActive={isHome}>
+                        <Link color={isHome ? "primary" : "foreground"} href="/">
                             Home
                         </Link>
                     </NextNavbarItem>
@@ -74,7 +79,7 @@ const Navbar = () => {
                             Activity Plan
                         </Link>
                     </NextNavbarItem>
-                    <NextNavbarItem isActive={isActive("/fitness-plan") || isActive("/session-plan") || isActive("/session-training")}>
+                    <NextNavbarItem isActive={isActive("/fitness-plan") || isActive("/session-training")}>
                         <Link href="/fitness-plan" color={isActive("/fitness-plan") || isActive("/session-plan") || isActive("/session-training") ? "primary" : "foreground"} >
                             Fitness Plan
                         </Link>
@@ -110,6 +115,7 @@ const Navbar = () => {
             </NextNavbar>
         </>
     )
+    return navbar
 }
 
 export default Navbar
