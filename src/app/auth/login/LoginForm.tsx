@@ -6,15 +6,18 @@ import { FaEye, FaEyeSlash, FaLock, FaUser } from 'react-icons/fa'
 import { login } from '../../../apis/user_apis'
 import { useRouter } from 'next/navigation'
 import Cookies from 'js-cookie'
+import { Spinner } from '@nextui-org/react'
 
 const LoginForm = () => {
     const router = useRouter()
+    const [isLoading, setIsLoading] = React.useState(false)
     const [isVisible, setIsVisible] = React.useState(false)
     const toggleVisibility = () => setIsVisible(!isVisible)
     const [error, setError] = React.useState<Error | null>(null)
 
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         try {
+            setIsLoading(true)
             e.preventDefault()
             const fd = new FormData(e.currentTarget)
             const { username, password } = Object.fromEntries(fd)
@@ -25,6 +28,8 @@ const LoginForm = () => {
             console.log(token)
         } catch (err) {
             setError(err as Error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -62,8 +67,8 @@ const LoginForm = () => {
                 ) :
                     null
                 }
-                <Button className={error ? `mt-2` : 'mt-12'} color='primary' fullWidth type='submit'>
-                    Login
+                <Button className={error ? `mt-2` : 'mt-12'} color={isLoading ? 'default' : 'primary'} fullWidth type='submit'>
+                    {isLoading ? (<Spinner color='white'/> ): 'Login'}
                 </Button>
             </form>
         </div>

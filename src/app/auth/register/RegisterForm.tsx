@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Input } from '@nextui-org/react'
+import { Button, Input, Spinner } from '@nextui-org/react'
 import React from 'react'
 import { FaEye, FaEyeSlash, FaLock, FaUser } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
@@ -10,6 +10,7 @@ import Link from 'next/link'
 
 const RegisterForm = () => {
     const router = useRouter()
+    const [isLoading, setIsLoading] = React.useState(false)
     const [isVisible, setIsVisible] = React.useState(false)
     const toggleVisibility = () => setIsVisible(!isVisible)
     const [email, setEmail] = React.useState('')
@@ -23,6 +24,7 @@ const RegisterForm = () => {
 
     const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
         try {
+            setIsLoading(true)
             e.preventDefault()
             const fd = new FormData(e.currentTarget)
             const { username, email, password } = Object.fromEntries(fd)
@@ -31,6 +33,8 @@ const RegisterForm = () => {
             console.log(user)
         } catch (err) {
             setError(err as Error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -89,8 +93,8 @@ const RegisterForm = () => {
                         null
                     }
                     <Link href={'/auth/login'} className='text-blue-400 mt-5 mb-3 text-center underline hover:text-blue-500' >Already have an account?</Link>
-                    <Button color='primary' fullWidth type='submit'>
-                        Register
+                    <Button color={isLoading ? 'default' : 'primary'} fullWidth type='submit'>
+                        {isLoading ? (<Spinner color='white'/>) : 'Register'}
                     </Button>
                 </div>
             </form>
