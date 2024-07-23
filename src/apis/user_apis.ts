@@ -1,5 +1,5 @@
 import LoginForm from "../types/user/LoginForm"
-import User from "../types/user/User"
+import User, { Token } from "../types/user/User"
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
@@ -59,4 +59,16 @@ export const getUser = async (token: string | undefined): Promise<number> => {
     })
     const data = await res.json()
     return data.user_id
+}
+
+export const checkAdmin = async (token: Token): Promise<boolean> => { 
+    const res = await fetch(`${baseUrl}/check_admin`, {
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization': `Token ${token}`
+        }
+    })
+    const data = await res.json()
+    return data.is_admin
 }

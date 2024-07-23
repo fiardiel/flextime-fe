@@ -4,3 +4,9 @@ export interface ITraining {
     training_type: string;
     description: string;
 }
+
+export interface TrainingForm {
+    title: string;
+    training_type: string;
+    description: string;
+}

@@ -17,6 +17,7 @@
     "@nextui-org/select": "^2.2.2",
     "@nextui-org/spinner": "^2.0.30",
     "@nextui-org/system": "^2.2.1",
+    "@nextui-org/table": "^2.0.39",
     "@nextui-org/theme": "^2.2.5",
     "@react-aria/i18n": "^3.11.1",
     "date-fns": "^3.6.0",

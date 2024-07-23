@@ -7,10 +7,12 @@ import { FitnessPlanForm } from '../../../types/fitness_plan/FitnessPlan';
 import { addFitnessPlan } from '../../../apis/fitness_plan_apis';
 import Cookies from 'js-cookie'
 import { getUser } from '../../../apis/user_apis';
+import { useRouter } from 'next/navigation';
 
 
 const AddFitnessPlan = () => {
     const token = Cookies.get('userToken') ?? '';
+    const router = useRouter()
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const [addInput, setAddInput] = React.useState<string>('')
 
@@ -25,6 +27,7 @@ const AddFitnessPlan = () => {
         try {
             const createdFitnessPlan = await addFitnessPlan(newFitnessPlan, token);
             console.log('Fitness Plan added successfully with ID:', createdFitnessPlan.id);
+            router.refresh()
         } catch (err) {
             console.error('Error creating fitness plan:', err);
         }

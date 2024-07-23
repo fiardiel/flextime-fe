@@ -9,7 +9,7 @@ const FitnessPlanPage = async () => {
   const token = cookies().get('userToken')?.value;
   let fitnessPlanComponent = null
   const fitnessPlan = await getFitnessPlan(token);
-  if (fitnessPlan) {
+  if (fitnessPlan && Object.keys(fitnessPlan).length > 0) {
     fitnessPlanComponent = (
       <div className='p-52 gap-8 self-center'>
         <FitnessPlan initFitnessPlan={fitnessPlan}></FitnessPlan>
